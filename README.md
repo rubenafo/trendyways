@@ -12,5 +12,5 @@ Currently available methods are:
 - Bollinger Bands (window n, k value).
 
 For the testing part, fantastic qunit.js testing library is used.
-Tests can be run from the file http://www.github.com/figurebelow/trendyways/tests.html once you get the 
-repository
+Tests can be run from the file tests.html once you get this
+repository, https://github.com/figurebelow/trendyways
