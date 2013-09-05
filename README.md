@@ -10,7 +10,8 @@ Currently available methods are:
 - Series min, max, mean and standar deviation.
 - Moving Average of n-th order.
 - Bollinger Bands (window n, k value).
+- Pivot Line, resistances (R1, R2 and R3) and supports (S1, S2 and S3).
 
 For the testing part, fantastic qunit.js testing library is used.
-Tests can be run from the file tests.html once you get this
+Tests can be run from the file tests.html once you fetch this
 repository, https://github.com/figurebelow/trendyways
