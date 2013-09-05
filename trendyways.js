@@ -161,3 +161,39 @@ bollinger = function (list, n, k) {
 }
 
 ///////////////////////////////////////////////////////
+
+/**
+ * Returns the pivot level, three support levels (s1,s2 and s3)
+ * and three resistance levels (r1, r2 and r3) of the
+ * given data series.
+ * These values for a given day are calculated based on the day before
+ * so expect n values as output for a given list of n days.
+ * Note that all three must have the same length.
+ * Params: - higList: list of high values
+ *         - lowList: list of low values
+ *         - cliseList: list of closing values
+ * The result is a list of elements with fields:
+ *         - r3: resistence third level
+ *         - r2: resistance second level
+ *         - r1: resistance first level
+ *         - pl: pivot level
+ *         - s3: support third level
+ *         - s2: support second level
+ *         - s1: support first level
+ */
+pivots = function (highList, lowList, closeList) {
+  var result = new Array();
+  for (var i = 0; i < highList.length; i++)
+  {
+    pivotLevel = (highList[i] + lowList[i] + closeList[i]) / 3;
+    r1 = 2 * pivotLevel - lowList[i];
+    r2 = pivotLevel + highList[i] - lowList[i];
+    r3 = r1 + highList[i] - lowList[i];
+    s1 = 2 * pivotLevel - highList[i];
+    s2 = pivotLevel - highList[i] + lowList[i];
+    s3 = s1 - highList[i] + lowList[i];
+    elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
+    result.push(elem);
+  }
+  return result;
+}

@@ -80,3 +80,17 @@ test ("Bollinger bands values for a sample serie", function () {
    }
 });
 
+test ("Pivot level, supports and resistances", function () {
+  var lowList = [5];
+  var highList = [18];
+  var closeList = [15];
+  var values = pivots (highList, lowList, closeList);
+  deepEqual (values[0].r3, 33.33333333333333, "Resistance R3 ok");
+  deepEqual (values[0].r2, 25.666666666666664, "Resistance R2 ok");
+  deepEqual (values[0].r1, 20.333333333333332, "Resistance R1 ok");
+  deepEqual (values[0].pl, 12.666666666666666, "Pivot level ok");
+  deepEqual (values[0].s1, 7.333333333333332, "Support R1 ok");
+  deepEqual (values[0].s2, -0.3333333333333339, "Support R2 ok");
+  deepEqual (values[0].s3, -5.666666666666668, "Support R3 ok");
+});
+
