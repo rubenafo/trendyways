@@ -313,3 +313,41 @@ camarillaPoints = function (highList, lowList, closeList) {
   }
   return result;
 }
+
+
+////////////////////////////////////////////////////////
+
+fibonacciRetrs = function (lowList, highList, trend)
+{
+  var result = new Array();
+  var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
+  if (trend == 'DOWNTREND') 
+  {
+    for (var i = 0; i < highList.length; i++)
+    {
+      var diff = highList[i] - lowList[i];
+      var elem = new Array();
+      for (var r = 0; r < retracements.length; r++)
+      {
+        var level = highList[i] - diff * retracements[r];
+        elem.push(level);
+      }
+      result.push(elem);
+    }
+  }
+  else  // UPTREND
+  {
+    for (var i = 0; i < lowList.length; i++)
+    {
+      var diff = highList[i] - lowList[i];
+      var elem = new Array();
+      for (var r = 0; r < retracements.length; r++)
+      {
+        var level = lowList[i] + diff * retracements[r];
+        elem.push (level);
+      }
+      result.push(elem);
+    }
+  }
+  return result;
+}

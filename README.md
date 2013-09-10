@@ -18,6 +18,7 @@ Support and resistance calculation:
 * Tom Demarks Points (low:high values prediction).
 * Woodies Points (resistances R1,R2; and supports S1 and S2).
 * Camarilla Points (resistances R1,R2,R3 and R4; supports S1,S2,S3 and S4).
+* Fibonacci Retracements (for both uptrend and downtrend series).
 
 For the testing part, fantastic qunit.js testing library is used.
 Tests can be run from the file tests.html once you fetch this

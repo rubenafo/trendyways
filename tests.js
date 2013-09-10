@@ -188,4 +188,52 @@ test ("Camarilla predicted points (supports and resistances)", function () {
   deepEqual (values[3].s4, 7.9, "Support s4 for fourth value ok");
 });
 
+test ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')", function ()
+{
+  var highList = [10, 12, 9, 15, 16];
+  var lowList = [5, 8, 7, 6, 9];
+  var values = fibonacciRetrs (lowList, highList, 'UPTREND');
+  deepEqual (values.length, 5, "Returned values ok");
+  for (var i = 0; i < values.length; i++)
+  {
+    deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
+  }
+  var solsUptrend = [[10, 8.09, 7.5, 6.91, 6.18, 5],
+             [12, 10.47, 10, 9.53, 8.94, 8],
+             [9, 8.24, 8, 7.76, 7.47, 7],
+             [15, 11.56, 10.50, 9.44, 8.12, 6],
+             [16, 13.33, 12.50, 11.67, 10.65, 9]];
+  var retracement = [100, 61.8, 50, 38.2, 23.6, 0]; // only for the text output
+  for (var i = 0; i < 5; i++)
+  {
+    for (var j = 0; j < 6; j++)
+    {
+      deepEqual (values[i][j].toFixed(2), solsUptrend[i][j].toFixed(2), "test " + i + " uptrend, " + retracement[j] + "% retracement OK");
+    }
+  }
+});
 
+test ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')", function ()
+{
+  var highList = [10, 9, 5, 7, 2];
+  var lowList = [5, 6, 3, 6, 1];
+  var values = fibonacciRetrs (lowList, highList, 'DOWNTREND');
+  deepEqual (values.length, 5, "Returned values ok");
+  for (var i = 0; i < values.length; i++)
+  {
+    deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
+  }
+  var solsDownTrend = [[5, 6.91, 7.5, 8.09, 8.82, 10],
+             [6, 7.15, 7.5, 7.85, 8.29, 9],
+             [3, 3.76, 4, 4.24, 4.53, 5],
+             [6, 6.38, 6.5, 6.62, 6.76, 7],
+             [1, 1.38, 1.5, 1.62, 1.76, 2]];
+  var retracement = [100, 61.8, 50, 38.2, 23.6, 0]; // only for the text output
+  for (var i = 0; i < 5; i++)
+  {
+    for (var j = 0; j < 6; j++)
+    {
+      deepEqual (values[i][j].toFixed(2), solsDownTrend[i][j].toFixed(2), "test " + i + " downtrend, " + retracement[j] + "% retracement OK");
+    }
+  }
+});
