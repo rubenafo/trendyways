@@ -15,20 +15,6 @@
 
 // TrendyWays: technical analysis methods for time series.
 
-/* 
- * A quick list of available functions, for more details navigate to 
- * each definition.
- *
- *  max (list) - returns the max value on the list
- *  min (list) - returns the min value on the list
- *  mean(list) - returns the mean of the param values
- *  sd (list) -  returns the standard deviation of the param values
- *  ma (list, n) - returns a list containing the Moving Average of order n-th
- *               - of the param list.
- *  bollinger (list, n, k) - returns the Bollinger Bands of the list, given
- *                         - window size = n, k value.
- */
-
 /**
  * Max value in a serie
  */
@@ -99,7 +85,6 @@ sd = function (values) {
  *           fun - function to apply on each chunk
  */
 windowOp = function (values, value, fun) {
-  //var index = values.length-1;
   var result = new Array();
   for (var i = value; i <= values.length; i++)
   {
@@ -109,8 +94,11 @@ windowOp = function (values, value, fun) {
   return result;
 }
 
-//////////////////////////////////////////////////////
-
+/*
+ * Moving Average: 
+ * also known as simple moving average, rolling average, moving mean
+ * and a million of similar combinations
+ */
 ma = function (values, order) {
 
   // Sums the content of a window
@@ -350,4 +338,124 @@ fibonacciRetrs = function (lowList, highList, trend)
     }
   }
   return result;
+}
+
+////////////////////////////////////////////////////////
+//
+// Errors
+//
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the difference of the vector parameters as
+ * a new vector
+ */
+diffVectors = function (series1, series2)
+{
+  var size = max([series1.length, series2.length])
+  var result = [];
+  var s1Size = series1.length;
+  var s2Size = series2.length;
+  for (var i = 0; i < size; i++)
+  {
+    var itemS1 = 0;
+    var itemS2 = 0;
+    if (s1Size > i)
+    {
+      itemS1 = series1[i];
+    }
+    if (s2Size > i)
+    {
+      itemS2 = series2[i];
+    }
+    result.push (itemS1 - itemS2);
+  }
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns a vector to the 2nd power
+ */
+powVector = function (serie) 
+{
+  var result = [];
+  pow = function (x) { 
+    result.push (Math.pow(x, 2)); 
+  };
+  serie.forEach (pow);
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the sum of all elements in a vector
+ */
+sumVector = function (vector)
+{
+  var result = 0;
+  sum = function (x) { result += x; }
+  vector.forEach (sum);
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the average of the sum of all vector elements
+ */
+avgVector = function (vector)
+{
+  var result = sumVector (vector);
+  if (!vector.length)
+    return 0;
+  else
+    return result / vector.length;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the vector containing absoulte values of the input
+ */
+absVector = function (vector)
+{
+  var result = [];
+  vector.forEach (function ab(x) 
+  {
+    result.push(Math.abs(x));
+  });
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * MSE error
+ */
+mse = function (series1, series2)
+{
+  return avgVector (powVector (diffVectors(series1, series2)));
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * RMSE error, the squared MSE
+ */
+rmse = function (series1, series2)
+{
+  return Math.sqrt (mse(series1, series2));
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * MAE error, mean absolute error
+ */
+mae = function (series1, series2)
+{
+  return avgVector(absVector(diffVectors(series1, series2)));
 }

@@ -1,19 +1,26 @@
 trendyways
 ==========
 
-Small javascrip library containing methods to use in financial technical analysis of time series.
-It is intended to be a simple library, for most of the methods the input is just an array of values to get as output 
-a list of values.
+Small javascrip library containing methods to use in financial technical analysis of stock time series.
+It is intended to be a simple library, suitable to be inserted in any visulization workflow to generate results on the fly.
 
 General purpose functions:
  
-* Series min, max, mean and standar deviation.
+* series min.
+* series max.
+* series mean.
+* series standar deviation.
 
 Averages and intervals:
-* Moving Average of n-th order.
-* Bollinger Bands (window n, k value).
+* moving average of n-th order.
+* Bollinger bands (window n, k value).
 
-Support and resistance calculation:
+Error methods:
+* series MSE
+* series RMSE
+* series MAE
+
+Support and resistance methods:
 * Floor pivot points (resistances R1, R2 and R3; and supports S1, S2 and S3).
 * Tom Demarks Points (low:high values prediction).
 * Woodies Points (resistances R1,R2; and supports S1 and S2).

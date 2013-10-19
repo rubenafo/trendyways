@@ -15,17 +15,17 @@
 */
 
 /**
- * This tests checks most of the TrendyWays.js functionality.
+ * This tests check most of the TrendyWays.js functionality.
  */
 
 test ("Max value in a simple serie", function () {
    var serie = [0,6,2,7,8,9]
-   deepEqual (max (serie), 9, "Correct max value of a simple serie");
+   deepEqual (max (serie), 9, "Correct max value of a sample serie");
 });
 
 test ("Min value in a simple serie", function () {
    var serie = [0,6,2,7,8,9]
-   deepEqual (min (serie), 0, "Correct min value of a simple serie");
+   deepEqual (min (serie), 0, "Correct min value of a sample serie");
 });
 
 test ("Mean of zero is zero", function () {
@@ -35,14 +35,14 @@ test ("Mean of zero is zero", function () {
 
 test ("Mean of a simple serie", function () {
    var serie = [2,6,5,7,10,9,12,5]
-   deepEqual (mean(serie), 7, "Mean value of a simple serie");
+   deepEqual (mean(serie), 7, "Mean value of a sample serie");
 });
 
 // Values from the wikipedia for an example of Standard Deviation:
 // http://en.wikipedia.org/wiki/Standard_deviation 
 test ("Standard deviation of a serie", function () {
    var serie = [2,4,4,4,5,5,7,9]
-   deepEqual (sd(serie), 2, "Correct standard deviation of a simple serie");
+   deepEqual (sd(serie), 2, "Correct standard deviation of a sample serie");
 });
 
 test ("Moving Average of a sample serie", function () {
@@ -236,4 +236,48 @@ test ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')"
       deepEqual (values[i][j].toFixed(2), solsDownTrend[i][j].toFixed(2), "test " + i + " downtrend, " + retracement[j] + "% retracement OK");
     }
   }
+});
+
+test ("MSE mean standard error test", function ()
+{
+  var s1 = [];
+  var s2 = [];
+  var mseResult = mse (s1, s2);
+  equal (mseResult, 0, "Empty series return MSE = 0")
+  s1 = [0,0,0,0,0]
+  s2 = [0,0,0,0,0]
+  mseResult = mse(s1, s2);
+  equal (mseResult, 0, "Zeroed-series return MSE = 0");
+  s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
+  s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
+  equal (mse(s1, s1), 0, "Equal vectors return MSE = 0");
+  equal (mse(s1, s2), 101.22833333333334, "MSE of two sample vectors");
+});
+
+test ("RMSE root-squared mean standard error test", function ()
+{
+  var s1 = [];
+  var s2 = [];
+  equal (rmse(s1,s2), 0, "Empty series return RMSE = 0")
+  s1 = [0,0,0,0,0]
+  s2 = [0,0,0,0,0]
+  equal (rmse(s1,s2), 0, "Zeroed-series return RMSE = 0");
+  s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
+  s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
+  equal (rmse(s1, s1), 0, "Equal vectors return RMSE = 0");
+  equal (parseFloat(rmse(s1, s2).toString().substr(0,10)), 10.0612292, "RMSE of two sample vectors");
+});
+
+test ("MAE mean absolute error test", function ()
+{
+  var s1 = [];
+  var s2 = [];
+  equal (mae(s1,s2), 0, "Empty series return MAE = 0")
+  s1 = [0,0,0,0,0]
+  s2 = [0,0,0,0,0]
+  equal (mae(s1,s2), 0, "Zeroed-series return MAE = 0");
+  s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
+  s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
+  equal (mae(s1, s1), 0, "Equal vectors return MAE = 0");
+  equal (parseFloat(mae(s1, s2).toString().substr(0,5)), 7.3500, "MAE of two sample vectors");
 });
