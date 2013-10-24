@@ -76,7 +76,12 @@ test ("Exponential moving average test", function ()
 test ("Weighted moving average test", function ()
 {
   var series = [1, 2, 3, 4, 5, 6];
-  var result = wma (series, 4, [0.6, 0.3, 0.1]);
+  var expected = [0.5, 0.83333, 1.16667, 1.5]
+  var result = wma (series, [0.6, 0.3, 0.1]);
+  for (var i = 0; i < result.length; i++)
+  {
+    equal (expected[i], result[i].toFixed(5), "Testing WMA value " + i);
+  }
 });
 
 /**
