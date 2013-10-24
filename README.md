@@ -12,7 +12,9 @@ General purpose functions:
 * series standar deviation.
 
 Averages and intervals:
-* moving average of n-th order.
+* MA: simple moving average.
+* EMA: exponential moving average.
+* WMA: weighted moving average.
 * Bollinger bands (window n, k value).
 
 Error methods:
