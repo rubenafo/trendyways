@@ -56,6 +56,29 @@ test ("Moving Average of a sample serie", function () {
    }
 });
 
+test ("Exponential moving average test", function ()
+{
+  var series = [64.75, 63.79, 63.73, 63.73, 63.55, 
+                63.19, 63.91, 63.85, 62.95, 63.37, 
+                61.33, 61.51, 61.87, 60.25, 59.35, 
+                59.95, 58.93, 57.68, 58.82, 58.87];
+  var expected = [ 63.682, 63.254, 62.937, 62.743, 62.290,
+                   61.755, 61.427, 60.973, 60.374, 60.092,
+                   59.870
+                 ];
+  var result = ema(series, 10);
+  for (var i = 0; i < result.length; i++)
+  {
+    equal (result[i].toFixed(3), expected[i], "Checking EMA index = " + i)
+  }
+});
+
+test ("Weighted moving average test", function ()
+{
+  var series = [1, 2, 3, 4, 5, 6];
+  var result = wma (series, 4, [0.6, 0.3, 0.1]);
+});
+
 /**
  * This test checks multiple window of size n and different k values on
  * a sample serie.
@@ -265,7 +288,7 @@ test ("RMSE root-squared mean standard error test", function ()
   s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
   s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
   equal (rmse(s1, s1), 0, "Equal vectors return RMSE = 0");
-  equal (parseFloat(rmse(s1, s2).toString().substr(0,10)), 10.0612292, "RMSE of two sample vectors");
+  equal (rmse(s1, s2).toFixed(7), 10.0612292, "RMSE of two sample vectors");
 });
 
 test ("MAE mean absolute error test", function ()
@@ -279,5 +302,5 @@ test ("MAE mean absolute error test", function ()
   s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
   s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
   equal (mae(s1, s1), 0, "Equal vectors return MAE = 0");
-  equal (parseFloat(mae(s1, s2).toString().substr(0,5)), 7.3500, "MAE of two sample vectors");
+  equal (mae(s1, s2).toFixed(2), 7.35, "MAE of two sample vectors");
 });
