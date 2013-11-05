@@ -500,3 +500,39 @@ mae = function (series1, series2)
 {
   return avgVector(absVector(diffVectors(series1, series2)));
 }
+
+///////////////////////////////////////////////////////
+// Volume
+//////////////////////////////////////////////////////
+/**
+ * On-Balance Volume (obv).
+ * Input:  - list of close prices
+ *         - volume list
+ * Returns: - obv list
+ */
+obv = function (closeList, volumeList)
+{
+  var result = [];
+  var prevObv = volumeList[0];
+  result.push (prevObv);
+  for (var i = 1; i < closeList.length; i++)
+  {
+    if (closeList[i] > closeList[i-1])
+    {
+      // bullish
+      result.push (prevObv + volumeList[i]);
+      prevObv += volumeList[i];
+    }
+    else if (closeList[i] < closeList[i-1])
+    {
+      // bearish
+      result.push (prevObv - volumeList[i]);
+      prevObv -= volumeList[i];
+    }
+    else 
+    {
+      result.push (prevObv);
+    }
+  }
+  return result;
+}
