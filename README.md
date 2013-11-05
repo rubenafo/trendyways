@@ -29,6 +29,9 @@ Support and resistance methods:
 * Camarilla Points (resistances R1,R2,R3 and R4; supports S1,S2,S3 and S4).
 * Fibonacci Retracements (for both uptrend and downtrend series).
 
+Indicators:
+* On-Balanced Volume (obv)
+
 For the testing part, fantastic qunit.js testing library is used.
 Tests can be run from the file tests.html once you fetch this
 repository, https://github.com/figurebelow/trendyways
