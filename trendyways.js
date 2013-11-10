@@ -502,7 +502,9 @@ mae = function (series1, series2)
 }
 
 ///////////////////////////////////////////////////////
-// Volume
+// 
+// Indicators
+//
 //////////////////////////////////////////////////////
 /**
  * On-Balance Volume (obv).
@@ -533,6 +535,25 @@ obv = function (closeList, volumeList)
     {
       result.push (prevObv);
     }
+  }
+  return result;
+}
+/**
+ * Volume-price trend
+ * Input:  - list of close prices
+ *         - volume list
+ * Returns: - vpt list
+ */
+vpt = function (closeList, volumeList)
+{
+  var result = [];
+  var vpt = volumeList[0]
+  result.push (vpt);
+  for (var i = 1; i < closeList.length; i++)
+  {
+    var newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
+    result.push (newVpt);
+    vpt = newVpt;
   }
   return result;
 }

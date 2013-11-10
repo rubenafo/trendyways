@@ -30,7 +30,8 @@ Support and resistance methods:
 * Fibonacci Retracements (for both uptrend and downtrend series).
 
 Indicators:
-* On-Balanced Volume (obv)
+* On-Balance Volume (obv)
+* Price and Volume Trend (pvt)
 
 For the testing part, fantastic qunit.js testing library is used.
 Tests can be run from the file tests.html once you fetch this
