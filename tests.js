@@ -309,3 +309,27 @@ test ("MAE mean absolute error test", function ()
   equal (mae(s1, s1), 0, "Equal vectors return MAE = 0");
   equal (mae(s1, s2).toFixed(2), 7.35, "MAE of two sample vectors");
 });
+
+test ("Money Flow Index test", function ()
+{
+  var highPrices = [4161, 4181, 4158, 4136, 4088, 4134, 4095, 4151,
+                    4150, 4181, 4232, 4228, 4269, 4282, 4291, 4251,
+                    4256, 4296, 4299, 4302, 4307, 4326, 4363];
+  var lowPrices = [4081, 4110, 4104, 4066, 4031, 4058, 3981, 4072,
+                   4102, 4113, 4172, 4177, 4218, 4234, 4231, 4189,
+                   4141, 4243, 4249, 4241, 4250, 4289, 4256];
+  var closePrices = [4151, 4117, 4111, 4077, 4079, 4067, 4077, 4134,
+                     4120, 4171, 4220, 4215, 4261, 4278, 4246, 4205,
+                     4248, 4257, 4293, 4250, 4296, 4297, 4267];
+  var volumes = [79370729, 67472022, 63121628, 71942510, 65147231,74202811, 101610206, 95639685, 
+  				 82708097, 78503267, 92236562, 68771304, 91866901, 85013484, 83254495, 78696265, 
+  				 87574680, 82687609, 70929391, 88198865, 105631422, 73330395, 81067590];
+  var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791,
+                64.67398, 73.14163, 72.71666, 65.73574];
+  var mfiResult = mfi (highPrices, lowPrices, closePrices, volumes, 14);
+  equal (mfiResult.length, result.length,"MoneyFlow result values match length");
+  for (var i = 0; i < mfiResult.length; i++)
+  {
+    deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
+  }
+});

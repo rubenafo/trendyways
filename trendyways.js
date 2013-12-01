@@ -474,6 +474,21 @@ absVector = function (vector)
 ////////////////////////////////////////////////////////
 
 /**
+ * Returns the values of the first vector divided the second
+ */
+divVector = function (v1, v2)
+{
+  var result = [];
+  for (var i = 0; i < v1.length; i++)
+  {
+    result.push (v1[i] / v2[i]);
+  }
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
  * MSE error
  */
 mse = function (series1, series2)
@@ -556,4 +571,56 @@ vpt = function (closeList, volumeList)
     vpt = newVpt;
   }
   return result;
+}
+
+/**
+ * Money-flow index
+ * Input: - list of high prices
+ *        - list of low prices
+ *        - list of close prices
+ *        - list of volume
+ * Returns: - money-flow index
+ */
+mfi = function (highPrices, lowPrices, closePrices, volumes)
+{
+  var typicalMoney = [];
+  var moneyFlow = [];
+  for (var i = 0; i < highPrices.length; i++)
+  {
+    var tpMoney = (highPrices[i] + lowPrices[i] + closePrices[i]) / 3;
+    typicalMoney.push(tpMoney);
+    moneyFlow.push (tpMoney * volumes[i]);
+  }
+
+  var posMoneyFlow = [];
+  var negMoneyFlow = [];
+  for (var i = 0; i < typicalMoney.length-1; i++)
+  {
+    if (typicalMoney[i] <= typicalMoney[i+1])
+    {
+      posMoneyFlow.push (moneyFlow[i+1]);
+      negMoneyFlow.push(0);
+    }
+    else if (typicalMoney[i] > typicalMoney[i+1])
+    {
+      posMoneyFlow.push (0);
+      negMoneyFlow.push (moneyFlow[i+1]);
+    }
+    else // typical money unchanged implies day is discharged
+    {
+    	posMoneyFlow.push(0);
+    	negMoneyFlow.push(0);
+    }
+  }
+
+  var sumPosFlow = windowOp (posMoneyFlow, 14, sumVector);
+  var sumNegFlow = windowOp (negMoneyFlow, 14, sumVector);
+  var moneyRatio = divVector (sumPosFlow, sumNegFlow);
+
+  var mfi = [];
+  moneyRatio.forEach (function (value)
+  {
+    mfi.push (100 - (100/(1+value)));
+  });
+  return mfi;
 }
