@@ -1,19 +1,101 @@
-/*
-  Copyright 2013 Ruben Afonso, http://www.figurebelow.com
-  Licensed under the Apache License, Version 2.0 (the "License");
-  you may not use this file except in compliance with the License.
-  You may obtain a copy of the License at
+/**
+ * Returns the difference of the vector parameters as
+ * a new vector
+ */
+diffVectors = function (series1, series2)
+{
+  var size = max([series1.length, series2.length])
+  var result = [];
+  var s1Size = series1.length;
+  var s2Size = series2.length;
+  for (var i = 0; i < size; i++)
+  {
+    var itemS1 = 0;
+    var itemS2 = 0;
+    if (s1Size > i)
+    {
+      itemS1 = series1[i];
+    }
+    if (s2Size > i)
+    {
+      itemS2 = series2[i];
+    }
+    result.push (itemS1 - itemS2);
+  }
+  return result;
+}
 
-  http://www.apache.org/licenses/LICENSE-2.0
+////////////////////////////////////////////////////////
 
-  Unless required by applicable law or agreed to in writing, software
-  distributed under the License is distributed on an "AS IS" BASIS,
-  WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-  See the License for the specific language governing permissions and
-  limitations under the License.
-*/
+/**
+ * Returns a vector to the 2nd power
+ */
+powVector = function (serie) 
+{
+  var result = [];
+  pow = function (x) { 
+    result.push (Math.pow(x, 2)); 
+  };
+  serie.forEach (pow);
+  return result;
+}
 
-// TrendyWays: technical analysis methods for time series.
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the sum of all elements in a vector
+ */
+sumVector = function (vector)
+{
+  var result = 0;
+  sum = function (x) { result += x; }
+  vector.forEach (sum);
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the average of the sum of all vector elements
+ */
+avgVector = function (vector)
+{
+  var result = sumVector (vector);
+  if (!vector.length)
+    return 0;
+  else
+    return result / vector.length;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the vector containing absoulte values of the input
+ */
+absVector = function (vector)
+{
+  var result = [];
+  vector.forEach (function ab(x) 
+  {
+    result.push(Math.abs(x));
+  });
+  return result;
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * Returns the values of the first vector divided the second
+ */
+divVector = function (v1, v2)
+{
+  var result = [];
+  for (var i = 0; i < v1.length; i++)
+  {
+    result.push (v1[i] / v2[i]);
+  }
+  return result;
+}
 
 /**
  * Max value in a serie
@@ -73,8 +155,6 @@ sd = function (values) {
   return Math.sqrt (sqrSum/values.length);
 }
 
-//////////////////////////////////////////////////////////
-
 /*
  * This is an internal function and is not supposed to 
  * be used directly. Invoke carefully.
@@ -94,24 +174,35 @@ windowOp = function (values, value, fun) {
   return result;
 }
 
-/*
- * Moving Average: 
- * also known as simple moving average, rolling average, moving mean
- * and a million of similar combinations
- */
-ma = function (values, order) {
 
-  // Sums the content of a window
-  sumWindow = function (serie) {
-    var sum = 0;
-    for (var init = 0; init < serie.length; init++)
-      sum += serie[init];
-    return (sum/serie.length);
-  }
-  return windowOp (values, order, sumWindow);
+
+/**
+ * MSE error
+ */
+mse = function (series1, series2)
+{
+  return avgVector (powVector (diffVectors(series1, series2)));
 }
 
-//////////////////////////////////////////////////////////
+////////////////////////////////////////////////////////
+
+/**
+ * RMSE error, the squared MSE
+ */
+rmse = function (series1, series2)
+{
+  return Math.sqrt (mse(series1, series2));
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * MAE error, mean absolute error
+ */
+mae = function (series1, series2)
+{
+  return avgVector(absVector(diffVectors(series1, series2)));
+}
 
 /*
  * Returns the Bollinger Band values as an object
@@ -146,6 +237,23 @@ bollinger = function (list, n, k) {
       ma: movingAvg,
       lowerBand: lowerBand
   };
+}
+
+/*
+ * Moving Average: 
+ * also known as simple moving average, rolling average, moving mean
+ * and a million of similar combinations
+ */
+ma = function (values, order) {
+
+  // Sums the content of a window
+  sumWindow = function (serie) {
+    var sum = 0;
+    for (var init = 0; init < serie.length; init++)
+      sum += serie[init];
+    return (sum/serie.length);
+  }
+  return windowOp (values, order, sumWindow);
 }
 
 ///////////////////////////////////////////////////////
@@ -191,6 +299,110 @@ wma = function (series, weights)
 
 ///////////////////////////////////////////////////////
 
+
+/**
+ * On-Balance Volume (obv).
+ * Input:  - list of close prices
+ *         - volume list
+ * Returns: - obv list
+ */
+obv = function (closeList, volumeList)
+{
+  var result = [];
+  var prevObv = volumeList[0];
+  result.push (prevObv);
+  for (var i = 1; i < closeList.length; i++)
+  {
+    if (closeList[i] > closeList[i-1])
+    {
+      // bullish
+      result.push (prevObv + volumeList[i]);
+      prevObv += volumeList[i];
+    }
+    else if (closeList[i] < closeList[i-1])
+    {
+      // bearish
+      result.push (prevObv - volumeList[i]);
+      prevObv -= volumeList[i];
+    }
+    else 
+    {
+      result.push (prevObv);
+    }
+  }
+  return result;
+}
+/**
+ * Volume-price trend
+ * Input:  - list of close prices
+ *         - volume list
+ * Returns: - vpt list
+ */
+vpt = function (closeList, volumeList)
+{
+  var result = [];
+  var vpt = volumeList[0]
+  result.push (vpt);
+  for (var i = 1; i < closeList.length; i++)
+  {
+    var newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
+    result.push (newVpt);
+    vpt = newVpt;
+  }
+  return result;
+}
+
+/**
+ * Money-flow index
+ * Input: - list of high prices
+ *        - list of low prices
+ *        - list of close prices
+ *        - list of volume
+ * Returns: - money-flow index
+ */
+mfi = function (highPrices, lowPrices, closePrices, volumes)
+{
+  var typicalMoney = [];
+  var moneyFlow = [];
+  for (var i = 0; i < highPrices.length; i++)
+  {
+    var tpMoney = (highPrices[i] + lowPrices[i] + closePrices[i]) / 3;
+    typicalMoney.push(tpMoney);
+    moneyFlow.push (tpMoney * volumes[i]);
+  }
+
+  var posMoneyFlow = [];
+  var negMoneyFlow = [];
+  for (var i = 0; i < typicalMoney.length-1; i++)
+  {
+    if (typicalMoney[i] <= typicalMoney[i+1])
+    {
+      posMoneyFlow.push (moneyFlow[i+1]);
+      negMoneyFlow.push(0);
+    }
+    else if (typicalMoney[i] > typicalMoney[i+1])
+    {
+      posMoneyFlow.push (0);
+      negMoneyFlow.push (moneyFlow[i+1]);
+    }
+    else // typical money unchanged implies day is discharged
+    {
+    	posMoneyFlow.push(0);
+    	negMoneyFlow.push(0);
+    }
+  }
+
+  var sumPosFlow = windowOp (posMoneyFlow, 14, sumVector);
+  var sumNegFlow = windowOp (negMoneyFlow, 14, sumVector);
+  var moneyRatio = divVector (sumPosFlow, sumNegFlow);
+
+  var mfi = [];
+  moneyRatio.forEach (function (value)
+  {
+    mfi.push (100 - (100/(1+value)));
+  });
+  return mfi;
+}
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)
  * and three resistance levels (r1, r2 and r3) of the
@@ -379,248 +591,4 @@ fibonacciRetrs = function (lowList, highList, trend)
     }
   }
   return result;
-}
-
-////////////////////////////////////////////////////////
-//
-// Errors
-//
-////////////////////////////////////////////////////////
-
-/**
- * Returns the difference of the vector parameters as
- * a new vector
- */
-diffVectors = function (series1, series2)
-{
-  var size = max([series1.length, series2.length])
-  var result = [];
-  var s1Size = series1.length;
-  var s2Size = series2.length;
-  for (var i = 0; i < size; i++)
-  {
-    var itemS1 = 0;
-    var itemS2 = 0;
-    if (s1Size > i)
-    {
-      itemS1 = series1[i];
-    }
-    if (s2Size > i)
-    {
-      itemS2 = series2[i];
-    }
-    result.push (itemS1 - itemS2);
-  }
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * Returns a vector to the 2nd power
- */
-powVector = function (serie) 
-{
-  var result = [];
-  pow = function (x) { 
-    result.push (Math.pow(x, 2)); 
-  };
-  serie.forEach (pow);
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * Returns the sum of all elements in a vector
- */
-sumVector = function (vector)
-{
-  var result = 0;
-  sum = function (x) { result += x; }
-  vector.forEach (sum);
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * Returns the average of the sum of all vector elements
- */
-avgVector = function (vector)
-{
-  var result = sumVector (vector);
-  if (!vector.length)
-    return 0;
-  else
-    return result / vector.length;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * Returns the vector containing absoulte values of the input
- */
-absVector = function (vector)
-{
-  var result = [];
-  vector.forEach (function ab(x) 
-  {
-    result.push(Math.abs(x));
-  });
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * Returns the values of the first vector divided the second
- */
-divVector = function (v1, v2)
-{
-  var result = [];
-  for (var i = 0; i < v1.length; i++)
-  {
-    result.push (v1[i] / v2[i]);
-  }
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * MSE error
- */
-mse = function (series1, series2)
-{
-  return avgVector (powVector (diffVectors(series1, series2)));
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * RMSE error, the squared MSE
- */
-rmse = function (series1, series2)
-{
-  return Math.sqrt (mse(series1, series2));
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * MAE error, mean absolute error
- */
-mae = function (series1, series2)
-{
-  return avgVector(absVector(diffVectors(series1, series2)));
-}
-
-///////////////////////////////////////////////////////
-// 
-// Indicators
-//
-//////////////////////////////////////////////////////
-/**
- * On-Balance Volume (obv).
- * Input:  - list of close prices
- *         - volume list
- * Returns: - obv list
- */
-obv = function (closeList, volumeList)
-{
-  var result = [];
-  var prevObv = volumeList[0];
-  result.push (prevObv);
-  for (var i = 1; i < closeList.length; i++)
-  {
-    if (closeList[i] > closeList[i-1])
-    {
-      // bullish
-      result.push (prevObv + volumeList[i]);
-      prevObv += volumeList[i];
-    }
-    else if (closeList[i] < closeList[i-1])
-    {
-      // bearish
-      result.push (prevObv - volumeList[i]);
-      prevObv -= volumeList[i];
-    }
-    else 
-    {
-      result.push (prevObv);
-    }
-  }
-  return result;
-}
-/**
- * Volume-price trend
- * Input:  - list of close prices
- *         - volume list
- * Returns: - vpt list
- */
-vpt = function (closeList, volumeList)
-{
-  var result = [];
-  var vpt = volumeList[0]
-  result.push (vpt);
-  for (var i = 1; i < closeList.length; i++)
-  {
-    var newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
-    result.push (newVpt);
-    vpt = newVpt;
-  }
-  return result;
-}
-
-/**
- * Money-flow index
- * Input: - list of high prices
- *        - list of low prices
- *        - list of close prices
- *        - list of volume
- * Returns: - money-flow index
- */
-mfi = function (highPrices, lowPrices, closePrices, volumes)
-{
-  var typicalMoney = [];
-  var moneyFlow = [];
-  for (var i = 0; i < highPrices.length; i++)
-  {
-    var tpMoney = (highPrices[i] + lowPrices[i] + closePrices[i]) / 3;
-    typicalMoney.push(tpMoney);
-    moneyFlow.push (tpMoney * volumes[i]);
-  }
-
-  var posMoneyFlow = [];
-  var negMoneyFlow = [];
-  for (var i = 0; i < typicalMoney.length-1; i++)
-  {
-    if (typicalMoney[i] <= typicalMoney[i+1])
-    {
-      posMoneyFlow.push (moneyFlow[i+1]);
-      negMoneyFlow.push(0);
-    }
-    else if (typicalMoney[i] > typicalMoney[i+1])
-    {
-      posMoneyFlow.push (0);
-      negMoneyFlow.push (moneyFlow[i+1]);
-    }
-    else // typical money unchanged implies day is discharged
-    {
-    	posMoneyFlow.push(0);
-    	negMoneyFlow.push(0);
-    }
-  }
-
-  var sumPosFlow = windowOp (posMoneyFlow, 14, sumVector);
-  var sumNegFlow = windowOp (negMoneyFlow, 14, sumVector);
-  var moneyRatio = divVector (sumPosFlow, sumNegFlow);
-
-  var mfi = [];
-  moneyRatio.forEach (function (value)
-  {
-    mfi.push (100 - (100/(1+value)));
-  });
-  return mfi;
 }
