@@ -22,6 +22,7 @@
   ],
   "bundledDependencies": [
     "uglify-js",
+    "jsdoc"
   ],  
   "license": "Apache",
   "engines": {

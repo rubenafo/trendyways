@@ -21,6 +21,10 @@ trendyways.min.js: trendyways.js
 	@echo generating trendyways.min.js ...
 	@nodejs node_modules/uglify-js/bin/uglifyjs trendyways.js -o trendyways.min.js 
 
+docs:
+	@rm -Rf ./docs
+	jsdoc trendyways.js -d docs
+
 clean:
 	rm -f trendyways.js trendyways.min.js
 
