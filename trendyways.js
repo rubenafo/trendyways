@@ -98,7 +98,9 @@ divVector = function (v1, v2)
 }
 
 /**
- * Max value in a serie
+ * @description Max value in a series
+ * @param{array} values array of numerical values
+ * @returns {value} the max element in the series
  */
 max = function (values) {
   var ret = Number.MIN_VALUE
@@ -113,7 +115,9 @@ max = function (values) {
 //////////////////////////////////////////////////////////
 
 /**
- * Min value in a serie
+ * @description Min value in a series
+ * @param {array} values array of numerical values
+ * @returns {value} min value in the series
  */
 min = function (values) {
   var ret = Number.MAX_VALUE
@@ -128,7 +132,9 @@ min = function (values) {
 //////////////////////////////////////////////////////////
 
 /**
- * Mean of values in a serie
+ * @description Mean of values in a serie
+ * @param {array} values array of numerical values
+ * @return {value} mean of the series
  */
 mean = function (values) {
   var mean = 0;
@@ -144,7 +150,9 @@ mean = function (values) {
 //////////////////////////////////////////////////////////
 
 /**
- * Standar deviation of values in a serie
+ * @description Standar deviation of values in a serie.
+ * @param {values} array of numerical values
+ * @return {value} standard deviation of the series values.
  */
 sd = function (values) {
   var meanVal = mean(values);

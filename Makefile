@@ -11,7 +11,7 @@ SRC_FILES = \
 						src/indicators/ \
 						src/sup_res
 
-all: clean $(GENERATED_FILES)
+all: clean $(GENERATED_FILES) docs
 
 trendyways.js: 
 	$(shell for js in `find $(SRC_FILES) | grep js$$`; do cat $$js >> trendyways.js; done)
@@ -21,11 +21,11 @@ trendyways.min.js: trendyways.js
 	@echo generating trendyways.min.js ...
 	@nodejs node_modules/uglify-js/bin/uglifyjs trendyways.js -o trendyways.min.js 
 
-docs:
-	@rm -Rf ./docs
+docs: trendyways.js
+	rm -Rf ./docs
 	jsdoc trendyways.js -d docs
 
 clean:
 	rm -f trendyways.js trendyways.min.js
 
-.PHONY: all
+.PHONY: all docs
