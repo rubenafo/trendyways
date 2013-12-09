@@ -53,7 +53,7 @@ mean = function (values) {
 
 /**
  * @description Standar deviation of values in a serie.
- * @param {values} array of numerical values
+ * @param {array} values array of numerical values
  * @return {value} standard deviation of the series values.
  */
 sd = function (values) {

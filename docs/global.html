@@ -91,7 +91,7 @@
         <dl>
             
 <dt>
-    <h4 class="name" id="absVector"><span class="type-signature"></span>absVector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="absVector"><span class="type-signature"></span>absVector<span class="signature">(vector)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
     
 </dt>
@@ -99,7 +99,7 @@
     
     
     <div class="description">
-        Returns the vector containing absoulte values of the input
+        Returns the vector containing absolutes values of the input
     </div>
     
 
@@ -107,6 +107,54 @@
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>vector</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -132,7 +180,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line75">line 75</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line85">line 85</a>
     </li></ul></dd>
     
     
@@ -153,6 +201,28 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the absolute values of the given array
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -160,7 +230,7 @@
         
             
 <dt>
-    <h4 class="name" id="avgVector"><span class="type-signature"></span>avgVector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="avgVector"><span class="type-signature"></span>avgVector<span class="signature">(vector)</span><span class="type-signature"> &rarr; {value}</span></h4>
     
     
 </dt>
@@ -177,6 +247,54 @@
     
     
     
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>vector</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
     
     
 <dl class="details">
@@ -201,7 +319,7 @@
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line61">line 61</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line69">line 69</a>
     </li></ul></dd>
     
     
@@ -222,6 +340,28 @@
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the average of the all elements
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">value</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -286,7 +426,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line546">line 546</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line557">line 557</a>
     </li></ul></dd>
     
     
@@ -314,7 +454,7 @@ The result is a list of elements with fields:
         
             
 <dt>
-    <h4 class="name" id="diffVectors"><span class="type-signature"></span>diffVectors<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="diffVectors"><span class="type-signature"></span>diffVectors<span class="signature">(series1, series2)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
     
 </dt>
@@ -322,8 +462,7 @@ The result is a list of elements with fields:
     
     
     <div class="description">
-        Returns the difference of the vector parameters as
-a new vector
+        Returns a vector containing the difference of the parameters.
     </div>
     
 
@@ -331,6 +470,77 @@ a new vector
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>series1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">first values array</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>series2</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">second values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -356,7 +566,7 @@ a new vector
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line5">line 5</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line7">line 7</a>
     </li></ul></dd>
     
     
@@ -377,6 +587,28 @@ a new vector
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    series1 - series2
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -384,7 +616,7 @@ a new vector
         
             
 <dt>
-    <h4 class="name" id="divVector"><span class="type-signature"></span>divVector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="divVector"><span class="type-signature"></span>divVector<span class="signature">(v1, v2)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
     
 </dt>
@@ -392,7 +624,7 @@ a new vector
     
     
     <div class="description">
-        Returns the values of the first vector divided the second
+        Returns the values of the first vector divided by the second
     </div>
     
 
@@ -400,6 +632,77 @@ a new vector
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>v1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>v2</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -425,7 +728,7 @@ a new vector
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line90">line 90</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line103">line 103</a>
     </li></ul></dd>
     
     
@@ -446,6 +749,28 @@ a new vector
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    v1 / v2
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -494,7 +819,7 @@ a new vector
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line272">line 272</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line283">line 283</a>
     </li></ul></dd>
     
     
@@ -579,7 +904,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line433">line 433</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line444">line 444</a>
     </li></ul></dd>
     
     
@@ -648,7 +973,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line210">line 210</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line221">line 221</a>
     </li></ul></dd>
     
     
@@ -717,7 +1042,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line105">line 105</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line118">line 118</a>
     </li></ul></dd>
     
     
@@ -856,7 +1181,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line139">line 139</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line152">line 152</a>
     </li></ul></dd>
     
     
@@ -952,7 +1277,7 @@ Returns: - money-flow index
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line371">line 371</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line382">line 382</a>
     </li></ul></dd>
     
     
@@ -1069,7 +1394,7 @@ Returns: - money-flow index
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line122">line 122</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line135">line 135</a>
     </li></ul></dd>
     
     
@@ -1160,7 +1485,7 @@ Returns: - money-flow index
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line190">line 190</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line201">line 201</a>
     </li></ul></dd>
     
     
@@ -1232,7 +1557,7 @@ Returns: - obv list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line317">line 317</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line328">line 328</a>
     </li></ul></dd>
     
     
@@ -1260,7 +1585,7 @@ Returns: - obv list
         
             
 <dt>
-    <h4 class="name" id="powVector"><span class="type-signature"></span>powVector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="powVector"><span class="type-signature"></span>powVector<span class="signature">(serie)</span><span class="type-signature"> &rarr; {array}</span></h4>
     
     
 </dt>
@@ -1276,6 +1601,54 @@ Returns: - obv list
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>serie</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1301,7 +1674,7 @@ Returns: - obv list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line33">line 33</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line37">line 37</a>
     </li></ul></dd>
     
     
@@ -1322,6 +1695,28 @@ Returns: - obv list
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    values array ^ 2
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1370,7 +1765,7 @@ Returns: - obv list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line200">line 200</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line211">line 211</a>
     </li></ul></dd>
     
     
@@ -1398,7 +1793,7 @@ Returns: - obv list
         
             
 <dt>
-    <h4 class="name" id="sd"><span class="type-signature"></span>sd<span class="signature">(array)</span><span class="type-signature"> &rarr; {value}</span></h4>
+    <h4 class="name" id="sd"><span class="type-signature"></span>sd<span class="signature">(values)</span><span class="type-signature"> &rarr; {value}</span></h4>
     
     
 </dt>
@@ -1440,13 +1835,13 @@ Returns: - obv list
 	
         <tr>
             
-                <td class="name"><code>array</code></td>
+                <td class="name"><code>values</code></td>
             
             
             <td class="type">
             
                 
-<span class="param-type">values</span>
+<span class="param-type">array</span>
 
 
             
@@ -1456,7 +1851,7 @@ Returns: - obv list
             
             
             
-            <td class="description last">of numerical values</td>
+            <td class="description last">array of numerical values</td>
         </tr>
 	
 	
@@ -1487,7 +1882,7 @@ Returns: - obv list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line157">line 157</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line170">line 170</a>
     </li></ul></dd>
     
     
@@ -1537,7 +1932,7 @@ Returns: - obv list
         
             
 <dt>
-    <h4 class="name" id="sumVector"><span class="type-signature"></span>sumVector<span class="signature">()</span><span class="type-signature"></span></h4>
+    <h4 class="name" id="sumVector"><span class="type-signature"></span>sumVector<span class="signature">(vector)</span><span class="type-signature"> &rarr; {value}</span></h4>
     
     
 </dt>
@@ -1553,6 +1948,54 @@ Returns: - obv list
     
     
     
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>vector</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
     
     
     
@@ -1578,7 +2021,7 @@ Returns: - obv list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line48">line 48</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line54">line 54</a>
     </li></ul></dd>
     
     
@@ -1599,6 +2042,28 @@ Returns: - obv list
     
     
     
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    the sum of all elements
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">value</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1657,7 +2122,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line465">line 465</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line476">line 476</a>
     </li></ul></dd>
     
     
@@ -1729,7 +2194,7 @@ Returns: - vpt list
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line349">line 349</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line360">line 360</a>
     </li></ul></dd>
     
     
@@ -1750,6 +2215,191 @@ Returns: - vpt list
     
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="windowOp"><span class="type-signature"></span>windowOp<span class="signature">(values, value, fun)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>values</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">values array</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>value</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">value</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">size of the window</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">function to apply on each chunk</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line186">line 186</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    values returned by the given function in each chunck
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -1801,7 +2451,7 @@ The sum of weights should be 1.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line296">line 296</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line307">line 307</a>
     </li></ul></dd>
     
     
@@ -1883,7 +2533,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line508">line 508</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line519">line 519</a>
     </li></ul></dd>
     
     
@@ -1924,13 +2574,13 @@ The result is a list of elements with fields:
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#windowOp">windowOp</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Thu Dec 05 2013 02:25:38 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Tue Dec 10 2013 00:45:04 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

@@ -1,6 +1,8 @@
 /**
- * Returns the difference of the vector parameters as
- * a new vector
+ * @description Returns a vector containing the difference of the parameters.
+ * @param {array} series1 first values array
+ * @param {array} series2 second values array
+ * @return {array} series1 - series2
  */
 diffVectors = function (series1, series2)
 {
@@ -28,7 +30,9 @@ diffVectors = function (series1, series2)
 ////////////////////////////////////////////////////////
 
 /**
- * Returns a vector to the 2nd power
+ * @description Returns a vector to the 2nd power
+ * @param {array} serie values array
+ * @return {array} values array ^ 2
  */
 powVector = function (serie) 
 {
@@ -43,7 +47,9 @@ powVector = function (serie)
 ////////////////////////////////////////////////////////
 
 /**
- * Returns the sum of all elements in a vector
+ * @description Returns the sum of all elements in a vector
+ * @param {array} vector values array
+ * @returns {value} the sum of all elements
  */
 sumVector = function (vector)
 {
@@ -56,7 +62,9 @@ sumVector = function (vector)
 ////////////////////////////////////////////////////////
 
 /**
- * Returns the average of the sum of all vector elements
+ * @description Returns the average of the sum of all vector elements
+ * @param {array} vector values array
+ * @returns {value} the average of the all elements
  */
 avgVector = function (vector)
 {
@@ -70,7 +78,9 @@ avgVector = function (vector)
 ////////////////////////////////////////////////////////
 
 /**
- * Returns the vector containing absoulte values of the input
+ * @description Returns the vector containing absolutes values of the input
+ * @param {array} vector values array
+ * @return {array} the absolute values of the given array
  */
 absVector = function (vector)
 {
@@ -85,7 +95,10 @@ absVector = function (vector)
 ////////////////////////////////////////////////////////
 
 /**
- * Returns the values of the first vector divided the second
+ * @description Returns the values of the first vector divided by the second
+ * @param {array} v1 values array
+ * @param {array} v2 values array
+ * @return {array} v1 / v2
  */
 divVector = function (v1, v2)
 {
