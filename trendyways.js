@@ -193,10 +193,11 @@ windowOp = function (values, value, fun) {
   return result;
 }
 
-
-
 /**
- * MSE error
+ * @description Returns the MSE error of two series
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mse error
  */
 mse = function (series1, series2)
 {
@@ -206,7 +207,10 @@ mse = function (series1, series2)
 ////////////////////////////////////////////////////////
 
 /**
- * RMSE error, the squared MSE
+ * @description Returns the RMSE error (squared MSE)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the RMSE error
  */
 rmse = function (series1, series2)
 {
@@ -216,7 +220,10 @@ rmse = function (series1, series2)
 ////////////////////////////////////////////////////////
 
 /**
- * MAE error, mean absolute error
+ * @description Returns the MAE erro (mean absolute error)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mae error
  */
 mae = function (series1, series2)
 {
@@ -320,10 +327,10 @@ wma = function (series, weights)
 
 
 /**
- * On-Balance Volume (obv).
- * Input:  - list of close prices
- *         - volume list
- * Returns: - obv list
+ * @description On-Balance Volume (obv).
+ * @param {array} closeList list of close prices
+ * @param {array} volumeList list of volumes
+ * @return {array} the OBV values list
  */
 obv = function (closeList, volumeList)
 {
@@ -352,10 +359,10 @@ obv = function (closeList, volumeList)
   return result;
 }
 /**
- * Volume-price trend
- * Input:  - list of close prices
- *         - volume list
- * Returns: - vpt list
+ * @description Returns the VPT (Volume-price Trend)
+ * @param {array} closeList list of close prices
+ * @param {array} volumeList list of volume
+ * @return {array} vpt values array
  */
 vpt = function (closeList, volumeList)
 {
@@ -372,12 +379,12 @@ vpt = function (closeList, volumeList)
 }
 
 /**
- * Money-flow index
- * Input: - list of high prices
- *        - list of low prices
- *        - list of close prices
- *        - list of volume
- * Returns: - money-flow index
+ * @description Returns the Money-flow Index
+ * @param {array} highPrices list of high prices
+ * @param {array} lowPrices list of low prices
+ * @param {array} closePrices list of close prices
+ * @param {array} volumes list of volumes
+ * @return {value} the money-flow index
  */
 mfi = function (highPrices, lowPrices, closePrices, volumes)
 {

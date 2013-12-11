@@ -1,7 +1,8 @@
-
-
 /**
- * MSE error
+ * @description Returns the MSE error of two series
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mse error
  */
 mse = function (series1, series2)
 {
@@ -11,7 +12,10 @@ mse = function (series1, series2)
 ////////////////////////////////////////////////////////
 
 /**
- * RMSE error, the squared MSE
+ * @description Returns the RMSE error (squared MSE)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the RMSE error
  */
 rmse = function (series1, series2)
 {
@@ -21,7 +25,10 @@ rmse = function (series1, series2)
 ////////////////////////////////////////////////////////
 
 /**
- * MAE error, mean absolute error
+ * @description Returns the MAE erro (mean absolute error)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mae error
  */
 mae = function (series1, series2)
 {
