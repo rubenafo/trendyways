@@ -1,8 +1,25 @@
-trendyways
+Trendyways
 ==========
 
 Small javascrip library containing methods to use in financial technical analysis of stock time series.
 It is intended to be a simple library, suitable to be inserted in any visulization workflow to generate results on the fly.
+
+Installation
+-------------
+To use trendyways library copying the main file, [trendyways.min.js](https://github.com/figurebelow/trendyways/blob/master/trendyways.min.js) is enough for production environments. A non minified version is available in the same dir,    [trendyways.js](https://github.com/figurebelow/trendyways/blob/master/trendyways.js)
+
+Building from source is also possible if nodejs is installed on your system. In this case after clone this repo, run 
+ 
+  make all
+
+to create the trendyways lib and associated docs.
+
+Documentation
+-------------
+The full, detailed, HTML documentation is available [here](https://github.com/figurebelow/trendyways/blob/master/docs/index.html) once you clone the repo.
+
+
+The list below includes the (so far) implemented methods.
 
 General purpose functions:
  
