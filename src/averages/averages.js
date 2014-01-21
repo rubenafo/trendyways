@@ -24,6 +24,10 @@ ma = function (values, order) {
 ema = function (serie, period) 
 {
   var result = new Array();
+  for (var i = 0; i < period-1; i++)
+  {
+    result.push(0);
+  }
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
   var previousDay = avgVector (initSlice);

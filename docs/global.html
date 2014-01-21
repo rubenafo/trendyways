@@ -426,7 +426,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line564">line 564</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line626">line 626</a>
     </li></ul></dd>
     
     
@@ -447,6 +447,192 @@ The result is a list of elements with fields:
     
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="combineVectors"><span class="type-signature"></span>combineVectors<span class="signature">(serie1, serie2, fun)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Combine two vectors using the provided function.
+Both series must have the same length.
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>serie1</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>serie2</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>fun</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">function</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last"></td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line123">line 123</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    values fun(serie1, serie2)
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -819,7 +1005,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line290">line 290</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line317">line 317</a>
     </li></ul></dd>
     
     
@@ -904,7 +1090,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line451">line 451</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line513">line 513</a>
     </li></ul></dd>
     
     
@@ -925,6 +1111,146 @@ The result is a list of elements with fields:
     
     
     
+    
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="macd"><span class="type-signature"></span>macd<span class="signature">(closePrices)</span><span class="type-signature"> &rarr; {object}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns the MACD
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>closePrices</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">list of close prices</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line472">line 472</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    object containing the macd, signal
+                 and hist series.
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">object</span>
+
+
+	</dd>
+</dl>
+
+        
     
     
 </dd>
@@ -973,7 +1299,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line228">line 228</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line255">line 255</a>
     </li></ul></dd>
     
     
@@ -1042,7 +1368,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line118">line 118</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line145">line 145</a>
     </li></ul></dd>
     
     
@@ -1181,7 +1507,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line152">line 152</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line179">line 179</a>
     </li></ul></dd>
     
     
@@ -1389,7 +1715,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line389">line 389</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line420">line 420</a>
     </li></ul></dd>
     
     
@@ -1528,7 +1854,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line135">line 135</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line162">line 162</a>
     </li></ul></dd>
     
     
@@ -1619,7 +1945,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line202">line 202</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line229">line 229</a>
     </li></ul></dd>
     
     
@@ -1759,7 +2085,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line335">line 335</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line366">line 366</a>
     </li></ul></dd>
     
     
@@ -1989,7 +2315,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line215">line 215</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line242">line 242</a>
     </li></ul></dd>
     
     
@@ -2106,7 +2432,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line170">line 170</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line197">line 197</a>
     </li></ul></dd>
     
     
@@ -2346,7 +2672,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line483">line 483</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line545">line 545</a>
     </li></ul></dd>
     
     
@@ -2486,7 +2812,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line367">line 367</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line398">line 398</a>
     </li></ul></dd>
     
     
@@ -2671,7 +2997,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line186">line 186</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line213">line 213</a>
     </li></ul></dd>
     
     
@@ -2765,7 +3091,7 @@ The sum of weights should be 1.
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line314">line 314</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line345">line 345</a>
     </li></ul></dd>
     
     
@@ -2847,7 +3173,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line526">line 526</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line588">line 588</a>
     </li></ul></dd>
     
     
@@ -2888,13 +3214,13 @@ The result is a list of elements with fields:
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#windowOp">windowOp</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#combineVectors">combineVectors</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#macd">macd</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#windowOp">windowOp</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Wed Dec 11 2013 01:35:38 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Wed Jan 22 2014 00:30:30 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

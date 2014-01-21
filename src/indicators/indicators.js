@@ -102,3 +102,34 @@ mfi = function (highPrices, lowPrices, closePrices, volumes)
   });
   return mfi;
 }
+
+////////////////////////////////////////////
+
+/**
+ * @description Returns the MACD
+ * @param {array} closePrices list of close prices
+ * @return {object} object containing the macd, signal
+ *                  and hist series.
+ */
+macd = function (closeValues)
+{
+  slow = 26;
+  fast = 12;
+  signal = 9;
+  slowEMA = ema (closeValues, slow);
+  fastEMA = ema (closeValues, fast);
+  macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
+    if (slow == 0)
+    {
+      return 0; // avoid div by 0
+    };
+    return (100 * ((fast/slow) - 1));
+  });
+  signalLine = ema (macdLine.slice(25), signal); // avoid first 25 (padding)
+  for (var i = 0; i < 25; i++)
+  {
+    signalLine.unshift(0); // append again 25 zeros
+  }
+  histLine = diffVectors(macdLine, signalLine);
+  return { macd: macdLine, signal:signalLine, hist: histLine };
+}

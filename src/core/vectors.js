@@ -109,3 +109,30 @@ divVector = function (v1, v2)
   }
   return result;
 }
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Combine two vectors using the provided function.
+ * Both series must have the same length.
+ * @param {array} serie1
+ * @param {array} serie2
+ * @param {function} fun
+ * @return {array} values fun(serie1, serie2)
+ */
+combineVectors = function (serie1, serie2, fun)
+{
+  if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
+  {
+    return [-1];
+  }
+  else
+  {
+    var result = [];
+    for (var i = 0; i < serie1.length; i++)
+    {
+      result.push (fun(serie1[i], serie2[i]));
+    }
+    return result;
+  }
+}

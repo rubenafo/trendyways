@@ -110,6 +110,33 @@ divVector = function (v1, v2)
   return result;
 }
 
+////////////////////////////////////////////////////////
+
+/**
+ * @description Combine two vectors using the provided function.
+ * Both series must have the same length.
+ * @param {array} serie1
+ * @param {array} serie2
+ * @param {function} fun
+ * @return {array} values fun(serie1, serie2)
+ */
+combineVectors = function (serie1, serie2, fun)
+{
+  if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
+  {
+    return [-1];
+  }
+  else
+  {
+    var result = [];
+    for (var i = 0; i < serie1.length; i++)
+    {
+      result.push (fun(serie1[i], serie2[i]));
+    }
+    return result;
+  }
+}
+
 /**
  * @description Max value in a series
  * @param{array} values array of numerical values
@@ -290,6 +317,10 @@ ma = function (values, order) {
 ema = function (serie, period) 
 {
   var result = new Array();
+  for (var i = 0; i < period-1; i++)
+  {
+    result.push(0);
+  }
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
   var previousDay = avgVector (initSlice);
@@ -428,6 +459,37 @@ mfi = function (highPrices, lowPrices, closePrices, volumes)
     mfi.push (100 - (100/(1+value)));
   });
   return mfi;
+}
+
+////////////////////////////////////////////
+
+/**
+ * @description Returns the MACD
+ * @param {array} closePrices list of close prices
+ * @return {object} object containing the macd, signal
+ *                  and hist series.
+ */
+macd = function (closeValues)
+{
+  slow = 26;
+  fast = 12;
+  signal = 9;
+  slowEMA = ema (closeValues, slow);
+  fastEMA = ema (closeValues, fast);
+  macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
+    if (slow == 0)
+    {
+      return 0; // avoid div by 0
+    };
+    return (100 * ((fast/slow) - 1));
+  });
+  signalLine = ema (macdLine.slice(25), signal); // avoid first 25 (padding)
+  for (var i = 0; i < 25; i++)
+  {
+    signalLine.unshift(0); // append again 25 zeros
+  }
+  histLine = diffVectors(macdLine, signalLine);
+  return { macd: macdLine, signal:signalLine, hist: histLine };
 }
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)
