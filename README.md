@@ -50,6 +50,7 @@ Indicators:
 * On-Balance Volume (obv)
 * Price and Volume Trend (pvt)
 * Money Flow Index (mfi)
+* MACD indicator (macd)
 
 For the testing part, fantastic qunit.js testing library is used.
 Tests can be run from the file tests.html once you fetch this
