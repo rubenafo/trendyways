@@ -456,4 +456,8 @@ test ("MACD test", function () {
   {
       deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
   }
+  for (var i = 0; i < trendyWaysMacd.hist[i].length; i++)
+  {
+      deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
+  }
 });
