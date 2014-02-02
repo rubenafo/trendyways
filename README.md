@@ -51,7 +51,8 @@ Indicators:
 * Price and Volume Trend (pvt)
 * Money Flow Index (mfi)
 * MACD indicator (macd)
+* Momentum (n-th order momentum)
 
-For the testing part, fantastic qunit.js testing library is used.
-Tests can be run from the file tests.html once you fetch this
-repository, https://github.com/figurebelow/trendyways
+The detailed documentation is provided in /docs folder.
+For the testing part, the qunit.js testing library is used.
+Tests can be run from the file tests.html once you fetch this.

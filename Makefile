@@ -3,7 +3,7 @@ LOCALE ?= en_US
 GENERATED_FILES = \
 									trendyways.js \
 									trendyways.min.js \
-									test.js
+									tests
 
 SRC_FILES = \
 						src/core/ \
@@ -12,7 +12,7 @@ SRC_FILES = \
 						src/indicators/ \
 						src/sup_res
 
-all: clean $(GENERATED_FILES) docs test
+all: clean $(GENERATED_FILES)
 
 trendyways.js: 
 	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep -v Test.`; do cat $$js >> trendyways.js; done)
@@ -26,12 +26,12 @@ docs: trendyways.js
 	rm -Rf ./docs
 	jsdoc trendyways.js -d docs
 
-test.js:
-	rm -f tests.js
-	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep Test`; do cat $$js >> test.js; done)
+tests:
+	rm -f testsGen.js
 	@echo generating tests file ...
+	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep Test`; do cat $$js >> tests.js; done)
 
 clean:
-	rm -f trendyways.js trendyways.min.js
+	rm -f trendyways.js trendyways.min.js tests.js
 
-.PHONY: all docs test
+.PHONY: all docs tests

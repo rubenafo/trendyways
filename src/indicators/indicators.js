@@ -133,3 +133,23 @@ macd = function (closeValues)
   histLine = diffVectors(macdLine, signalLine);
   return { macd: macdLine, signal:signalLine, hist: histLine };
 }
+
+////////////////////////////////////////////
+
+/**
+ * @description Returns the Momentum
+ * @param {array} closePrices list of close prices
+ * @param {order} order of the momentum 
+ * @returns {array} list containing the momentum series
+ * @example 
+ * var m = momemtum ([12,34,23, 81], 1) 
+ * console.log(m)  // [22, -11, 58]
+ */
+momentum = function(closePrices, order)
+{
+  momentumN = function (chunk)
+  {
+    return chunk[chunk.length-1] - chunk[0]
+  };
+  return windowOp (closePrices, order+1, momentumN);
+}

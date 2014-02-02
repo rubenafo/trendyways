@@ -138,3 +138,24 @@ test ("MACD test", function () {
       deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
   }
 });
+
+/**
+ * Momentum function test
+ */
+test ("Momentum Test", function () {
+  var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
+  var resultOrder1 = [-1.08, -1.28, -0.85, -0.27, -0.55, 0.56, 1.57, -1.83, -0.12];
+  var resultOrder3 = [-3.21, -2.4, -1.67, -0.26, 1.58, 0.3, -0.38];
+  var momentumValues = momentum (values, 1);
+  deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
+  for (var i = 0; i < momentumValues.length; i++)
+  {
+    deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+  }
+  var momentumValues3 = momentum (values, 3);
+  deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
+  for (var i = 0; i < momentumValues3.length; i++)
+  {
+    deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+  }
+});
