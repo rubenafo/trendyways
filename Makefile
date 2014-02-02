@@ -26,12 +26,10 @@ docs: trendyways.js
 	rm -Rf ./docs
 	jsdoc trendyways.js -d docs
 
-tests:
-	rm -f testsGen.js
-	@echo generating tests file ...
-	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep Test`; do cat $$js >> tests.js; done)
+tests: trendyways.js
+	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep Test.`; do cat $$js >> tests.js; done)
 
 clean:
 	rm -f trendyways.js trendyways.min.js tests.js
 
-.PHONY: all docs tests
+.PHONY: all docs tests clean

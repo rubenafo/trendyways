@@ -159,3 +159,24 @@ test ("Momentum Test", function () {
     deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
   }
 });
+
+/**
+ * Rate of Change function test
+ */
+test ("Rate of Change", function () {
+  var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
+  var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
+  var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
+  var rocValues = roc (values, 1);
+  deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
+  for (var i = 0; i < rocValues.length; i++)
+  {
+    deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+  }
+  var rocValues3 = roc (values, 3);
+  deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
+  for (var i = 0; i < rocValues3.length; i++)
+  {
+    deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+  }
+});

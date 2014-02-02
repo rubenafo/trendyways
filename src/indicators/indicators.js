@@ -139,7 +139,7 @@ macd = function (closeValues)
 /**
  * @description Returns the Momentum
  * @param {array} closePrices list of close prices
- * @param {order} order of the momentum 
+ * @param {value} order order of the momentum 
  * @returns {array} list containing the momentum series
  * @example 
  * var m = momemtum ([12,34,23, 81], 1) 
@@ -152,4 +152,24 @@ momentum = function(closePrices, order)
     return chunk[chunk.length-1] - chunk[0]
   };
   return windowOp (closePrices, order+1, momentumN);
+}
+
+////////////////////////////////////////////
+
+/**
+ * @description Returns the Rate of Change value (ROC)
+ * @param {array} closePrices list of close prices
+ * @param {value} order order of the ROC
+ * @returns {array} list containing the ROC series
+ * @example 
+ * var roc = roc ([12, 11, 15, 10], 1) 
+ * console.log(roc)  // [-0.09, 0.36, -0.33]
+ */
+roc = function(closePrices, order)
+{
+  rocN = function (chunk)
+  {
+    return (chunk[chunk.length-1] - chunk[0]) / chunk[0];
+  };
+  return windowOp (closePrices, order+1, rocN);
 }
