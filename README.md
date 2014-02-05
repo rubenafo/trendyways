@@ -52,7 +52,7 @@ Indicators:
 * Money Flow Index (mfi)
 * MACD indicator (macd)
 * Momentum (n-th order momentum)
-* Ratio of Change (ROC) (n-th order)
+* Rate of Change (ROC) (n-th order)
 
 The detailed documentation is provided in /docs folder.
 For the testing part, the qunit.js testing library is used.
