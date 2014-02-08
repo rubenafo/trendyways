@@ -52,6 +52,7 @@ Indicators:
 * Money Flow Index (mfi)
 * MACD indicator (macd)
 * Momentum (n-th order momentum)
+* RSI (Relative Strength Index) (n-th order)
 
 The detailed documentation is provided in /docs folder.
 For the testing part, the qunit.js testing library is used.
