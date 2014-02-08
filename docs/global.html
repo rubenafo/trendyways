@@ -426,7 +426,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line666">line 666</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line722">line 722</a>
     </li></ul></dd>
     
     
@@ -1090,7 +1090,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line553">line 553</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line609">line 609</a>
     </li></ul></dd>
     
     
@@ -1176,7 +1176,7 @@ The result is a list of elements with fields:
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -1661,7 +1661,7 @@ The result is a list of elements with fields:
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -1962,7 +1962,7 @@ The result is a list of elements with fields:
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -2200,7 +2200,7 @@ console.log(m)  // [22, -11, 58]</code></pre>
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -2570,7 +2570,7 @@ console.log(m)  // [22, -11, 58]</code></pre>
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -2674,6 +2674,175 @@ console.log(m)  // [22, -11, 58]</code></pre>
     <pre class="prettyprint"><code> 
 var roc = roc ([12, 11, 15, 10], 1) 
 console.log(roc)  // [-0.09, 0.36, -0.33]</code></pre>
+
+    
+</dd>
+
+        
+            
+<dt>
+    <h4 class="name" id="rsi"><span class="type-signature"></span>rsi<span class="signature">(closePrices, order)</span><span class="type-signature"> &rarr; {array}</span></h4>
+    
+    
+</dt>
+<dd>
+    
+    
+    <div class="description">
+        Returns the RSI (Relative Strength Index)
+    </div>
+    
+
+    
+    
+    
+    
+    
+        <h5>Parameters:</h5>
+        
+
+<table class="params">
+    <thead>
+	<tr>
+		
+		<th>Name</th>
+		
+		
+		<th>Type</th>
+		
+		
+		
+		
+		
+		<th class="last">Description</th>
+	</tr>
+	</thead>
+	
+	<tbody>
+	
+	
+        <tr>
+            
+                <td class="name"><code>closePrices</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">array</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">list of closing prices</td>
+        </tr>
+	
+	
+	
+        <tr>
+            
+                <td class="name"><code>order</code></td>
+            
+            
+            <td class="type">
+            
+                
+<span class="param-type">value</span>
+
+
+            
+            </td>
+            
+            
+            
+            
+            
+            <td class="description last">RSI order (typically 14)</td>
+        </tr>
+	
+	
+	</tbody>
+</table>
+    
+    
+    
+<dl class="details">
+    
+        
+    
+    
+    
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    <dt class="tag-source">Source:</dt>
+    <dd class="tag-source"><ul class="dummy"><li>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line546">line 546</a>
+    </li></ul></dd>
+    
+    
+    
+    
+    
+    
+    
+</dl>
+
+    
+    
+
+    
+
+    
+    
+    
+    
+    
+    <h5>Returns:</h5>
+    
+            
+<div class="param-desc">
+    list containing the RSI for each period
+</div>
+
+
+
+<dl>
+	<dt>
+		Type
+	</dt>
+	<dd>
+		
+<span class="param-type">array</span>
+
+
+	</dd>
+</dl>
+
+        
+    
+    
+        <h5>Example</h5>
+        
+    <pre class="prettyprint"><code> 
+var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
+console.log(rsi)  // [70.53, 66.32, ..., 56.05]</code></pre>
 
     
 </dd>
@@ -3010,7 +3179,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line585">line 585</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line641">line 641</a>
     </li></ul></dd>
     
     
@@ -3096,7 +3265,7 @@ The result is a list of elements with fields:
             
             
             
-            <td class="description last">list of close prices</td>
+            <td class="description last">list of closing prices</td>
         </tr>
 	
 	
@@ -3511,7 +3680,7 @@ The result is a list of elements with fields:
     
     <dt class="tag-source">Source:</dt>
     <dd class="tag-source"><ul class="dummy"><li>
-        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line628">line 628</a>
+        <a href="trendyways.js.html">trendyways.js</a>, <a href="trendyways.js.html#line684">line 684</a>
     </li></ul></dd>
     
     
@@ -3552,13 +3721,13 @@ The result is a list of elements with fields:
 </div>
 
 <nav>
-    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#combineVectors">combineVectors</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#macd">macd</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#momentum">momentum</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#roc">roc</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#windowOp">windowOp</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
+    <h2><a href="index.html">Index</a></h2><h3>Global</h3><ul><li><a href="global.html#absVector">absVector</a></li><li><a href="global.html#avgVector">avgVector</a></li><li><a href="global.html#camarillaPoints">camarillaPoints</a></li><li><a href="global.html#combineVectors">combineVectors</a></li><li><a href="global.html#diffVectors">diffVectors</a></li><li><a href="global.html#divVector">divVector</a></li><li><a href="global.html#ema">ema</a></li><li><a href="global.html#floorPivots">floorPivots</a></li><li><a href="global.html#macd">macd</a></li><li><a href="global.html#mae">mae</a></li><li><a href="global.html#max">max</a></li><li><a href="global.html#mean">mean</a></li><li><a href="global.html#mfi">mfi</a></li><li><a href="global.html#min">min</a></li><li><a href="global.html#momentum">momentum</a></li><li><a href="global.html#mse">mse</a></li><li><a href="global.html#obv">obv</a></li><li><a href="global.html#powVector">powVector</a></li><li><a href="global.html#rmse">rmse</a></li><li><a href="global.html#roc">roc</a></li><li><a href="global.html#rsi">rsi</a></li><li><a href="global.html#sd">sd</a></li><li><a href="global.html#sumVector">sumVector</a></li><li><a href="global.html#tomDemarksPoints">tomDemarksPoints</a></li><li><a href="global.html#vpt">vpt</a></li><li><a href="global.html#windowOp">windowOp</a></li><li><a href="global.html#wma">wma</a></li><li><a href="global.html#woodiesPoints">woodiesPoints</a></li></ul>
 </nav>
 
 <br clear="both">
 
 <footer>
-    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Sun Feb 02 2014 19:07:38 GMT+0100 (CET)
+    Documentation generated by <a href="https://github.com/jsdoc3/jsdoc">JSDoc 3.2.0</a> on Sat Feb 08 2014 14:17:47 GMT+0100 (CET)
 </footer>
 
 <script> prettyPrint(); </script>

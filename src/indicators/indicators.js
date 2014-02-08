@@ -1,7 +1,7 @@
 
 /**
  * @description On-Balance Volume (obv).
- * @param {array} closeList list of close prices
+ * @param {array} closeList list of closing prices
  * @param {array} volumeList list of volumes
  * @return {array} the OBV values list
  */
@@ -33,7 +33,7 @@ obv = function (closeList, volumeList)
 }
 /**
  * @description Returns the VPT (Volume-price Trend)
- * @param {array} closeList list of close prices
+ * @param {array} closeList list of closing prices
  * @param {array} volumeList list of volume
  * @return {array} vpt values array
  */
@@ -55,7 +55,7 @@ vpt = function (closeList, volumeList)
  * @description Returns the Money-flow Index
  * @param {array} highPrices list of high prices
  * @param {array} lowPrices list of low prices
- * @param {array} closePrices list of close prices
+ * @param {array} closePrices list of closing prices
  * @param {array} volumes list of volumes
  * @return {value} the money-flow index
  */
@@ -107,7 +107,7 @@ mfi = function (highPrices, lowPrices, closePrices, volumes)
 
 /**
  * @description Returns the MACD
- * @param {array} closePrices list of close prices
+ * @param {array} closePrices list of closing prices
  * @return {object} object containing the macd, signal
  *                  and hist series.
  */
@@ -138,7 +138,7 @@ macd = function (closeValues)
 
 /**
  * @description Returns the Momentum
- * @param {array} closePrices list of close prices
+ * @param {array} closePrices list of closing prices
  * @param {value} order order of the momentum 
  * @returns {array} list containing the momentum series
  * @example 
@@ -158,7 +158,7 @@ momentum = function(closePrices, order)
 
 /**
  * @description Returns the Rate of Change value (ROC)
- * @param {array} closePrices list of close prices
+ * @param {array} closePrices list of closing prices
  * @param {value} order order of the ROC
  * @returns {array} list containing the ROC series
  * @example 
@@ -172,4 +172,60 @@ roc = function(closePrices, order)
     return (chunk[chunk.length-1] - chunk[0]) / chunk[0];
   };
   return windowOp (closePrices, order+1, rocN);
+}
+
+
+////////////////////////////////////////////
+/**
+ * @description Returns the RSI (Relative Strength Index)
+ * @param {array} closePrices list of closing prices
+ * @param {value} order RSI order (typically 14)
+ * @returns {array} list containing the RSI for each period
+ * @example 
+ * var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
+ * console.log(rsi)  // [70.53, 66.32, ..., 56.05]
+ */
+rsi = function (closePrices, order)
+{
+  if (closePrices.length < order+1)
+  {
+    return [-1]; // not enough params
+  }
+  gains = [];
+  losses = [];
+  for (var i = 0; i < closePrices.length; i++)
+  {
+    diff = closePrices[i+1] - closePrices[i];
+    if (diff > 0) 
+    {
+      gains.push(diff);
+      losses.push(0);
+    }
+    else if (diff < 0)
+    {
+      gains.push(0);
+      losses.push(Math.abs(diff));
+    }
+    else
+    {
+      gains.push(0);
+      losses.push(0);
+    }
+  }
+  result = [];
+  avgGain = avgVector (gains.slice(0, order));
+  avgLoss = avgVector (losses.slice (0, order));
+  firstRS = avgGain / avgLoss;
+  result.push (100 - (100 / (1 + firstRS)));
+  for (var i = order; i < closePrices.length-1; i++)
+  {
+    partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
+    partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
+    smoothedRS = partialCurrentGain / partialCurrentLoss;
+    rsi = 100 - (100 / (1 + smoothedRS))
+    result.push(rsi);
+    avgGain = partialCurrentGain;
+    avgLoss = partialCurrentLoss;
+  }
+  return result;
 }

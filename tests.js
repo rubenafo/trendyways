@@ -328,6 +328,34 @@ test ("Rate of Change", function () {
     deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
   }
 });
+
+/**
+ * RSI (relative strength index) test
+ */
+test ("RSI test", function () {
+  var values = [44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42,
+                45.84, 46.08, 45.89, 46.03, 45.61, 46.28, 46.28, 46.00,
+                46.03, 46.41, 46.22, 45.64, 46.21, 46.25, 45.71, 46.45,
+                45.78, 45.35, 44.03, 44.18, 44.22, 44.57, 43.42, 42.66, 
+                43.13];
+  /*var values = [
+      46.125, 47.1250, 46.4375, 46.9375, 44.9375, 44.25, 44.625,
+      45.75, 47.81, 47.56, 47, 44.56, 46.31, 47.68, 46.68, 45.68,
+      43.06, 43.56, 44.87, 43.68
+  ];*/
+  var expected = [70.46, 66.24, 66.48, 69.34, 66.29, 57.91, 62.88, 63.20,
+                  56.01, 62.33, 54.67, 50.38, 40.01, 41.49, 41.9, 45.49,
+                  37.32, 33.09, 37.78];
+  /*var expected = [
+    51.779, 48.477, 41.073, 42.863, 47.382, 43.992 
+  ];*/
+  var result = rsi (values, 14);
+  deepEqual (result.length, expected.length, "RSI result length matches");
+  for (var i = 0; i < result.length; i++)
+  {
+    deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
+  }
+});
 test ("Floor pivot level, supports and resistances", function () {
   var lowList = [5];
   var highList = [18];
