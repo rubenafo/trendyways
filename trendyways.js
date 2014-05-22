@@ -1,3 +1,22 @@
+
+/**
+ * @description Alternative forEach for all those browsers like IE8 and below
+ * @param {function} function to apply to each element
+ * @param {scope} scope 
+ */
+if ( !Array.prototype.forEach ) {
+  Array.prototype.forEacht = function(fn, scope) 
+  {
+    for(var i = 0, len = this.length; i < len; ++i) 
+    {
+      if (i in this) 
+      {
+        fn.call(scope, this[i], i, this);
+      }
+    }
+  };
+}
+
 /**
  * @description Returns a vector containing the difference of the parameters.
  * @param {array} series1 first values array
