@@ -1,6 +1,6 @@
 
 var assert = require ("assert");
-var Trendyways = require ("../trendyWays.min.js");
+var Trendyways = require ("../trendyways.min.js");
 
 describe ("Functions", function () {
 
