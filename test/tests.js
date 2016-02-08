@@ -1,94 +1,99 @@
-test ("Max value in a simple serie", function () {
-   var serie = [0,6,2,7,8,9]
-   deepEqual (max (serie), 9, "Correct max value of a sample serie");
-});
 
-test ("Min value in a simple serie", function () {
-   var serie = [0,6,2,7,8,9]
-   deepEqual (min (serie), 0, "Correct min value of a sample serie");
-});
+var assert = require ("assert");
+var Trendyways = require ("../trendyWays.min.js");
 
-test ("Mean of zero is zero", function () {
-   var serie = [];
-   deepEqual (mean(serie), 0, "Mean of zeor values is zero");
-});
+describe ("Functions", function () {
 
-test ("Mean of a simple serie", function () {
-   var serie = [2,6,5,7,10,9,12,5]
-   deepEqual (mean(serie), 7, "Mean value of a sample serie");
-});
+	it ("gets the max value from a simple serie", function () {
+		var serie = [0,6,2,7,8,9]
+   	assert.equal (9, max (serie));
+	});
 
-// Values from the wikipedia for an example of Standard Deviation:
-// http://en.wikipedia.org/wiki/Standard_deviation 
-test ("Standard deviation of a serie", function () {
+	it ("gets the min value from a sample serie", function () {
+		var serie = [0,6,2,7,8,9]
+   	assert.equal (0, min (serie));
+	});
+
+	it ("gets the mean from zero values", function () {
+   	var serie = [];
+   	assert.equal (0, mean(serie));
+	});
+
+  it ("gets the mean of a simple serie", function () {
+   	var serie = [2,6,5,7,10,9,12,5]
+   	assert.equal (7, mean(serie));
+	});
+
+	// Values from the wikipedia for an example of Standard Deviation:
+	// http://en.wikipedia.org/wiki/Standard_deviation 
+	it ("gets the standard deviation of a serie", function () {
    var serie = [2,4,4,4,5,5,7,9]
-   deepEqual (sd(serie), 2, "Correct standard deviation of a sample serie");
-});
+   assert.equal (2, sd(serie));
+	});
 
+	it ("calculates the MSE from a series", function ()
+	{
+  	var s1 = [];
+  	var s2 = [];
+  	var mseResult = mse (s1, s2);
+  	assert.equal (0, mseResult);
+  	s1 = [0,0,0,0,0];
+  	s2 = [0,0,0,0,0];
+  	mseResult = mse(s1, s2);
+  	assert.equal (0, mseResult);
+  	s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5];
+  	s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1];
+  	assert.equal (0, mse(s1, s1));
+  	assert.equal (101.22833333333334, mse(s1, s2));
+	});
 
-test ("MSE mean standard error test", function ()
+it ("RMSE root-squared mean standard error test", function ()
 {
   var s1 = [];
   var s2 = [];
-  var mseResult = mse (s1, s2);
-  equal (mseResult, 0, "Empty series return MSE = 0")
+  assert.equal (rmse(s1,s2), 0, "Empty series return RMSE = 0")
   s1 = [0,0,0,0,0]
   s2 = [0,0,0,0,0]
-  mseResult = mse(s1, s2);
-  equal (mseResult, 0, "Zeroed-series return MSE = 0");
+  assert.equal (rmse(s1,s2), 0, "Zeroed-series return RMSE = 0");
   s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
   s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
-  equal (mse(s1, s1), 0, "Equal vectors return MSE = 0");
-  equal (mse(s1, s2), 101.22833333333334, "MSE of two sample vectors");
+  assert.equal (rmse(s1, s1), 0, "Equal vectors return RMSE = 0");
+  assert.equal (rmse(s1, s2).toFixed(7), 10.0612292, "RMSE of two sample vectors");
 });
 
-test ("RMSE root-squared mean standard error test", function ()
+it ("MAE mean absolute error test", function ()
 {
   var s1 = [];
   var s2 = [];
-  equal (rmse(s1,s2), 0, "Empty series return RMSE = 0")
+  assert.equal (mae(s1,s2), 0, "Empty series return MAE = 0")
   s1 = [0,0,0,0,0]
   s2 = [0,0,0,0,0]
-  equal (rmse(s1,s2), 0, "Zeroed-series return RMSE = 0");
+  assert.equal (mae(s1,s2), 0, "Zeroed-series return MAE = 0");
   s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
   s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
-  equal (rmse(s1, s1), 0, "Equal vectors return RMSE = 0");
-  equal (rmse(s1, s2).toFixed(7), 10.0612292, "RMSE of two sample vectors");
-});
-
-test ("MAE mean absolute error test", function ()
-{
-  var s1 = [];
-  var s2 = [];
-  equal (mae(s1,s2), 0, "Empty series return MAE = 0")
-  s1 = [0,0,0,0,0]
-  s2 = [0,0,0,0,0]
-  equal (mae(s1,s2), 0, "Zeroed-series return MAE = 0");
-  s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5]
-  s2 = [2.2, 8.4, 7.8, -2.3, -8.9, 5.1]
-  equal (mae(s1, s1), 0, "Equal vectors return MAE = 0");
-  equal (mae(s1, s2).toFixed(2), 7.35, "MAE of two sample vectors");
+  assert.equal (mae(s1, s1), 0, "Equal vectors return MAE = 0");
+  assert.equal (mae(s1, s2).toFixed(2), 7.35, "MAE of two sample vectors");
 });
 
 /**
  * This test checks multiple window of size n and different k values on
  * a sample serie.
  */
-test ("Bollinger bands values for a sample serie", function () {
+it ("Bollinger bands values for a sample serie", function () {
    var serie = [2.1,4.3,4.5,4.8,5.0,5.8,7.1,9.1]
    for (var k = 1; k < 4; k++)
    {  
       for (var n = 1; n < serie.length; n++)
       {
          var bands = bollinger (serie, n, k); // window size n = 3, k = 3
-         deepEqual (bands.upperBand.length, serie.length - n + 1, "Upper band length is correct");
-         deepEqual (bands.lowerBand.length, serie.length - n + 1, "Lower band length is correct");
-         deepEqual (bands.ma.length, serie.length - n + 1, "Moving average band length is correct");
+         assert.deepEqual (bands.upperBand.length, serie.length - n + 1, "Upper band length is correct");
+         assert.deepEqual (bands.lowerBand.length, serie.length - n + 1, "Lower band length is correct");
+         assert.deepEqual (bands.ma.length, serie.length - n + 1, "Moving average band length is correct");
          for (var i = 0; i < serie.length-n+1; i++)
          {
             var stdDev = sd(serie.slice(i,i+n));
-            deepEqual (bands.upperBand[i], bands.ma[i] + stdDev * k, "Upper value nº " + i + " correct (n="+n+",k="+k+")");
-            deepEqual (bands.lowerBand[i], bands.ma[i] - stdDev * k, "Lower value nº " + i + " correct (n="+n+",k="+k+")");
+            assert.deepEqual (bands.upperBand[i], bands.ma[i] + stdDev * k, "Upper value nº " + i + " correct (n="+n+",k="+k+")");
+            assert.deepEqual (bands.lowerBand[i], bands.ma[i] - stdDev * k, "Lower value nº " + i + " correct (n="+n+",k="+k+")");
          }
       }
    }
@@ -96,18 +101,18 @@ test ("Bollinger bands values for a sample serie", function () {
 
 
 
-test ("Moving Average of a sample serie", function () {
+it ("Moving Average of a sample serie", function () {
    var serie = [2,6,5,7,10,9,12,5];
    var correctValues = [5,7,7.75,9.5,9];
    var movingAvg = ma(serie,4);
-   deepEqual (movingAvg.length, 5, "Moving Average result's length is correct");
+   assert.deepEqual (movingAvg.length, 5, "Moving Average result's length is correct");
    for (var i = 0; i < 5; i++)
    {
-      deepEqual (movingAvg[i], correctValues[i], "MA value " + i + " is correct");
+      assert.deepEqual (movingAvg[i], correctValues[i], "MA value " + i + " is correct");
    }
 });
 
-test ("Exponential moving average test", function ()
+it ("Exponential moving average test", function ()
 {
   var series = [64.75, 63.79, 63.73, 63.73, 63.55, 
                 63.19, 63.91, 63.85, 62.95, 63.37, 
@@ -119,34 +124,34 @@ test ("Exponential moving average test", function ()
                    59.870
                  ];
   var result = ema(series, 10);
-  equal (result.length, expected.length, "EMA length = " + result.length);
+  assert.equal (result.length, expected.length, "EMA length = " + result.length);
   for (var i = 0; i < 10 - 1; i++)
   {
-    equal (result[i], expected[i], "Checking EMA index = " + i)
+    assert.equal (result[i], expected[i], "Checking EMA index = " + i)
   }
   for (var i = 10-1; i < result.length; i++)
   {
-    equal (result[i].toFixed(3), expected[i], "Checking EMA index = " + i)
+    assert.equal (result[i].toFixed(3), expected[i], "Checking EMA index = " + i)
   }
   result = ema(series, 1);
   for (var i = 0; i < result.length; i++)
   {
-    equal (result[i].toFixed(3), series[i], "EMA = 1, value " + i + " unchanged");
+    assert.equal (result[i].toFixed(3), series[i], "EMA = 1, value " + i + " unchanged");
   }
 });
 
-test ("Weighted moving average test", function ()
+it ("Weighted moving average test", function ()
 {
   var series = [1, 2, 3, 4, 5, 6];
   var expected = [0.5, 0.83333, 1.16667, 1.5]
   var result = wma (series, [0.6, 0.3, 0.1]);
   for (var i = 0; i < result.length; i++)
   {
-    equal (expected[i], result[i].toFixed(5), "Testing WMA value " + i);
+    assert.equal (expected[i], result[i].toFixed(5), "Testing WMA value " + i);
   }
 });
 
-test ("Money Flow Index test", function ()
+it ("Money Flow Index test", function ()
 {
   var highPrices = [4161, 4181, 4158, 4136, 4088, 4134, 4095, 4151,
                     4150, 4181, 4232, 4228, 4269, 4282, 4291, 4251,
@@ -163,10 +168,10 @@ test ("Money Flow Index test", function ()
   var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791,
                 64.67398, 73.14163, 72.71666, 65.73574];
   var mfiResult = mfi (highPrices, lowPrices, closePrices, volumes, 14);
-  equal (mfiResult.length, result.length,"MoneyFlow result values match length");
+  assert.equal (mfiResult.length, result.length,"MoneyFlow result values match length");
   for (var i = 0; i < mfiResult.length; i++)
   {
-    deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
+    assert.deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
   }
 });
 
@@ -174,7 +179,7 @@ test ("Money Flow Index test", function ()
  * MACD test using IBM close values from 2013-01-01 to 17-01-2014.
  * Test results obtained with R library "quantmod": MACD("IBM", from="2013-01-01", to="17-01-2014")
  */
-test ("MACD test", function () {
+it ("MACD test", function () {
   var testData  = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45,192.62,
                 192.50,192.59,193.65,194.47,196.08,204.72,204.42,
                 204.97,204.93,203.90,203.52,203.07,205.18,203.79,
@@ -271,68 +276,68 @@ test ("MACD test", function () {
                   0.402451934,0.540252674,0.654774263,0.779235732,0.886387296,0.969878048,1.030865267,1.045533903,1.043167320,
                   1.043497276,1.051811291,1.073581927];
   var trendyWaysMacd = macd (testData);
-  equal (trendyWaysMacd.macd.length, macdTest.length, "MACD values match length");
+  assert.equal (trendyWaysMacd.macd.length, macdTest.length, "MACD values match length");
   for (var i = 0; i < trendyWaysMacd.macd.length; i++)
   {
-      deepEqual (trendyWaysMacd.macd[i].toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
+      assert.deepEqual (trendyWaysMacd.macd[i].toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
   }
-  equal (trendyWaysMacd.signal.length, signalTest.length, "MACD signal values match length");
+  assert.equal (trendyWaysMacd.signal.length, signalTest.length, "MACD signal values match length");
   for (var i = 0; i < trendyWaysMacd.signal.length; i++)
   {
-      deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
+      assert.deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
   }
   for (var i = 0; i < trendyWaysMacd.hist[i].length; i++)
   {
-      deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
+      assert.deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
   }
 });
 
 /**
  * Momentum function test
  */
-test ("Momentum Test", function () {
+it ("Momentum Test", function () {
   var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
   var resultOrder1 = [-1.08, -1.28, -0.85, -0.27, -0.55, 0.56, 1.57, -1.83, -0.12];
   var resultOrder3 = [-3.21, -2.4, -1.67, -0.26, 1.58, 0.3, -0.38];
   var momentumValues = momentum (values, 1);
-  deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
+  assert.deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
   for (var i = 0; i < momentumValues.length; i++)
   {
-    deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
   }
   var momentumValues3 = momentum (values, 3);
-  deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
+  assert.deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
   for (var i = 0; i < momentumValues3.length; i++)
   {
-    deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
   }
 });
 
 /**
  * Rate of Change function test
  */
-test ("Rate of Change", function () {
+it ("Rate of Change", function () {
   var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
   var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
   var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
   var rocValues = roc (values, 1);
-  deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
+  assert.deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
   for (var i = 0; i < rocValues.length; i++)
   {
-    deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
   }
   var rocValues3 = roc (values, 3);
-  deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
+  assert.deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
   for (var i = 0; i < rocValues3.length; i++)
   {
-    deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
   }
 });
 
 /**
  * RSI (relative strength index) test
  */
-test ("RSI test", function () {
+it ("RSI test", function () {
   var values = [44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42,
                 45.84, 46.08, 45.89, 46.03, 45.61, 46.28, 46.28, 46.00,
                 46.03, 46.41, 46.22, 45.64, 46.21, 46.25, 45.71, 46.45,
@@ -350,129 +355,129 @@ test ("RSI test", function () {
     51.779, 48.477, 41.073, 42.863, 47.382, 43.992 
   ];*/
   var result = rsi (values, 14);
-  deepEqual (result.length, expected.length, "RSI result length matches");
+  assert.deepEqual (result.length, expected.length, "RSI result length matches");
   for (var i = 0; i < result.length; i++)
   {
-    deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
+    assert.deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
   }
 });
-test ("Floor pivot level, supports and resistances", function () {
+it ("Floor pivot level, supports and resistances", function () {
   var lowList = [5];
   var highList = [18];
   var closeList = [15];
   var values = floorPivots (highList, lowList, closeList);
-  deepEqual (values[0].r3, 33.33333333333333, "Resistance R3 ok");
-  deepEqual (values[0].r2, 25.666666666666664, "Resistance R2 ok");
-  deepEqual (values[0].r1, 20.333333333333332, "Resistance R1 ok");
-  deepEqual (values[0].pl, 12.666666666666666, "Pivot level ok");
-  deepEqual (values[0].s1, 7.333333333333332, "Support R1 ok");
-  deepEqual (values[0].s2, -0.3333333333333339, "Support R2 ok");
-  deepEqual (values[0].s3, -5.666666666666668, "Support R3 ok");
+  assert.deepEqual (values[0].r3, 33.33333333333333, "Resistance R3 ok");
+  assert.deepEqual (values[0].r2, 25.666666666666664, "Resistance R2 ok");
+  assert.deepEqual (values[0].r1, 20.333333333333332, "Resistance R1 ok");
+  assert.deepEqual (values[0].pl, 12.666666666666666, "Pivot level ok");
+  assert.deepEqual (values[0].s1, 7.333333333333332, "Support R1 ok");
+  assert.deepEqual (values[0].s2, -0.3333333333333339, "Support R2 ok");
+  assert.deepEqual (values[0].s3, -5.666666666666668, "Support R3 ok");
 });
 
-test ("Tom Demarks's predicted low and high value (support and resistance)", function () {
+it ("Tom Demarks's predicted low and high value (support and resistance)", function () {
   var highList = [10, 15, 25];
   var lowList = [5, 8, 10];
   var openList = [6, 10, 17];
   var closeList = [7, 11, 12];
   var values = tomDemarksPoints (highList, lowList, openList, closeList);
-  deepEqual (values.length, 3, "Returned values ok");
+  assert.deepEqual (values.length, 3, "Returned values ok");
   // first predicted values
-  deepEqual (values[0].low, 6 , "Support for first value ok");
-  deepEqual (values[0].high, 11, "Resistance for first value ok");
+  assert.deepEqual (values[0].low, 6 , "Support for first value ok");
+  assert.deepEqual (values[0].high, 11, "Resistance for first value ok");
   // second predicted values
-  deepEqual (values[1].low, 9.5, "Support for second value  ok");
-  deepEqual (values[1].high, 16.5, "Resistance for second value ok");
+  assert.deepEqual (values[1].low, 9.5, "Support for second value  ok");
+  assert.deepEqual (values[1].high, 16.5, "Resistance for second value ok");
   // third predicted values
-  deepEqual (values[2].low, 3.5, "Support for third value ok");
-  deepEqual (values[2].high, 18.5, "Resistance for third value ok");
+  assert.deepEqual (values[2].low, 3.5, "Support for third value ok");
+  assert.deepEqual (values[2].high, 18.5, "Resistance for third value ok");
 });
 
-test ("Woodies predicted points (support and resistance)", function () {
+it ("Woodies predicted points (support and resistance)", function () {
   var highList = [10, 15, 25, 10];
   var lowList = [5, 8, 10, 8];
   var closeList = [7, 11, 12, 9];
   var values = woodiesPoints (highList, lowList, closeList);
-  deepEqual (values.length, 4, "Returned values ok");
+  assert.deepEqual (values.length, 4, "Returned values ok");
   // first predicted values
-  deepEqual (values[0].pivot, 7.25, "Pivot for first value ok");
-  deepEqual (values[0].r1, 9.5, "Resistance for first value ok");
-  deepEqual (values[0].r2, 12.25, "Resistance for first value ok");
-  deepEqual (values[0].s1, 4.5, "Resistance for first value ok");
-  deepEqual (values[0].s2, 2.25, "Resistance for first value ok");
+  assert.deepEqual (values[0].pivot, 7.25, "Pivot for first value ok");
+  assert.deepEqual (values[0].r1, 9.5, "Resistance for first value ok");
+  assert.deepEqual (values[0].r2, 12.25, "Resistance for first value ok");
+  assert.deepEqual (values[0].s1, 4.5, "Resistance for first value ok");
+  assert.deepEqual (values[0].s2, 2.25, "Resistance for first value ok");
   // second predicted values
-  deepEqual (values[1].pivot, 11.25, "Pivot for second value ok");
-  deepEqual (values[1].r1, 14.5, "Resistance for second value ok");
-  deepEqual (values[1].r2, 18.25, "Resistance for second value ok");
-  deepEqual (values[1].s1, 7.5, "Resistance for second value ok");
-  deepEqual (values[1].s2, 4.25, "Resistance for second value ok");
+  assert.deepEqual (values[1].pivot, 11.25, "Pivot for second value ok");
+  assert.deepEqual (values[1].r1, 14.5, "Resistance for second value ok");
+  assert.deepEqual (values[1].r2, 18.25, "Resistance for second value ok");
+  assert.deepEqual (values[1].s1, 7.5, "Resistance for second value ok");
+  assert.deepEqual (values[1].s2, 4.25, "Resistance for second value ok");
   // third predicted values
-  deepEqual (values[2].pivot, 14.75, "Pivot for third value ok");
-  deepEqual (values[2].r1, 19.5, "Resistance for third value ok");
-  deepEqual (values[2].r2, 29.75, "Resistance for third value ok");
-  deepEqual (values[2].s1, 4.5, "Resistance for third value ok");
-  deepEqual (values[2].s2, -0.25, "Resistance for third value ok");
+  assert.deepEqual (values[2].pivot, 14.75, "Pivot for third value ok");
+  assert.deepEqual (values[2].r1, 19.5, "Resistance for third value ok");
+  assert.deepEqual (values[2].r2, 29.75, "Resistance for third value ok");
+  assert.deepEqual (values[2].s1, 4.5, "Resistance for third value ok");
+  assert.deepEqual (values[2].s2, -0.25, "Resistance for third value ok");
   // fourth predicted values
-  deepEqual (values[3].pivot, 9, "Pivot for fourth value ok");
-  deepEqual (values[3].r1, 10, "Resistance for fourth value ok");
-  deepEqual (values[3].r2, 11, "Resistance for fourth value ok");
-  deepEqual (values[3].s1, 8, "Resistance for fourth value ok");
-  deepEqual (values[3].s2, 7, "Resistance for fourth value ok");
+  assert.deepEqual (values[3].pivot, 9, "Pivot for fourth value ok");
+  assert.deepEqual (values[3].r1, 10, "Resistance for fourth value ok");
+  assert.deepEqual (values[3].r2, 11, "Resistance for fourth value ok");
+  assert.deepEqual (values[3].s1, 8, "Resistance for fourth value ok");
+  assert.deepEqual (values[3].s2, 7, "Resistance for fourth value ok");
 });
 
-test ("Camarilla predicted points (supports and resistances)", function () {
+it ("Camarilla predicted points (supports and resistances)", function () {
   var highList = [10, 15, 25, 10];
   var lowList = [5, 8, 10, 8];
   var closeList = [7, 11, 12, 9];
   var values = camarillaPoints (highList, lowList, closeList);
-  deepEqual (values.length, 4, "Returned values ok");
+  assert.deepEqual (values.length, 4, "Returned values ok");
   // first predicted values
-  deepEqual (values[0].r1, 7.458333333333333, "Resistance r1 for first value ok");
-  deepEqual (values[0].r2, 7.916666666666667, "Resistance r2 for first value ok");
-  deepEqual (values[0].r3, 8.375, "Resistance r3 for first value ok");
-  deepEqual (values[0].r4, 9.75, "Resistance r4 for first value ok");
-  deepEqual (values[0].s1, 6.541666666666667, "Support s1 for first value ok");
-  deepEqual (values[0].s2, 6.083333333333333, "Support s2 for first value ok");
-  deepEqual (values[0].s3, 5.625, "Support s3 for first value ok");
-  deepEqual (values[0].s4, 4.25, "Support s4 for first value ok");
+  assert.deepEqual (values[0].r1, 7.458333333333333, "Resistance r1 for first value ok");
+  assert.deepEqual (values[0].r2, 7.916666666666667, "Resistance r2 for first value ok");
+  assert.deepEqual (values[0].r3, 8.375, "Resistance r3 for first value ok");
+  assert.deepEqual (values[0].r4, 9.75, "Resistance r4 for first value ok");
+  assert.deepEqual (values[0].s1, 6.541666666666667, "Support s1 for first value ok");
+  assert.deepEqual (values[0].s2, 6.083333333333333, "Support s2 for first value ok");
+  assert.deepEqual (values[0].s3, 5.625, "Support s3 for first value ok");
+  assert.deepEqual (values[0].s4, 4.25, "Support s4 for first value ok");
   // second predicted values
-  deepEqual (values[1].r1, 11.641666666666667, "Resistance r1 for second value ok");
-  deepEqual (values[1].r2, 12.283333333333333, "Resistance r2 for second value ok");
-  deepEqual (values[1].r3, 12.925, "Resistance r3 for second value ok");
-  deepEqual (values[1].r4, 14.850000000000001, "Resistance r4 for second value ok");
-  deepEqual (values[1].s1, 10.358333333333333, "Support s1 for second value ok");
-  deepEqual (values[1].s2, 9.716666666666667, "Support s2 for second value ok");
-  deepEqual (values[1].s3, 9.075, "Support s3 for second value ok");
-  deepEqual (values[1].s4, 7.1499999999999995, "Support s4 for second value ok");
+  assert.deepEqual (values[1].r1, 11.641666666666667, "Resistance r1 for second value ok");
+  assert.deepEqual (values[1].r2, 12.283333333333333, "Resistance r2 for second value ok");
+  assert.deepEqual (values[1].r3, 12.925, "Resistance r3 for second value ok");
+  assert.deepEqual (values[1].r4, 14.850000000000001, "Resistance r4 for second value ok");
+  assert.deepEqual (values[1].s1, 10.358333333333333, "Support s1 for second value ok");
+  assert.deepEqual (values[1].s2, 9.716666666666667, "Support s2 for second value ok");
+  assert.deepEqual (values[1].s3, 9.075, "Support s3 for second value ok");
+  assert.deepEqual (values[1].s4, 7.1499999999999995, "Support s4 for second value ok");
   // third predicted values 
-  deepEqual (values[2].r1, 13.375, "Resistance r1 for third value ok");
-  deepEqual (values[2].r2, 14.75, "Resistance r2 for third value ok");
-  deepEqual (values[2].r3, 16.125, "Resistance r3 for third value ok");
-  deepEqual (values[2].r4, 20.25, "Resistance r4 for third value ok");
-  deepEqual (values[2].s1, 10.625, "Support s1 for third value ok");
-  deepEqual (values[2].s2, 9.25, "Support s2 for third value ok");
-  deepEqual (values[2].s3, 7.875, "Support s3 for third value ok");
-  deepEqual (values[2].s4, 3.75, "Support s4 for third value ok");
+  assert.deepEqual (values[2].r1, 13.375, "Resistance r1 for third value ok");
+  assert.deepEqual (values[2].r2, 14.75, "Resistance r2 for third value ok");
+  assert.deepEqual (values[2].r3, 16.125, "Resistance r3 for third value ok");
+  assert.deepEqual (values[2].r4, 20.25, "Resistance r4 for third value ok");
+  assert.deepEqual (values[2].s1, 10.625, "Support s1 for third value ok");
+  assert.deepEqual (values[2].s2, 9.25, "Support s2 for third value ok");
+  assert.deepEqual (values[2].s3, 7.875, "Support s3 for third value ok");
+  assert.deepEqual (values[2].s4, 3.75, "Support s4 for third value ok");
   // fourth predicted values
-  deepEqual (values[3].r1, 9.183333333333334, "Resistance r1 for fourth value ok");
-  deepEqual (values[3].r2, 9.366666666666667, "Resistance r2 for fourth value ok");
-  deepEqual (values[3].r3, 9.55, "Resistance r3 for fourth value ok");
-  deepEqual (values[3].r4, 10.1, "Resistance r4 for fourth value ok");
-  deepEqual (values[3].s1, 8.816666666666666, "Support s1 for fourth value ok");
-  deepEqual (values[3].s2, 8.633333333333333, "Support s2 for fourth value ok");
-  deepEqual (values[3].s3, 8.45, "Support s3 for fourth value ok");
-  deepEqual (values[3].s4, 7.9, "Support s4 for fourth value ok");
+  assert.deepEqual (values[3].r1, 9.183333333333334, "Resistance r1 for fourth value ok");
+  assert.deepEqual (values[3].r2, 9.366666666666667, "Resistance r2 for fourth value ok");
+  assert.deepEqual (values[3].r3, 9.55, "Resistance r3 for fourth value ok");
+  assert.deepEqual (values[3].r4, 10.1, "Resistance r4 for fourth value ok");
+  assert.deepEqual (values[3].s1, 8.816666666666666, "Support s1 for fourth value ok");
+  assert.deepEqual (values[3].s2, 8.633333333333333, "Support s2 for fourth value ok");
+  assert.deepEqual (values[3].s3, 8.45, "Support s3 for fourth value ok");
+  assert.deepEqual (values[3].s4, 7.9, "Support s4 for fourth value ok");
 });
 
-test ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')", function ()
+it ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')", function ()
 {
   var highList = [10, 12, 9, 15, 16];
   var lowList = [5, 8, 7, 6, 9];
   var values = fibonacciRetrs (lowList, highList, 'UPTREND');
-  deepEqual (values.length, 5, "Returned values ok");
+  assert.deepEqual (values.length, 5, "Returned values ok");
   for (var i = 0; i < values.length; i++)
   {
-    deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
+    assert.deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
   }
   var solsUptrend = [[10, 8.09, 7.5, 6.91, 6.18, 5],
              [12, 10.47, 10, 9.53, 8.94, 8],
@@ -484,20 +489,20 @@ test ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')",
   {
     for (var j = 0; j < 6; j++)
     {
-      deepEqual (values[i][j].toFixed(2), solsUptrend[i][j].toFixed(2), "test " + i + " uptrend, " + retracement[j] + "% retracement OK");
+      assert.deepEqual (values[i][j].toFixed(2), solsUptrend[i][j].toFixed(2), "test " + i + " uptrend, " + retracement[j] + "% retracement OK");
     }
   }
 });
 
-test ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')", function ()
+it ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')", function ()
 {
   var highList = [10, 9, 5, 7, 2];
   var lowList = [5, 6, 3, 6, 1];
   var values = fibonacciRetrs (lowList, highList, 'DOWNTREND');
-  deepEqual (values.length, 5, "Returned values ok");
+  assert.deepEqual (values.length, 5, "Returned values ok");
   for (var i = 0; i < values.length; i++)
   {
-    deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
+    assert.deepEqual (values[i].length, 6, "Values in pos " + i + " ok");
   }
   var solsDownTrend = [[5, 6.91, 7.5, 8.09, 8.82, 10],
              [6, 7.15, 7.5, 7.85, 8.29, 9],
@@ -509,8 +514,9 @@ test ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')"
   {
     for (var j = 0; j < 6; j++)
     {
-      deepEqual (values[i][j].toFixed(2), solsDownTrend[i][j].toFixed(2), "test " + i + " downtrend, " + retracement[j] + "% retracement OK");
+      assert.deepEqual (values[i][j].toFixed(2), solsDownTrend[i][j].toFixed(2), "test " + i + " downtrend, " + retracement[j] + "% retracement OK");
     }
   }
 });
 
+});

@@ -1,16 +1,16 @@
 LOCALE ?= en_US
 
 GENERATED_FILES = \
-									trendyways.js \
-									trendyways.min.js \
-									tests
+	trendyways.js \
+	trendyways.min.js \
+	tests
 
 SRC_FILES = \
-						src/core/ \
-						src/error/ \
-						src/averages/ \
-						src/indicators/ \
-						src/sup_res
+	src/core/ \
+	src/error/ \
+	src/averages/ \
+	src/indicators/ \
+	src/sup_res
 
 all: clean $(GENERATED_FILES)
 

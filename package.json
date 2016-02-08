@@ -23,9 +23,16 @@
   "bundledDependencies": [
     "uglify-js",
     "jsdoc"
-  ],  
+  ], 
+  "devDependencies": {
+     "mocha": ">=2.3.4"
+  },
   "license": "Apache",
   "engines": {
     "node": ">=0.10.15"
+  },
+  "scripts": {
+    "test": "mocha tests",
+    "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests"
   }
 }
