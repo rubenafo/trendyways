@@ -17,6 +17,7 @@
   "keywords": [
     "technical analysis",
     "financial",
+    "finance",
     "javascript",
     "series"
   ],
@@ -25,9 +26,11 @@
     "jsdoc"
   ], 
   "devDependencies": {
-     "mocha": ">=2.3.4"
+     "mocha": ">=2.3.4",
+     "coveralls": "^2.11.6",
+     "istanbul": "^0.4.2"
   },
-  "license": "Apache",
+  "license": "Apache-2.0",
   "engines": {
     "node": ">=0.10.15"
   },
