@@ -1,14 +1,14 @@
 {
   "name": "trendyways",
   "preferGlobal": true,
-  "version": "0.2.0",
+  "version": "0.2.1",
   "author": "Ruben Afonso <ruben@figurebelow.com>",
   "description": "a javascript library for financial technical analysis",
-  "contributors": [ 
+  "contributors": [
     {
       "name": "Ruben Afonso",
       "email": "ruben@figurebelow.com"
-    } 
+    }
   ],
   "repository": {
     "type": "git",
@@ -24,11 +24,11 @@
   "bundledDependencies": [
     "uglify-js",
     "jsdoc"
-  ], 
+  ],
   "devDependencies": {
-     "mocha": ">=2.3.4",
-     "coveralls": "^2.11.6",
-     "istanbul": "^0.4.2"
+    "mocha": ">=2.3.4",
+    "coveralls": "^2.11.6",
+    "istanbul": "^0.4.2"
   },
   "license": "Apache-2.0",
   "engines": {
