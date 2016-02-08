@@ -1,3 +1,7 @@
+[![Build Status](https://travis-ci.org/figurebelow/trendyways.svg?branch=master)](https://travis-ci.org/figurebelow/trendyways)
+[![Coverage Status](https://coveralls.io/repos/github/figurebelow/trendyways/badge.svg?branch=master)](https://coveralls.io/github/figurebelow/trendyways?branch=master)
+[![npm version](https://badge.fury.io/js/trendyways.svg)](https://badge.fury.io/js/trendyways)
+
 Trendyways
 ==========
 
