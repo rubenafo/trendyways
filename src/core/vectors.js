@@ -2,20 +2,22 @@
 /**
  * @description Alternative forEach for all those browsers like IE8 and below
  * @param {function} function to apply to each element
- * @param {scope} scope 
+ * @param {scope} scope
  */
 if ( !Array.prototype.forEach ) {
-  Array.prototype.forEach = function(fn, scope) 
+  Array.prototype.forEach = function(fn, scope)
   {
-    for(var i = 0, len = this.length; i < len; ++i) 
+    for(var i = 0, len = this.length; i < len; ++i)
     {
-      if (i in this) 
+      if (i in this)
       {
         fn.call(scope, this[i], i, this);
       }
     }
   };
 }
+
+////////////////////////////////////////////////////////
 
 /**
  * @description Returns a vector containing the difference of the parameters.
@@ -53,11 +55,11 @@ diffVectors = function (series1, series2)
  * @param {array} serie values array
  * @return {array} values array ^ 2
  */
-powVector = function (serie) 
+powVector = function (serie)
 {
   var result = [];
-  pow = function (x) { 
-    result.push (Math.pow(x, 2)); 
+  pow = function (x) {
+    result.push (Math.pow(x, 2));
   };
   serie.forEach (pow);
   return result;
@@ -104,7 +106,7 @@ avgVector = function (vector)
 absVector = function (vector)
 {
   var result = [];
-  vector.forEach (function ab(x) 
+  vector.forEach (function ab(x)
   {
     result.push(Math.abs(x));
   });

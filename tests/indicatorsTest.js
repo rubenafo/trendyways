@@ -1,33 +1,38 @@
-test ("Money Flow Index test", function ()
-{
-  var highPrices = [4161, 4181, 4158, 4136, 4088, 4134, 4095, 4151,
-                    4150, 4181, 4232, 4228, 4269, 4282, 4291, 4251,
-                    4256, 4296, 4299, 4302, 4307, 4326, 4363];
-  var lowPrices = [4081, 4110, 4104, 4066, 4031, 4058, 3981, 4072,
-                   4102, 4113, 4172, 4177, 4218, 4234, 4231, 4189,
-                   4141, 4243, 4249, 4241, 4250, 4289, 4256];
-  var closePrices = [4151, 4117, 4111, 4077, 4079, 4067, 4077, 4134,
+var assert = require ("assert");
+var Trendyways = require ("../trendyways.js");
+
+describe ("Indicators", function () {
+
+  it ("Money Flow Index test", function ()
+  {
+    var highPrices = [4161, 4181, 4158, 4136, 4088, 4134, 4095, 4151,
+                      4150, 4181, 4232, 4228, 4269, 4282, 4291, 4251,
+                      4256, 4296, 4299, 4302, 4307, 4326, 4363];
+    var lowPrices = [4081, 4110, 4104, 4066, 4031, 4058, 3981, 4072,
+                     4102, 4113, 4172, 4177, 4218, 4234, 4231, 4189,
+                     4141, 4243, 4249, 4241, 4250, 4289, 4256];
+    var closePrices = [4151, 4117, 4111, 4077, 4079, 4067, 4077, 4134,
                      4120, 4171, 4220, 4215, 4261, 4278, 4246, 4205,
                      4248, 4257, 4293, 4250, 4296, 4297, 4267];
-  var volumes = [79370729, 67472022, 63121628, 71942510, 65147231,74202811, 101610206, 95639685, 
-  				 82708097, 78503267, 92236562, 68771304, 91866901, 85013484, 83254495, 78696265, 
+    var volumes = [79370729, 67472022, 63121628, 71942510, 65147231,74202811, 101610206, 95639685,
+  				 82708097, 78503267, 92236562, 68771304, 91866901, 85013484, 83254495, 78696265,
   				 87574680, 82687609, 70929391, 88198865, 105631422, 73330395, 81067590];
-  var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791,
+    var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791,
                 64.67398, 73.14163, 72.71666, 65.73574];
-  var mfiResult = mfi (highPrices, lowPrices, closePrices, volumes, 14);
-  equal (mfiResult.length, result.length,"MoneyFlow result values match length");
-  for (var i = 0; i < mfiResult.length; i++)
-  {
-    deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
-  }
-});
+    var mfiResult = mfi (highPrices, lowPrices, closePrices, volumes, 14);
+    assert.equal (mfiResult.length, result.length,"MoneyFlow result values match length");
+    for (var i = 0; i < mfiResult.length; i++)
+    {
+      assert.deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
+    }
+  });
 
-/**
- * MACD test using IBM close values from 2013-01-01 to 17-01-2014.
- * Test results obtained with R library "quantmod": MACD("IBM", from="2013-01-01", to="17-01-2014")
- */
-test ("MACD test", function () {
-  var testData  = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45,192.62,
+  /**
+   * MACD test using IBM close values from 2013-01-01 to 17-01-2014.
+   * Test results obtained with R library "quantmod": MACD("IBM", from="2013-01-01", to="17-01-2014")
+   */
+   it ("MACD test", function () {
+     var testData  = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45,192.62,
                 192.50,192.59,193.65,194.47,196.08,204.72,204.42,
                 204.97,204.93,203.90,203.52,203.07,205.18,203.79,
                 202.79,201.02,199.74,201.68,200.16,200.04,200.09,
@@ -51,9 +56,7 @@ test ("MACD test", function () {
                 177.85,175.76,178.70,180.22,180.02,182.23,183.22,185.35,185.08,186.41,187.57,185.53,186.64,
                 186.00,189.71,187.97,187.38,187.26,184.16,185.92,187.74,188.76,190.09];
 
-  var macdTest =  [0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,
-                   0,0,0,0,0,0,0,0,0,
+     var macdTest =  [0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
                 1.65754960,1.53745561,1.36558626,1.21065468,1.07749703,0.94343290,0.88055663,
                 0.79500891,0.67875283,0.54088660,0.53672501,0.38458302,0.32602610,0.40374827,
                 0.40010647,0.47544149,0.61925614,0.77719919,0.96403208,1.13895103,1.29915537,
@@ -122,89 +125,90 @@ test ("MACD test", function () {
                   -0.726992089,-0.652061906,-0.546759494,-0.417978570,-0.261523627,-0.097946732,0.073262912,0.250042718,
                   0.402451934,0.540252674,0.654774263,0.779235732,0.886387296,0.969878048,1.030865267,1.045533903,1.043167320,
                   1.043497276,1.051811291,1.073581927];
-  var trendyWaysMacd = macd (testData);
-  equal (trendyWaysMacd.macd.length, macdTest.length, "MACD values match length");
-  for (var i = 0; i < trendyWaysMacd.macd.length; i++)
-  {
-      deepEqual (trendyWaysMacd.macd[i].toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
-  }
-  equal (trendyWaysMacd.signal.length, signalTest.length, "MACD signal values match length");
-  for (var i = 0; i < trendyWaysMacd.signal.length; i++)
-  {
-      deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
-  }
-  for (var i = 0; i < trendyWaysMacd.hist[i].length; i++)
-  {
-      deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
-  }
-});
+    var trendyWaysMacd = macd (testData);
+    assert.equal (trendyWaysMacd.macd.length, macdTest.length, "MACD values match length");
+    for (var i = 0; i < trendyWaysMacd.macd.length; i++)
+    {
+      assert.deepEqual (trendyWaysMacd.macd[i].toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
+    }
+    assert.equal (trendyWaysMacd.signal.length, signalTest.length, "MACD signal values match length");
+    for (var i = 0; i < trendyWaysMacd.signal.length; i++)
+    {
+      assert.deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
+    }
+    for (var i = 0; i < trendyWaysMacd.hist[i].length; i++)
+    {
+      assert.deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
+    }
+  });
 
 /**
  * Momentum function test
  */
-test ("Momentum Test", function () {
+it ("Momentum Test", function () {
   var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
   var resultOrder1 = [-1.08, -1.28, -0.85, -0.27, -0.55, 0.56, 1.57, -1.83, -0.12];
   var resultOrder3 = [-3.21, -2.4, -1.67, -0.26, 1.58, 0.3, -0.38];
   var momentumValues = momentum (values, 1);
-  deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
+  assert.deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
   for (var i = 0; i < momentumValues.length; i++)
   {
-    deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
   }
   var momentumValues3 = momentum (values, 3);
-  deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
+  assert.deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
   for (var i = 0; i < momentumValues3.length; i++)
   {
-    deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
   }
 });
 
 /**
  * Rate of Change function test
  */
-test ("Rate of Change", function () {
-  var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
-  var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
-  var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
-  var rocValues = roc (values, 1);
-  deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
-  for (var i = 0; i < rocValues.length; i++)
-  {
-    deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
-  }
-  var rocValues3 = roc (values, 3);
-  deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
-  for (var i = 0; i < rocValues3.length; i++)
-  {
-    deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
-  }
-});
+ it ("Rate of Change", function () {
+   var values = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45, 192.62, 192.50];
+   var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
+   var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
+   var rocValues = roc (values, 1);
+   assert.deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
+   for (var i = 0; i < rocValues.length; i++)
+   {
+     assert.deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+   }
+   var rocValues3 = roc (values, 3);
+   assert.deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
+   for (var i = 0; i < rocValues3.length; i++)
+   {
+     assert.deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+   }
+ });
 
-/**
- * RSI (relative strength index) test
- */
-test ("RSI test", function () {
-  var values = [44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42,
+ /**
+  * RSI (relative strength index) test
+  */
+ it ("RSI test", function () {
+    var values = [44.34, 44.09, 44.15, 43.61, 44.33, 44.83, 45.10, 45.42,
                 45.84, 46.08, 45.89, 46.03, 45.61, 46.28, 46.28, 46.00,
                 46.03, 46.41, 46.22, 45.64, 46.21, 46.25, 45.71, 46.45,
-                45.78, 45.35, 44.03, 44.18, 44.22, 44.57, 43.42, 42.66, 
+                45.78, 45.35, 44.03, 44.18, 44.22, 44.57, 43.42, 42.66,
                 43.13];
-  /*var values = [
+    /*var values = [
       46.125, 47.1250, 46.4375, 46.9375, 44.9375, 44.25, 44.625,
       45.75, 47.81, 47.56, 47, 44.56, 46.31, 47.68, 46.68, 45.68,
       43.06, 43.56, 44.87, 43.68
-  ];*/
-  var expected = [70.46, 66.24, 66.48, 69.34, 66.29, 57.91, 62.88, 63.20,
+    ];*/
+    var expected = [70.46, 66.24, 66.48, 69.34, 66.29, 57.91, 62.88, 63.20,
                   56.01, 62.33, 54.67, 50.38, 40.01, 41.49, 41.9, 45.49,
                   37.32, 33.09, 37.78];
-  /*var expected = [
-    51.779, 48.477, 41.073, 42.863, 47.382, 43.992 
-  ];*/
-  var result = rsi (values, 14);
-  deepEqual (result.length, expected.length, "RSI result length matches");
-  for (var i = 0; i < result.length; i++)
-  {
-    deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
-  }
+    /*var expected = [
+      51.779, 48.477, 41.073, 42.863, 47.382, 43.992
+    ];*/
+    var result = rsi (values, 14);
+    assert.deepEqual (result.length, expected.length, "RSI result length matches");
+    for (var i = 0; i < result.length; i++)
+    {
+      assert.deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
+    }
+  });
 });
