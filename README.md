@@ -22,7 +22,7 @@ to create the trendyways lib and associated docs.
 
 Documentation
 -------------
-The full, detailed, HTML documentation is available [here](http://htmlpreview.github.io/?https://github.com/figurebelow/trendyways/blob/master/docs/index.html) once you clone the repo.
+The full, detailed, HTML documentation is available [here](http://htmlpreview.github.io/?https://github.com/figurebelow/trendyways/blob/master/docs/index.html) 
 
 
 The list below includes the (so far) implemented methods.
