@@ -5,7 +5,7 @@
 Trendyways
 ==========
 
-Small javascrip library containing methods to use in financial technical analysis of stock time series.
+Small javascript library containing methods to be used in financial technical analysis of stock time series.
 It is intended to be a simple library, suitable to be inserted in any visulization workflow to generate results on the fly.
 
 Compatibily: IE[7,8,9,...], Chrome and Firefox.
@@ -22,7 +22,7 @@ to create the trendyways lib and associated docs.
 
 Documentation
 -------------
-The full, detailed, HTML documentation is available [here](https://github.com/figurebelow/trendyways/blob/master/docs/index.html) once you clone the repo.
+The full, detailed, HTML documentation is available [here](http://htmlpreview.github.io/?https://github.com/figurebelow/trendyways/blob/master/docs/index.html) once you clone the repo.
 
 
 The list below includes the (so far) implemented methods.
@@ -62,5 +62,11 @@ Indicators:
 * RSI (Relative Strength Index) (n-th order)
 
 The detailed documentation is provided in /docs folder.
-For the testing part, the qunit.js testing library is used.
-Tests can be run from the file tests.html once you fetch this.
+
+Tests
+-------------
+At the top of this README there is a link to the coverage and test results from Travis and CoverAll.
+If you want to run your tests locally, use mocha to run the /tests files:
+```
+mocha ./tests
+```
