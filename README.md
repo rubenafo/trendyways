@@ -22,8 +22,8 @@ to create the trendyways lib and associated docs.
 
 Documentation
 -------------
-The full, detailed, HTML documentation is available [here](http://htmlpreview.github.io/?https://github.com/figurebelow/trendyways/blob/master/docs/index.html) 
-
+The full dcument preview is available [here](https://cdn.rawgit.com/figurebelow/trendyways/master/docs/index.html) 
+and in the docs folder of the cloned repository.
 
 The list below includes the (so far) implemented methods.
 
