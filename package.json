@@ -28,7 +28,8 @@
   "devDependencies": {
     "mocha": ">=2.3.4",
     "coveralls": "^2.11.6",
-    "istanbul": "^0.4.2"
+    "istanbul": "^0.4.2",
+    "jsdoc": "^3.5"
   },
   "license": "Apache-2.0",
   "engines": {

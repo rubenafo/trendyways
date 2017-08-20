@@ -61,7 +61,7 @@ Indicators:
 * Rate of Change (ROC) (n-th order)
 * RSI (Relative Strength Index) (n-th order)
 
-The detailed documentation is provided in /docs folder.
+Detailed documentation is provided in /docs folder.
 
 Tests
 -------------

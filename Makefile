@@ -26,10 +26,7 @@ docs: trendyways.js
 	rm -Rf ./docs
 	jsdoc trendyways.js -d docs
 
-tests: trendyways.js
-	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep Test.`; do cat $$js >> tests.js; done)
-
 clean:
 	rm -f trendyways.js trendyways.min.js tests.js
 
-.PHONY: all docs tests clean
+.PHONY: all docs clean

@@ -1,7 +1,7 @@
 var assert = require ("assert");
 var Trendyways = require ("../trendyways.js");
 
-describe ("Error measurments", function () {
+describe ("Error measurements", function () {
 
   it ("MSE mean standard error test", function ()
   {
