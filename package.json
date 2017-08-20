@@ -2,7 +2,7 @@
   "name": "trendyways",
   "preferGlobal": true,
   "version": "0.2.1",
-  "author": "Ruben Afonso <ruben@figurebelow.com>",
+  "author": "Ruben Afonso <rbfrancos@gmail.com>",
   "description": "a javascript library for financial technical analysis",
   "contributors": [
     {
@@ -12,7 +12,7 @@
   ],
   "repository": {
     "type": "git",
-    "url": "https://github.com/figurebelow/trendyways.git"
+    "url": "https://github.com/rubenafo/trendyways.git"
   },
   "keywords": [
     "technical analysis",

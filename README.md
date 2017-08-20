@@ -1,5 +1,5 @@
-[![Build Status](https://travis-ci.org/figurebelow/trendyways.svg?branch=master)](https://travis-ci.org/figurebelow/trendyways)
-[![Coverage Status](https://coveralls.io/repos/github/figurebelow/trendyways/badge.svg?branch=master)](https://coveralls.io/github/figurebelow/trendyways?branch=master)
+[![Build Status](https://travis-ci.org/rubenafo/trendyways.svg?branch=master)](https://travis-ci.org/rubenafo/trendyways)
+[![Coverage Status](https://coveralls.io/repos/github/rubenafo/trendyways/badge.svg?branch=master)](https://coveralls.io/github/rubenafo/trendyways?branch=master)
 [![npm version](https://badge.fury.io/js/trendyways.svg)](https://badge.fury.io/js/trendyways)
 
 Trendyways
@@ -12,7 +12,7 @@ Compatibily: IE[7,8,9,...], Chrome and Firefox.
 
 Installation
 -------------
-To use trendyways library copying the main file, [trendyways.min.js](https://github.com/figurebelow/trendyways/blob/master/trendyways.min.js) is enough for production environments. A non minified version is available in the same dir,    [trendyways.js](https://github.com/figurebelow/trendyways/blob/master/trendyways.js)
+To use trendyways library copying the main file, [trendyways.min.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough for production environments. A non minified version is available in the same dir,    [trendyways.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
 
 Building from source is also possible if nodejs is installed on your system. In this case after clone this repo, run 
  
@@ -22,7 +22,7 @@ to create the trendyways lib and associated docs.
 
 Documentation
 -------------
-The full dcument preview is available [here](https://cdn.rawgit.com/figurebelow/trendyways/master/docs/index.html) 
+The full dcument preview is available [here](https://cdn.rawgit.com/rubenafo/trendyways/master/docs/index.html) 
 and in the docs folder of the cloned repository.
 
 The list below includes the (so far) implemented methods.
