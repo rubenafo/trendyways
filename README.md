@@ -10,22 +10,22 @@ It is intended to be a simple library, suitable to be inserted in any visulizati
 
 Compatibily: IE[7,8,9,...], Chrome and Firefox.
 
-Installation
+How to use it
 -------------
-To use trendyways library copying the main file, [trendyways.min.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough for production environments. A non minified version is available in the same dir,    [trendyways.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
+The minified version of Trendyways [trendyways.min.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough to use it in a production environment A non minified version is available in the same dir [trendyways.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
 
 Building from source is also possible if nodejs is installed on your system. In this case after clone this repo, run 
  
-  make all
+   make all
 
-to create the trendyways lib and associated docs.
+to create the trendyways.js lib and related docs.
 
 Documentation
 -------------
 The full dcument preview is available [here](https://cdn.rawgit.com/rubenafo/trendyways/master/docs/index.html) 
 and in the docs folder of the cloned repository.
 
-The list below includes the (so far) implemented methods.
+The list below includes the methods implemented so far,
 
 General purpose functions:
  
