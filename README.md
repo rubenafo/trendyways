@@ -10,49 +10,50 @@ It is intended to be a simple library, suitable to be inserted in any visulizati
 
 Compatibily: IE[7,8,9,...], Chrome and Firefox.
 
-Installation
+How to use it
 -------------
-To use trendyways library copying the main file, [trendyways.min.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough for production environments. A non minified version is available in the same dir,    [trendyways.js](https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
+The minified version of trendyways ([trendyways.min.js]) (https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough to use it in a production environment.   
+A non minified version is available in the same dir ([trendyways.js])(https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
 
 Building from source is also possible if nodejs is installed on your system. In this case after clone this repo, run 
  
-  make all
+   make all
 
-to create the trendyways lib and associated docs.
+to create the trendyways.js lib and related docs.
 
 Documentation
 -------------
 The full dcument preview is available [here](https://cdn.rawgit.com/rubenafo/trendyways/master/docs/index.html) 
 and in the docs folder of the cloned repository.
 
-The list below includes the (so far) implemented methods.
+The list below includes the methods implemented so far,
 
-General purpose functions:
+__General purpose functions:__
  
 * series min.
 * series max.
 * series mean.
 * series standar deviation.
 
-Averages and intervals:
+__Averages and Intervals:__
 * MA: simple moving average.
 * EMA: exponential moving average.
 * WMA: weighted moving average.
 * Bollinger bands (window n, k value).
 
-Error methods:
+__Error methods:__
 * series MSE
 * series RMSE
 * series MAE
 
-Support and resistance methods:
+__Support and Resistance methods:__
 * Floor pivot points (resistances R1, R2 and R3; and supports S1, S2 and S3).
 * Tom Demarks Points (low:high values prediction).
 * Woodies Points (resistances R1,R2; and supports S1 and S2).
 * Camarilla Points (resistances R1,R2,R3 and R4; supports S1,S2,S3 and S4).
 * Fibonacci Retracements (for both uptrend and downtrend series).
 
-Indicators:
+__Technical Indicators:__
 * On-Balance Volume (obv)
 * Price and Volume Trend (pvt)
 * Money Flow Index (mfi)
@@ -62,7 +63,7 @@ Indicators:
 * RSI (Relative Strength Index) (n-th order)
 * Average True Value (ATV)
 
-Detailed documentation is provided in /docs folder.
+Detailed documentation is provided in the /docs folder.
 
 Tests
 -------------
