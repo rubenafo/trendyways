@@ -193,11 +193,6 @@ it ("Momentum Test", function () {
                 46.03, 46.41, 46.22, 45.64, 46.21, 46.25, 45.71, 46.45,
                 45.78, 45.35, 44.03, 44.18, 44.22, 44.57, 43.42, 42.66,
                 43.13];
-    /*var values = [
-      46.125, 47.1250, 46.4375, 46.9375, 44.9375, 44.25, 44.625,
-      45.75, 47.81, 47.56, 47, 44.56, 46.31, 47.68, 46.68, 45.68,
-      43.06, 43.56, 44.87, 43.68
-    ];*/
     var expected = [70.46, 66.24, 66.48, 69.34, 66.29, 57.91, 62.88, 63.20,
                   56.01, 62.33, 54.67, 50.38, 40.01, 41.49, 41.9, 45.49,
                   37.32, 33.09, 37.78];
@@ -209,6 +204,24 @@ it ("Momentum Test", function () {
     for (var i = 0; i < result.length; i++)
     {
       assert.deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
+    }
+  });
+
+  it ("ATR test", function () {
+    var values = [{high:48.70, low:47.79, close:48.16},{high:48.72, low:48.14, close:48.61},
+                  {high:48.90, low:48.39, close:48.75},{high:48.87, low:48.37, close:48.63},
+                  {high:48.82, low:48.24, close:48.74},{high:49.05, low:48.64, close:49.03},
+                  {high:49.20, low:48.94, close:49.07},{high:49.35, low:48.86, close:49.32},
+                  {high:49.92, low:49.50, close:49.91},{high:50.19, low:49.87, close:50.13},
+                  {high:50.12, low:49.20, close:49.53},{high:49.66, low:48.90, close:49.50},
+                  {high:49.88, low:49.43, close:49.75},{high:50.19, low:49.73, close:50.03},
+                  {high:50.36, low:49.26, close:50.31},{high:50.57, low:50.09, close:50.52}]
+    var result = atr(values);
+    var expectedTR = [0.91, 0.58, 0.51, 0.5, 0.58, 0.41, 0.26, 0.49, 0.60, 0.32, 0.93, 0.76, 0.45, 0.46, 1.10, 0.48, 0.35, 1.22, 0.65, 0.96];
+    var expectedATR =[0,    0,    0,    0,   0,    0,    0,    0,    0,    0,    0,    0,    0,    0.55, 0.59, 0.59, 0.57, 0.62, 0.62, 0.64];
+    for (var i = 0; i < result.length; i++) {
+      assert.deepEqual(result[i].tr.toFixed(2), expectedTR[i].toFixed(2));
+      assert.deepEqual(result[i].atr.toFixed(2), expectedATR[i].toFixed(2));
     }
   });
 });

@@ -60,6 +60,7 @@ Indicators:
 * Momentum (n-th order momentum)
 * Rate of Change (ROC) (n-th order)
 * RSI (Relative Strength Index) (n-th order)
+* Average True Value (ATV)
 
 Detailed documentation is provided in /docs folder.
 

@@ -229,3 +229,41 @@ rsi = function (closePrices, order)
   }
   return result;
 }
+
+//////////////////////////////
+/**
+ * @description Returns the ATR (Average True Value). ATR is provided after 14th element.
+ * @param {array} values containing {high,low,close}
+ * @returns {array} list containing {tr,atr} values for each period.
+ * @example 
+ * var atr = atr ([{high:48.7, low:45.3, close:46}, ...])
+ * console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr:_value_} ]
+ */
+
+atr = function (values) {
+  var results = [];
+  for (var i = 0; i < values.length; i++) {
+    if (i == 0) {
+      results.push({tr:values[i].high - values[i].low, atr:0})
+    }
+    else {
+      var hl = values[i].high - values[i].low;
+      var hcp = Math.abs(values[i].high - values[i-1].close);
+      var lcp = Math.abs(values[i].low - values[i-1].close);
+      var tr = Math.max(hl,hcp,lcp);
+      var atr = 0;
+      if (i == 13) {
+        atr = tr;
+        for (var j = 0; j < results.length; j++) {
+          atr += results[j].tr;
+        }
+        atr = atr / 14.0;
+      }
+      else if (i > 13) {
+        atr = ((results[i-1].atr * 13) + tr) / 14;
+      }
+      results.push({tr:tr, atr:atr});
+    }
+  }
+  return results;
+}
