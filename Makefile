@@ -24,7 +24,7 @@ trendyways.min.js: trendyways.js
 
 docs: trendyways.js
 	rm -Rf ./docs
-	jsdoc trendyways.js -d docs
+	jsdoc trendyways.js -d=docs
 
 clean:
 	rm -f trendyways.js trendyways.min.js tests.js
