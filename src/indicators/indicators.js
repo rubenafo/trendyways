@@ -222,8 +222,8 @@ rsi = function (closePrices, order)
     partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
     partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
     smoothedRS = partialCurrentGain / partialCurrentLoss;
-    rsi = 100 - (100 / (1 + smoothedRS))
-    result.push(rsi);
+    currentRSI = 100 - (100 / (1 + smoothedRS))
+    result.push(currentRSI);
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
