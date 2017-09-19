@@ -4,10 +4,8 @@ var Trendyways = require ("../trendyways.js");
 describe ("Supports and resistances", function () {
 
   it ("Floor pivot level, supports and resistances", function () {
-    var lowList = [5];
-    var highList = [18];
-    var closeList = [15];
-    var values = floorPivots (highList, lowList, closeList);
+    var point = [{c:15, h:18, l:5}]
+    var values = floorPivots (point);
     assert.deepEqual (values[0].r3, 33.33333333333333, "Resistance R3 ok");
     assert.deepEqual (values[0].r2, 25.666666666666664, "Resistance R2 ok");
     assert.deepEqual (values[0].r1, 20.333333333333332, "Resistance R1 ok");
@@ -18,11 +16,10 @@ describe ("Supports and resistances", function () {
   });
 
   it ("Tom Demarks's predicted low and high value (support and resistance)", function () {
-    var highList = [10, 15, 25];
-    var lowList = [5, 8, 10];
-    var openList = [6, 10, 17];
-    var closeList = [7, 11, 12];
-    var values = tomDemarksPoints (highList, lowList, openList, closeList);
+    var points = [{h:10, l:5, o:6, c:7}, 
+                  {h:15, l:8, o:10, c:11}, 
+                  {h:25, l:10, o:17, c:12}];
+    var values = tomDemarksPoints (points);
     assert.deepEqual (values.length, 3, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].low, 6 , "Support for first value ok");
@@ -36,10 +33,9 @@ describe ("Supports and resistances", function () {
   });
 
   it ("Woodies predicted points (support and resistance)", function () {
-    var highList = [10, 15, 25, 10];
-    var lowList = [5, 8, 10, 8];
-    var closeList = [7, 11, 12, 9];
-    var values = woodiesPoints (highList, lowList, closeList);
+    var points = [{h:10, l:5, c:7},  {h:15, l:8, c:11}, 
+                  {h:25, l:10, c:12},{h:10, l:8, c:9}];
+    var values = woodiesPoints (points);
     assert.deepEqual (values.length, 4, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].pivot, 7.25, "Pivot for first value ok");
@@ -68,10 +64,8 @@ describe ("Supports and resistances", function () {
   });
 
   it ("Camarilla predicted points (supports and resistances)", function () {
-    var highList = [10, 15, 25, 10];
-    var lowList = [5, 8, 10, 8];
-    var closeList = [7, 11, 12, 9];
-    var values = camarillaPoints (highList, lowList, closeList);
+    var points = [{h:10, l:5, c:7}, {h:15, l:8, c:11}, {h:25, l:10, c:12}, {h:10, l:8, c:9}];
+    var values = camarillaPoints (points);
     assert.deepEqual (values.length, 4, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].r1, 7.458333333333333, "Resistance r1 for first value ok");
@@ -113,9 +107,8 @@ describe ("Supports and resistances", function () {
 
   it ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')", function ()
   {
-    var highList = [10, 12, 9, 15, 16];
-    var lowList = [5, 8, 7, 6, 9];
-    var values = fibonacciRetrs (lowList, highList, 'UPTREND');
+    var points = [{h:10, l:5}, {h:12, l:8}, {h:9, l:7}, {h:15, l:6}, {h:16, l:9}];
+    var values = fibonacciRetrs (points, 'UPTREND');
     assert.deepEqual (values.length, 5, "Returned values ok");
     for (var i = 0; i < values.length; i++)
     {
@@ -138,9 +131,8 @@ describe ("Supports and resistances", function () {
 
   it ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')", function ()
   {
-    var highList = [10, 9, 5, 7, 2];
-    var lowList = [5, 6, 3, 6, 1];
-    var values = fibonacciRetrs (lowList, highList, 'DOWNTREND');
+    var points = [{h:10, l:5}, {h:9, l:6}, {h:5, l:3}, {h:7, l:6}, {h:2, l:1}];
+    var values = fibonacciRetrs (points, 'DOWNTREND');
     assert.deepEqual (values.length, 5, "Returned values ok");
     for (var i = 0; i < values.length; i++)
     {

@@ -4,7 +4,7 @@ var Trendyways = require ("../trendyways.js");
 describe ("Averages", function () {
 
   it ("Moving Average of a sample serie", function () {
-    var serie = [2,6,5,7,10,9,12,5];
+    var serie = [{c:2},{c:6},{c:5},{c:7},{c:10},{c:9},{c:12},{c:5}]
     var correctValues = [5,7,7.75,9.5,9];
     var movingAvg = ma(serie,4);
     assert.deepEqual (movingAvg.length, 5, "Moving Average result's length is correct");
@@ -16,34 +16,30 @@ describe ("Averages", function () {
 
   it ("Exponential moving average test", function ()
   {
-    var series = [64.75, 63.79, 63.73, 63.73, 63.55,
-                  63.19, 63.91, 63.85, 62.95, 63.37,
-                  61.33, 61.51, 61.87, 60.25, 59.35,
-                  59.95, 58.93, 57.68, 58.82, 58.87];
+    var series = [{c:64.75},{c:63.79},{c:63.73},{c:63.73},{c:63.55},
+                  {c:63.19},{c:63.91},{c:63.85},{c:62.95},{c:63.37},
+                  {c:61.33},{c:61.51},{c:61.87},{c:60.25},{c:59.35},
+                  {c:59.95},{c:58.93},{c:57.68},{c:58.82},{c:58.87}];
     var expected = [ 0,0,0,0,0,0,0,0,0,
                      63.682,63.254,62.937,62.743,62.290,
                      61.755,61.427,60.973,60.374,60.092,
                      59.870];
-    var result = ema(series, 10);
-    assert.equal (result.length, expected.length, "EMA length = " + result.length);
-    for (var i = 0; i < 10 - 1; i++)
-    {
-      assert.equal (result[i], expected[i], "Checking EMA index = " + i)
-    }
-    for (var i = 10-1; i < result.length; i++)
-    {
-      assert.equal (result[i].toFixed(3), expected[i], "Checking EMA index = " + i)
-    }
-    result = ema(series, 1);
+    var result = ema(series, 10, ["c"]);
+    //assert.equal (result.length, expected.length, "EMA length = " + result.length);
     for (var i = 0; i < result.length; i++)
     {
-      assert.equal (result[i].toFixed(3), series[i], "EMA = 1, value " + i + " unchanged");
+      assert.equal (result[i].toFixed(3), expected[i].toFixed(3), "Checking EMA index = " + i)
+    }
+    result = ema(series, 1, ["c"]);
+    for (var i = 0; i < result.length; i++)
+    {
+      assert.equal (result[i].toFixed(3), series[i].c, "EMA = 1, value " + i + " unchanged");
     }
   });
 
   it ("Weighted moving average test", function ()
   {
-    var series = [1, 2, 3, 4, 5, 6];
+    var series = [{c:1}, {c:2}, {c:3}, {c:4}, {c:5}, {c:6}];
     var expected = [0.5, 0.83333, 1.16667, 1.5]
     var result = wma (series, [0.6, 0.3, 0.1]);
     for (var i = 0; i < result.length; i++)

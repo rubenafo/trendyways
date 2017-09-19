@@ -72,11 +72,16 @@ powVector = function (serie)
  * @param {array} vector values array
  * @returns {value} the sum of all elements
  */
-sumVector = function (vector)
+sumVector = function (values, targetAttr)
 {
   var result = 0;
-  sum = function (x) { result += x; }
-  vector.forEach (sum);
+  sum = function (x) {
+    if (isUndef(x[targetAttr]))
+      result += x
+    else
+      result += x[targetAttr]
+  }
+  values.forEach (sum);
   return result;
 }
 
@@ -87,9 +92,9 @@ sumVector = function (vector)
  * @param {array} vector values array
  * @returns {value} the average of the all elements
  */
-avgVector = function (vector)
+avgVector = function (vector, targetAttr)
 {
-  var result = sumVector (vector);
+  var result = sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else

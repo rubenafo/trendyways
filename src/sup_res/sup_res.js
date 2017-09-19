@@ -17,17 +17,17 @@
  *         - s2: support second level
  *         - s1: support first level
  */
-floorPivots = function (highList, lowList, closeList) {
+floorPivots = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    pivotLevel = (highList[i] + lowList[i] + closeList[i]) / 3;
-    r1 = 2 * pivotLevel - lowList[i];
-    r2 = pivotLevel + highList[i] - lowList[i];
-    r3 = r1 + highList[i] - lowList[i];
-    s1 = 2 * pivotLevel - highList[i];
-    s2 = pivotLevel - highList[i] + lowList[i];
-    s3 = s1 - highList[i] + lowList[i];
+    pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
+    r1 = 2 * pivotLevel - values[i].l;
+    r2 = pivotLevel + values[i].h - values[i].l;
+    r3 = r1 + values[i].h - values[i].l;
+    s1 = 2 * pivotLevel - values[i].h;
+    s2 = pivotLevel - values[i].h + values[i].l;
+    s3 = s1 - values[i].h + values[i].l;
     elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
@@ -49,25 +49,25 @@ floorPivots = function (highList, lowList, closeList) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-tomDemarksPoints = function (highList, lowList, openList, closeList) {
+tomDemarksPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
     var x = 0;
-    if (closeList[i] < openList[i])
+    if (values[i].c < values[i].o)
     {
-      x = highList[i] + (2 * (lowList[i]) + closeList[i]);
+      x = values[i].h + (2 * (values[i].l) + values[i].c);
     }
-    if (closeList[i] > openList[i])
+    if (values[i].c > values[i].o)
     {
-      x = (2 * highList[i]) +  lowList[i] + closeList[i];
+      x = (2 * values[i].h) +  values[i].l + values[i].c;
     }
-    if (closeList[i] == openList[i])
+    if (values[i].c == values[i].o)
     {
-      x = highList[i] + lowList[i] + (2 * closeList[i]);
+      x = values[i].h + values[i].l + (2 * values[i].c);
     }
-    newHigh = (x/2) - lowList[i];
-    newLow = (x/2) - highList[i];
+    newHigh = (x/2) - values[i].l;
+    newLow = (x/2) - values[i].h;
     elem = {low: newLow, high: newHigh};
     result.push(elem);
   }
@@ -92,16 +92,16 @@ tomDemarksPoints = function (highList, lowList, openList, closeList) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-woodiesPoints = function (highList, lowList, closeList) {
+woodiesPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
     var x = 0;
-    var pivot = (highList[i] + lowList[i] + 2 * closeList[i]) / 4;
-    var r1 = (2 * pivot) - lowList[i];
-    var r2 = pivot + highList[i] - lowList[i];
-    var s1 = (2 * pivot) - highList[i];
-    var s2 = pivot - highList[i] + lowList[i]; 
+    var pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
+    var r1 = (2 * pivot) - values[i].l;
+    var r2 = pivot + values[i].h - values[i].l;
+    var s1 = (2 * pivot) - values[i].h;
+    var s2 = pivot - values[i].h + values[i].l; 
     elem = {pivot: pivot, r1: r1, 
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
@@ -130,19 +130,19 @@ woodiesPoints = function (highList, lowList, closeList) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-camarillaPoints = function (highList, lowList, closeList) {
+camarillaPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    var diff = highList[i] - lowList[i];
-    var r4 = (diff * 1.1) / 2 + closeList[i];
-    var r3 = (diff *1.1) / 4 + closeList[i];
-    var r2 = (diff * 1.1) / 6 + closeList[i];
-    var r1 = (diff * 1.1) / 12 + closeList[i];
-    var s1 = closeList[i] - (diff * 1.1 / 12);
-    var s2 = closeList[i] - (diff *1.1 /6);
-    var s3 = closeList[i] - (diff * 1.1 / 4);
-    var s4 = closeList[i] - (diff *1.1 / 2);
+    var diff = values[i].h - values[i].l;
+    var r4 = (diff * 1.1) / 2 + values[i].c;
+    var r3 = (diff *1.1) / 4 + values[i].c;
+    var r2 = (diff * 1.1) / 6 + values[i].c;
+    var r1 = (diff * 1.1) / 12 + values[i].c;
+    var s1 = values[i].c - (diff * 1.1 / 12);
+    var s2 = values[i].c - (diff *1.1 /6);
+    var s3 = values[i].c - (diff * 1.1 / 4);
+    var s4 = values[i].c - (diff *1.1 / 2);
     elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3,
             s4: s4};
     result.push(elem);
@@ -153,19 +153,19 @@ camarillaPoints = function (highList, lowList, closeList) {
 
 ////////////////////////////////////////////////////////
 
-fibonacciRetrs = function (lowList, highList, trend)
+fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
   if (trend == 'DOWNTREND') 
   {
-    for (var i = 0; i < highList.length; i++)
+    for (var i = 0; i < values.length; i++)
     {
-      var diff = highList[i] - lowList[i];
+      var diff = values[i].h - values[i].l;
       var elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = highList[i] - diff * retracements[r];
+        var level = values[i].h - diff * retracements[r];
         elem.push(level);
       }
       result.push(elem);
@@ -173,13 +173,13 @@ fibonacciRetrs = function (lowList, highList, trend)
   }
   else  // UPTREND
   {
-    for (var i = 0; i < lowList.length; i++)
+    for (var i = 0; i < values.length; i++)
     {
-      var diff = highList[i] - lowList[i];
+      var diff = values[i].h - values[i].l;
       var elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = lowList[i] + diff * retracements[r];
+        var level = values[i].l + diff * retracements[r];
         elem.push (level);
       }
       result.push(elem);

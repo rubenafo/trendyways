@@ -59,15 +59,15 @@ vpt = function (closeList, volumeList)
  * @param {array} volumes list of volumes
  * @return {value} the money-flow index
  */
-mfi = function (highPrices, lowPrices, closePrices, volumes)
+mfi = function (values)
 {
   var typicalMoney = [];
   var moneyFlow = [];
-  for (var i = 0; i < highPrices.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    var tpMoney = (highPrices[i] + lowPrices[i] + closePrices[i]) / 3;
+    var tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
     typicalMoney.push(tpMoney);
-    moneyFlow.push (tpMoney * volumes[i]);
+    moneyFlow.push (tpMoney * values[i].v);
   }
 
   var posMoneyFlow = [];
@@ -111,13 +111,14 @@ mfi = function (highPrices, lowPrices, closePrices, volumes)
  * @return {object} object containing the macd, signal
  *                  and hist series.
  */
-macd = function (closeValues)
+macd = function (closeValues, targetAttr)
 {
+  targetAttr = valueIfUndef(targetAttr, ["c"])
   slow = 26;
   fast = 12;
   signal = 9;
-  slowEMA = ema (closeValues, slow);
-  fastEMA = ema (closeValues, fast);
+  slowEMA = ema (closeValues, slow, targetAttr);
+  fastEMA = ema (closeValues, fast, targetAttr);
   macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
     if (slow == 0)
     {
@@ -145,13 +146,13 @@ macd = function (closeValues)
  * var m = momemtum ([12,34,23, 81], 1) 
  * console.log(m)  // [22, -11, 58]
  */
-momentum = function(closePrices, order)
+momentum = function(values, order)
 {
   momentumN = function (chunk)
   {
-    return chunk[chunk.length-1] - chunk[0]
+    return chunk[chunk.length-1].c - chunk[0].c
   };
-  return windowOp (closePrices, order+1, momentumN);
+  return windowOp (values, order+1, momentumN);
 }
 
 ////////////////////////////////////////////
@@ -165,13 +166,13 @@ momentum = function(closePrices, order)
  * var roc = roc ([12, 11, 15, 10], 1) 
  * console.log(roc)  // [-0.09, 0.36, -0.33]
  */
-roc = function(closePrices, order)
+roc = function(values, order, targetAttr)
 {
   rocN = function (chunk)
   {
-    return (chunk[chunk.length-1] - chunk[0]) / chunk[0];
+    return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  return windowOp (closePrices, order+1, rocN);
+  return windowOp (values, order+1, rocN);
 }
 
 
@@ -185,17 +186,17 @@ roc = function(closePrices, order)
  * var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
  * console.log(rsi)  // [70.53, 66.32, ..., 56.05]
  */
-rsi = function (closePrices, order)
+rsi = function (values, order)
 {
-  if (closePrices.length < order+1)
+  if (values.length < order+1)
   {
     return [-1]; // not enough params
   }
   gains = [];
   losses = [];
-  for (var i = 0; i < closePrices.length; i++)
+  for (var i = 0; i < values.length-1; i++)
   {
-    diff = closePrices[i+1] - closePrices[i];
+    diff = values[i+1].c - values[i].c;
     if (diff > 0) 
     {
       gains.push(diff);
@@ -217,7 +218,7 @@ rsi = function (closePrices, order)
   avgLoss = avgVector (losses.slice (0, order));
   firstRS = avgGain / avgLoss;
   result.push (100 - (100 / (1 + firstRS)));
-  for (var i = order; i < closePrices.length-1; i++)
+  for (var i = order; i < values.length-1; i++)
   {
     partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
     partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;

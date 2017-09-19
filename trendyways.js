@@ -38,13 +38,12 @@ min = function (values) {
  * @param {array} values array of numerical values
  * @return {value} mean of the series
  */
-mean = function (values) {
+mean = function (values, targetAttr) {
   var mean = 0;
   if (values.length == 0)
     return mean;
-  for (var i = 0; i < values.length; i++)
-  {
-    mean += values[i];
+  for (var i = 0; i < values.length; i++) {
+      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
   }
   return mean/values.length;
 }
@@ -56,15 +55,15 @@ mean = function (values) {
  * @param {array} values array of numerical values
  * @return {value} standard deviation of the series values.
  */
-sd = function (values) {
-  var meanVal = mean(values);
+sd = function (values, targetAttr) {
+  var meanVal = mean(values, targetAttr);
   var sqrSum = 0;
   for (var i = 0; i < values.length; i++) {
-    sqrSum += Math.pow(values[i]-meanVal, 2);
+    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+    sqrSum += Math.pow(value-meanVal, 2);
   }
   return Math.sqrt (sqrSum/values.length);
 }
-
 /**
  * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
  * @param {array} values values array
@@ -72,16 +71,51 @@ sd = function (values) {
  * @param {function} fun function to apply on each chunk
  * @return {array} values returned by the given function in each chunck
  */
-windowOp = function (values, value, fun) {
+windowOp = function (values, value, fun, targetAttr) {
   var result = new Array();
   for (var i = value; i <= values.length; i++)
   {
-    var windowVal = fun (values.slice(i-value, i));
+    var windowVal = fun (values.slice(i-value, i), targetAttr);
     result.push (windowVal);
   }
   return result;
 }
+/**
+ * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+ * @param {object} objects list
+ * @param {attrs} list of attributes to look for
+ * @return {value} object attribute
+ */
+resolveParam = function (obj, attrs) {
+  for (var i = 0; i < attrs.length; i++) {
+    var field = attrs[i]
+    if (obj[field] != undefined)
+      return obj[field]
+  }
+  throw new Error( "No valid (" + attrs + ") found in obj");
+}
 
+/**
+ * @description returns the given value if the object is undefined
+ * @param {obj} object to check
+ * @param {val} value to return
+ */
+valueIfUndef = function (obj, val) {
+  return isUndef(obj) ? val : obj;
+}
+
+isUndef = function (obj) {
+  return typeof obj == "undefined";
+}
+
+reverseAppend = function (refList, addList, field) {
+  if (isUndef(field))
+    throw new Error ("Unable to append values, no field given")
+  addList.forEach (function (val, i) {
+    refList[refList.length-addList.length+i][field] = val[field];
+  })
+  return refList;
+}
 
 /**
  * @description Alternative forEach for all those browsers like IE8 and below
@@ -156,11 +190,16 @@ powVector = function (serie)
  * @param {array} vector values array
  * @returns {value} the sum of all elements
  */
-sumVector = function (vector)
+sumVector = function (values, targetAttr)
 {
   var result = 0;
-  sum = function (x) { result += x; }
-  vector.forEach (sum);
+  sum = function (x) {
+    if (isUndef(x[targetAttr]))
+      result += x
+    else
+      result += x[targetAttr]
+  }
+  values.forEach (sum);
   return result;
 }
 
@@ -171,9 +210,9 @@ sumVector = function (vector)
  * @param {array} vector values array
  * @returns {value} the average of the all elements
  */
-avgVector = function (vector)
+avgVector = function (vector, targetAttr)
 {
-  var result = sumVector (vector);
+  var result = sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else
@@ -293,9 +332,10 @@ mae = function (series1, series2)
  * elems for a elem and upper and lower bands are
  * located +2*sd and -2*sd from the central moving average.
  */
-bollinger = function (list, n, k) {
-  var movingAvg = ma (list, n);
-  var movingSd = windowOp (list, n, sd);
+bollinger = function (list, n, k, targetAttr) {
+  targetAttr = valueIfUndef(targetAttr, ["c"])
+  var movingAvg = ma (list, n, targetAttr);
+  var movingSd = windowOp (list, n, sd, targetAttr);
   var upperBand = new Array();
   var lowerBand = new Array();
   var movingAvgElem = 0;
@@ -318,16 +358,23 @@ bollinger = function (list, n, k) {
  * also known as simple moving average, rolling average, moving mean
  * and a million of similar combinations
  */
-ma = function (values, order) {
-
+ma = function (values, order, targetAttr) {
+  targetAttr = valueIfUndef(targetAttr, ["c"])
   // Sums the content of a window
   sumWindow = function (serie) {
     var sum = 0;
-    for (var init = 0; init < serie.length; init++)
-      sum += serie[init];
+    for (var init = 0; init < serie.length; init++) {
+      sum += resolveParam(serie[init], targetAttr);
+    }
     return (sum/serie.length);
   }
-  return windowOp (values, order, sumWindow);
+  newVal =  windowOp (values, order, sumWindow);
+  console.log(values.length, newVal.length)
+  newVal.forEach(function(val,i) {
+    values[i].ma = val;
+  });
+  console.log(values)
+  return newVal;
 }
 
 ///////////////////////////////////////////////////////
@@ -335,8 +382,10 @@ ma = function (values, order) {
 /**
  * Exponential moving average
  */
-ema = function (serie, period) 
+ema = function (serie, period, targetAttr) 
 {
+  if (typeof serie[0] == "object" && !targetAttr)
+    throw new Error("targetAttr not provided")
   var result = new Array();
   for (var i = 0; i < period-1; i++)
   {
@@ -344,12 +393,13 @@ ema = function (serie, period)
   }
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
-  var previousDay = avgVector (initSlice);
-  result.push (previousDay);
+  var previousDay = avgVector (initSlice, targetAttr);
+  result.push(previousDay)
   var emaSlice = serie.slice (period);
-  emaSlice.forEach (function getEma(i)
+  emaSlice.forEach (function (elem)
   {
-    previousDay = i * k + previousDay * (1-k)
+    var value = isUndef(targetAttr) ? elem : elem[targetAttr]
+    previousDay = value * k + previousDay * (1-k)
     result.push (previousDay);
   });
   return result;
@@ -363,14 +413,15 @@ ema = function (serie, period)
  * is based on the weight's length.
  * The sum of weights should be 1.
  */
-wma = function (series, weights)
+wma = function (series, weights, targetAttr)
 {
-  // Sums the content of a window
-  sumWindow = function (serie) {
+  targetAttr = valueIfUndef(targetAttr, ["c"])
+  sumWindow = function (elems) {
     var sum = 0;
-    for (var init = 0; init < serie.length; init++)
-      sum = sum + (serie[init] * weights[init]);
-    return (sum/serie.length);
+    elems.forEach(function(elem,i) {
+      sum = sum + (elem[targetAttr] * weights[i]);
+    });
+    return (sum/elems.length);
   }
   return windowOp (series, weights.length, sumWindow);
 }
@@ -438,15 +489,15 @@ vpt = function (closeList, volumeList)
  * @param {array} volumes list of volumes
  * @return {value} the money-flow index
  */
-mfi = function (highPrices, lowPrices, closePrices, volumes)
+mfi = function (values)
 {
   var typicalMoney = [];
   var moneyFlow = [];
-  for (var i = 0; i < highPrices.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    var tpMoney = (highPrices[i] + lowPrices[i] + closePrices[i]) / 3;
+    var tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
     typicalMoney.push(tpMoney);
-    moneyFlow.push (tpMoney * volumes[i]);
+    moneyFlow.push (tpMoney * values[i].v);
   }
 
   var posMoneyFlow = [];
@@ -490,13 +541,14 @@ mfi = function (highPrices, lowPrices, closePrices, volumes)
  * @return {object} object containing the macd, signal
  *                  and hist series.
  */
-macd = function (closeValues)
+macd = function (closeValues, targetAttr)
 {
+  targetAttr = valueIfUndef(targetAttr, ["c"])
   slow = 26;
   fast = 12;
   signal = 9;
-  slowEMA = ema (closeValues, slow);
-  fastEMA = ema (closeValues, fast);
+  slowEMA = ema (closeValues, slow, targetAttr);
+  fastEMA = ema (closeValues, fast, targetAttr);
   macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
     if (slow == 0)
     {
@@ -524,13 +576,13 @@ macd = function (closeValues)
  * var m = momemtum ([12,34,23, 81], 1) 
  * console.log(m)  // [22, -11, 58]
  */
-momentum = function(closePrices, order)
+momentum = function(values, order)
 {
   momentumN = function (chunk)
   {
-    return chunk[chunk.length-1] - chunk[0]
+    return chunk[chunk.length-1].c - chunk[0].c
   };
-  return windowOp (closePrices, order+1, momentumN);
+  return windowOp (values, order+1, momentumN);
 }
 
 ////////////////////////////////////////////
@@ -544,13 +596,13 @@ momentum = function(closePrices, order)
  * var roc = roc ([12, 11, 15, 10], 1) 
  * console.log(roc)  // [-0.09, 0.36, -0.33]
  */
-roc = function(closePrices, order)
+roc = function(values, order, targetAttr)
 {
   rocN = function (chunk)
   {
-    return (chunk[chunk.length-1] - chunk[0]) / chunk[0];
+    return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  return windowOp (closePrices, order+1, rocN);
+  return windowOp (values, order+1, rocN);
 }
 
 
@@ -564,17 +616,17 @@ roc = function(closePrices, order)
  * var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
  * console.log(rsi)  // [70.53, 66.32, ..., 56.05]
  */
-rsi = function (closePrices, order)
+rsi = function (values, order)
 {
-  if (closePrices.length < order+1)
+  if (values.length < order+1)
   {
     return [-1]; // not enough params
   }
   gains = [];
   losses = [];
-  for (var i = 0; i < closePrices.length; i++)
+  for (var i = 0; i < values.length-1; i++)
   {
-    diff = closePrices[i+1] - closePrices[i];
+    diff = values[i+1].c - values[i].c;
     if (diff > 0) 
     {
       gains.push(diff);
@@ -596,13 +648,13 @@ rsi = function (closePrices, order)
   avgLoss = avgVector (losses.slice (0, order));
   firstRS = avgGain / avgLoss;
   result.push (100 - (100 / (1 + firstRS)));
-  for (var i = order; i < closePrices.length-1; i++)
+  for (var i = order; i < values.length-1; i++)
   {
     partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
     partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
     smoothedRS = partialCurrentGain / partialCurrentLoss;
-    rsi = 100 - (100 / (1 + smoothedRS))
-    result.push(rsi);
+    currentRSI = 100 - (100 / (1 + smoothedRS))
+    result.push(currentRSI);
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
@@ -665,17 +717,17 @@ atr = function (values) {
  *         - s2: support second level
  *         - s1: support first level
  */
-floorPivots = function (highList, lowList, closeList) {
+floorPivots = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    pivotLevel = (highList[i] + lowList[i] + closeList[i]) / 3;
-    r1 = 2 * pivotLevel - lowList[i];
-    r2 = pivotLevel + highList[i] - lowList[i];
-    r3 = r1 + highList[i] - lowList[i];
-    s1 = 2 * pivotLevel - highList[i];
-    s2 = pivotLevel - highList[i] + lowList[i];
-    s3 = s1 - highList[i] + lowList[i];
+    pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
+    r1 = 2 * pivotLevel - values[i].l;
+    r2 = pivotLevel + values[i].h - values[i].l;
+    r3 = r1 + values[i].h - values[i].l;
+    s1 = 2 * pivotLevel - values[i].h;
+    s2 = pivotLevel - values[i].h + values[i].l;
+    s3 = s1 - values[i].h + values[i].l;
     elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
@@ -697,25 +749,25 @@ floorPivots = function (highList, lowList, closeList) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-tomDemarksPoints = function (highList, lowList, openList, closeList) {
+tomDemarksPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
     var x = 0;
-    if (closeList[i] < openList[i])
+    if (values[i].c < values[i].o)
     {
-      x = highList[i] + (2 * (lowList[i]) + closeList[i]);
+      x = values[i].h + (2 * (values[i].l) + values[i].c);
     }
-    if (closeList[i] > openList[i])
+    if (values[i].c > values[i].o)
     {
-      x = (2 * highList[i]) +  lowList[i] + closeList[i];
+      x = (2 * values[i].h) +  values[i].l + values[i].c;
     }
-    if (closeList[i] == openList[i])
+    if (values[i].c == values[i].o)
     {
-      x = highList[i] + lowList[i] + (2 * closeList[i]);
+      x = values[i].h + values[i].l + (2 * values[i].c);
     }
-    newHigh = (x/2) - lowList[i];
-    newLow = (x/2) - highList[i];
+    newHigh = (x/2) - values[i].l;
+    newLow = (x/2) - values[i].h;
     elem = {low: newLow, high: newHigh};
     result.push(elem);
   }
@@ -740,16 +792,16 @@ tomDemarksPoints = function (highList, lowList, openList, closeList) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-woodiesPoints = function (highList, lowList, closeList) {
+woodiesPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
     var x = 0;
-    var pivot = (highList[i] + lowList[i] + 2 * closeList[i]) / 4;
-    var r1 = (2 * pivot) - lowList[i];
-    var r2 = pivot + highList[i] - lowList[i];
-    var s1 = (2 * pivot) - highList[i];
-    var s2 = pivot - highList[i] + lowList[i]; 
+    var pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
+    var r1 = (2 * pivot) - values[i].l;
+    var r2 = pivot + values[i].h - values[i].l;
+    var s1 = (2 * pivot) - values[i].h;
+    var s2 = pivot - values[i].h + values[i].l; 
     elem = {pivot: pivot, r1: r1, 
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
@@ -778,19 +830,19 @@ woodiesPoints = function (highList, lowList, closeList) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-camarillaPoints = function (highList, lowList, closeList) {
+camarillaPoints = function (values) {
   var result = new Array();
-  for (var i = 0; i < highList.length; i++)
+  for (var i = 0; i < values.length; i++)
   {
-    var diff = highList[i] - lowList[i];
-    var r4 = (diff * 1.1) / 2 + closeList[i];
-    var r3 = (diff *1.1) / 4 + closeList[i];
-    var r2 = (diff * 1.1) / 6 + closeList[i];
-    var r1 = (diff * 1.1) / 12 + closeList[i];
-    var s1 = closeList[i] - (diff * 1.1 / 12);
-    var s2 = closeList[i] - (diff *1.1 /6);
-    var s3 = closeList[i] - (diff * 1.1 / 4);
-    var s4 = closeList[i] - (diff *1.1 / 2);
+    var diff = values[i].h - values[i].l;
+    var r4 = (diff * 1.1) / 2 + values[i].c;
+    var r3 = (diff *1.1) / 4 + values[i].c;
+    var r2 = (diff * 1.1) / 6 + values[i].c;
+    var r1 = (diff * 1.1) / 12 + values[i].c;
+    var s1 = values[i].c - (diff * 1.1 / 12);
+    var s2 = values[i].c - (diff *1.1 /6);
+    var s3 = values[i].c - (diff * 1.1 / 4);
+    var s4 = values[i].c - (diff *1.1 / 2);
     elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3,
             s4: s4};
     result.push(elem);
@@ -801,19 +853,19 @@ camarillaPoints = function (highList, lowList, closeList) {
 
 ////////////////////////////////////////////////////////
 
-fibonacciRetrs = function (lowList, highList, trend)
+fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
   if (trend == 'DOWNTREND') 
   {
-    for (var i = 0; i < highList.length; i++)
+    for (var i = 0; i < values.length; i++)
     {
-      var diff = highList[i] - lowList[i];
+      var diff = values[i].h - values[i].l;
       var elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = highList[i] - diff * retracements[r];
+        var level = values[i].h - diff * retracements[r];
         elem.push(level);
       }
       result.push(elem);
@@ -821,13 +873,13 @@ fibonacciRetrs = function (lowList, highList, trend)
   }
   else  // UPTREND
   {
-    for (var i = 0; i < lowList.length; i++)
+    for (var i = 0; i < values.length; i++)
     {
-      var diff = highList[i] - lowList[i];
+      var diff = values[i].h - values[i].l;
       var elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = lowList[i] + diff * retracements[r];
+        var level = values[i].l + diff * retracements[r];
         elem.push (level);
       }
       result.push(elem);

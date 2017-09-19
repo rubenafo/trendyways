@@ -1,13 +1,13 @@
 {
   "name": "trendyways",
   "preferGlobal": true,
-  "version": "0.2.1",
+  "version": "0.4",
   "author": "Ruben Afonso <rbfrancos@gmail.com>",
   "description": "a javascript library for financial technical analysis",
   "contributors": [
     {
       "name": "Ruben Afonso",
-      "email": "ruben@figurebelow.com"
+      "email": "rbfrancos@gmail.com"
     }
   ],
   "repository": {

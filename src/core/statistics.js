@@ -38,13 +38,12 @@ min = function (values) {
  * @param {array} values array of numerical values
  * @return {value} mean of the series
  */
-mean = function (values) {
+mean = function (values, targetAttr) {
   var mean = 0;
   if (values.length == 0)
     return mean;
-  for (var i = 0; i < values.length; i++)
-  {
-    mean += values[i];
+  for (var i = 0; i < values.length; i++) {
+      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
   }
   return mean/values.length;
 }
@@ -56,12 +55,12 @@ mean = function (values) {
  * @param {array} values array of numerical values
  * @return {value} standard deviation of the series values.
  */
-sd = function (values) {
-  var meanVal = mean(values);
+sd = function (values, targetAttr) {
+  var meanVal = mean(values, targetAttr);
   var sqrSum = 0;
   for (var i = 0; i < values.length; i++) {
-    sqrSum += Math.pow(values[i]-meanVal, 2);
+    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+    sqrSum += Math.pow(value-meanVal, 2);
   }
   return Math.sqrt (sqrSum/values.length);
 }
-

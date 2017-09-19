@@ -8,7 +8,7 @@ var Trendyways = require ("../trendyways.js");
 
 describe ("Bollinger", function () {
   it ("Bollinger bands values for a sample serie", function () {
-    var serie = [2.1,4.3,4.5,4.8,5.0,5.8,7.1,9.1]
+    var serie = [{c:2.1},{c:4.3},{c:4.5},{c:4.8},{c:5.0},{c:5.8},{c:7.1},{c:9.1}]
     for (var k = 1; k < 4; k++)
     {
       for (var n = 1; n < serie.length; n++)
@@ -19,7 +19,7 @@ describe ("Bollinger", function () {
          assert.deepEqual (bands.ma.length, serie.length - n + 1, "Moving average band length is correct");
          for (var i = 0; i < serie.length-n+1; i++)
          {
-            var stdDev = sd(serie.slice(i,i+n));
+            var stdDev = sd(serie.slice(i,i+n), ["c"]);
             assert.deepEqual (bands.upperBand[i], bands.ma[i] + stdDev * k, "Upper value nº " + i + " correct (n="+n+",k="+k+")");
             assert.deepEqual (bands.lowerBand[i], bands.ma[i] - stdDev * k, "Lower value nº " + i + " correct (n="+n+",k="+k+")");
          }
