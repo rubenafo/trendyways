@@ -111,8 +111,8 @@ isUndef = function (obj) {
 reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
-  addList.forEach (function (val, i) {
-    refList[refList.length-addList.length+i][field] = val[field];
+  addList.forEach (function (add, i) {
+    refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
   })
   return refList;
 }
@@ -341,7 +341,7 @@ bollinger = function (list, n, k, targetAttr) {
   var movingAvgElem = 0;
   var movingSdElem = 0;
   for (var index = 0; index < movingSd.length; index++) {
-    movingAvgElem = movingAvg[index];
+    movingAvgElem = movingAvg[index].ma;
     movingSdElem = movingSd[index] * k;
     upperBand.push (movingAvgElem + movingSdElem);
     lowerBand.push (movingAvgElem - movingSdElem);
@@ -368,13 +368,8 @@ ma = function (values, order, targetAttr) {
     }
     return (sum/serie.length);
   }
-  newVal =  windowOp (values, order, sumWindow);
-  console.log(values.length, newVal.length)
-  newVal.forEach(function(val,i) {
-    values[i].ma = val;
-  });
-  console.log(values)
-  return newVal;
+  newVal = windowOp (values, order, sumWindow);
+  return reverseAppend(values, newVal, "ma")
 }
 
 ///////////////////////////////////////////////////////
@@ -387,10 +382,6 @@ ema = function (serie, period, targetAttr)
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
   var result = new Array();
-  for (var i = 0; i < period-1; i++)
-  {
-    result.push(0);
-  }
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
   var previousDay = avgVector (initSlice, targetAttr);
@@ -402,7 +393,7 @@ ema = function (serie, period, targetAttr)
     previousDay = value * k + previousDay * (1-k)
     result.push (previousDay);
   });
-  return result;
+  return reverseAppend(serie, result, "ema")
 }
 
 ///////////////////////////////////////////////////////
@@ -423,7 +414,8 @@ wma = function (series, weights, targetAttr)
     });
     return (sum/elems.length);
   }
-  return windowOp (series, weights.length, sumWindow);
+  var wmaValues = windowOp (series, weights.length, sumWindow);
+  return reverseAppend(series, wmaValues, "wma")
 }
 
 ///////////////////////////////////////////////////////

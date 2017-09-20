@@ -29,8 +29,8 @@ isUndef = function (obj) {
 reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
-  addList.forEach (function (val, i) {
-    refList[refList.length-addList.length+i][field] = val[field];
+  addList.forEach (function (add, i) {
+    refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
   })
   return refList;
 }

@@ -23,7 +23,7 @@ bollinger = function (list, n, k, targetAttr) {
   var movingAvgElem = 0;
   var movingSdElem = 0;
   for (var index = 0; index < movingSd.length; index++) {
-    movingAvgElem = movingAvg[index];
+    movingAvgElem = movingAvg[index].ma;
     movingSdElem = movingSd[index] * k;
     upperBand.push (movingAvgElem + movingSdElem);
     lowerBand.push (movingAvgElem - movingSdElem);

@@ -5,12 +5,12 @@ describe ("Averages", function () {
 
   it ("Moving Average of a sample serie", function () {
     var serie = [{c:2},{c:6},{c:5},{c:7},{c:10},{c:9},{c:12},{c:5}]
-    var correctValues = [5,7,7.75,9.5,9];
+    var correctValues = [5, 7, 7.75, 9.5, 9];
     var movingAvg = ma(serie,4);
-    assert.deepEqual (movingAvg.length, 5, "Moving Average result's length is correct");
+    assert.deepEqual (movingAvg.length, serie.length, "Moving Average result's length is correct");
     for (var i = 0; i < 5; i++)
     {
-      assert.deepEqual (movingAvg[i], correctValues[i], "MA value " + i + " is correct");
+      assert.deepEqual (movingAvg[i+3].ma, correctValues[i], "MA value " + i + " is correct");
     }
   });
 
@@ -20,20 +20,19 @@ describe ("Averages", function () {
                   {c:63.19},{c:63.91},{c:63.85},{c:62.95},{c:63.37},
                   {c:61.33},{c:61.51},{c:61.87},{c:60.25},{c:59.35},
                   {c:59.95},{c:58.93},{c:57.68},{c:58.82},{c:58.87}];
-    var expected = [ 0,0,0,0,0,0,0,0,0,
-                     63.682,63.254,62.937,62.743,62.290,
+    var expected = [ 63.682,63.254,62.937,62.743,62.290,
                      61.755,61.427,60.973,60.374,60.092,
                      59.870];
     var result = ema(series, 10, ["c"]);
-    //assert.equal (result.length, expected.length, "EMA length = " + result.length);
-    for (var i = 0; i < result.length; i++)
+    assert.equal (result.length, series.length, "EMA length = " + result.length);
+    for (var i = 0; i < expected.length; i++)
     {
-      assert.equal (result[i].toFixed(3), expected[i].toFixed(3), "Checking EMA index = " + i)
+      assert.equal (result[i+9].ema.toFixed(3), expected[i].toFixed(3), "Checking EMA i = " + i)
     }
     result = ema(series, 1, ["c"]);
     for (var i = 0; i < result.length; i++)
     {
-      assert.equal (result[i].toFixed(3), series[i].c, "EMA = 1, value " + i + " unchanged");
+      assert.equal (result[i].ema.toFixed(3), series[i].c, "EMA = 1, value " + i + " unchanged");
     }
   });
 
@@ -42,9 +41,9 @@ describe ("Averages", function () {
     var series = [{c:1}, {c:2}, {c:3}, {c:4}, {c:5}, {c:6}];
     var expected = [0.5, 0.83333, 1.16667, 1.5]
     var result = wma (series, [0.6, 0.3, 0.1]);
-    for (var i = 0; i < result.length; i++)
+    for (var i = 0; i < expected.length; i++)
     {
-      assert.equal (expected[i], result[i].toFixed(5), "Testing WMA value " + i);
+      assert.equal (expected[i], result[i+2].wma.toFixed(5), "WMA i = " + i + ", "+ expected[i]);
     }
   });
 });
