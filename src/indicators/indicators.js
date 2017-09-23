@@ -117,22 +117,28 @@ macd = function (closeValues, targetAttr)
   slow = 26;
   fast = 12;
   signal = 9;
-  slowEMA = ema (closeValues, slow, targetAttr);
-  fastEMA = ema (closeValues, fast, targetAttr);
+  slowEMA = ema (closeValues, slow, targetAttr, "slowema");
+  fastEMA = ema (closeValues, fast, targetAttr, "fastema");
   macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
-    if (slow == 0)
+    if (slow.slowema == 0 || isUndef(slow.slowema))
     {
-      return 0; // avoid div by 0
+      return ({macd:0}); // avoid div by 0
     };
-    return (100 * ((fast/slow) - 1));
+    return ({macd:100 * ((fast.fastema/slow.slowema) - 1)});
   });
-  signalLine = ema (macdLine.slice(25), signal); // avoid first 25 (padding)
+  signalLine = ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
   for (var i = 0; i < 25; i++)
   {
-    signalLine.unshift(0); // append again 25 zeros
+    signalLine.unshift({macd:0}); // append again 25 zeros
   }
-  histLine = diffVectors(macdLine, signalLine);
-  return { macd: macdLine, signal:signalLine, hist: histLine };
+  histLine = diffVectors(macdLine, signalLine, "macd");
+  fill(signalLine, "ema", 0);
+  macdItems = [];
+  for (var i = 0; i < macdLine.length; i++) {
+    macdItems.push({macd:{line:macdLine[i].macd, signal:signalLine[i].ema, hist:histLine[i]}});
+  }
+  var returnList = closeValues.slice()
+  return reverseAppend (returnList, macdItems, "macd");
 }
 
 ////////////////////////////////////////////

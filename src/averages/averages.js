@@ -23,23 +23,25 @@ ma = function (values, order, targetAttr) {
 /**
  * Exponential moving average
  */
-ema = function (serie, period, targetAttr) 
+ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
-  var result = new Array();
+  newAttr = valueIfUndef (newAttr, "ema")
+  var emaValues = new Array();
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
   var previousDay = avgVector (initSlice, targetAttr);
-  result.push(previousDay)
+  emaValues.push(previousDay)
   var emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
     var value = isUndef(targetAttr) ? elem : elem[targetAttr]
     previousDay = value * k + previousDay * (1-k)
-    result.push (previousDay);
+    emaValues.push (previousDay);
   });
-  return reverseAppend(serie, result, "ema")
+  var newSerie = serie.slice()
+  return reverseAppend(newSerie, emaValues, newAttr)
 }
 
 ///////////////////////////////////////////////////////

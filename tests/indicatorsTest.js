@@ -124,20 +124,20 @@ describe ("Indicators", function () {
                   -0.726992089,-0.652061906,-0.546759494,-0.417978570,-0.261523627,-0.097946732,0.073262912,0.250042718,
                   0.402451934,0.540252674,0.654774263,0.779235732,0.886387296,0.969878048,1.030865267,1.045533903,1.043167320,
                   1.043497276,1.051811291,1.073581927];
-    var trendyWaysMacd = macd (testData);
-    assert.equal (trendyWaysMacd.macd.length, macdTest.length, "MACD values match length");
-    for (var i = 0; i < trendyWaysMacd.macd.length; i++)
+    var macdResults = macd (testData);
+    assert.equal (flat(macdResults,"macd").length, macdTest.length, "MACD values match length ");
+    for (var i = 0; i < flat(macdResults,"macd").length; i++)
     {
-      assert.deepEqual (trendyWaysMacd.macd[i].toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
+      assert.deepEqual (macdResults[i].macd.line.toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
     }
-    assert.equal (trendyWaysMacd.signal.length, signalTest.length, "MACD signal values match length");
-    for (var i = 0; i < trendyWaysMacd.signal.length; i++)
+    assert.equal (flat(macdResults,"signal").length, signalTest.length, "MACD signal values match length");
+    for (var i = 0; i < flat(macdResults,"signal").length; i++)
     {
-      assert.deepEqual (trendyWaysMacd.signal[i].toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
+      assert.deepEqual (macdResults[i].macd.signal.toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
     }
-    for (var i = 0; i < trendyWaysMacd.hist[i].length; i++)
+    for (var i = 0; i < macdResults[i].macd.hist.length; i++)
     {
-      assert.deepEqual (trendyWaysMacd.hist[i].toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
+      assert.deepEqual (macdResults[i].hist.toFixed(5), (macdTest[i] - signalTest[i]).toFixed(5), "Testing hist value " + i);
     }
   });
 

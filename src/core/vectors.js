@@ -25,7 +25,7 @@ if ( !Array.prototype.forEach ) {
  * @param {array} series2 second values array
  * @return {array} series1 - series2
  */
-diffVectors = function (series1, series2)
+diffVectors = function (series1, series2, targetAttr)
 {
   var size = max([series1.length, series2.length])
   var result = [];
@@ -37,11 +37,11 @@ diffVectors = function (series1, series2)
     var itemS2 = 0;
     if (s1Size > i)
     {
-      itemS1 = series1[i];
+      itemS1 = isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
     }
     if (s2Size > i)
     {
-      itemS2 = series2[i];
+      itemS2 = isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
     }
     result.push (itemS1 - itemS2);
   }

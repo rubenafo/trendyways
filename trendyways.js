@@ -117,6 +117,19 @@ reverseAppend = function (refList, addList, field) {
   return refList;
 }
 
+flat = function (list, attr) {
+  return list.map (function (i) {
+    return isUndef(i[attr]) ? 0 : i[attr];
+  });
+}
+
+fill = function (list, attr, defaultValue) {
+  list.forEach(function(l) {
+    if (isUndef(l[attr]))
+      l[attr] = defaultValue;
+  });
+}
+
 /**
  * @description Alternative forEach for all those browsers like IE8 and below
  * @param {function} function to apply to each element
@@ -143,7 +156,7 @@ if ( !Array.prototype.forEach ) {
  * @param {array} series2 second values array
  * @return {array} series1 - series2
  */
-diffVectors = function (series1, series2)
+diffVectors = function (series1, series2, targetAttr)
 {
   var size = max([series1.length, series2.length])
   var result = [];
@@ -155,11 +168,11 @@ diffVectors = function (series1, series2)
     var itemS2 = 0;
     if (s1Size > i)
     {
-      itemS1 = series1[i];
+      itemS1 = isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
     }
     if (s2Size > i)
     {
-      itemS2 = series2[i];
+      itemS2 = isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
     }
     result.push (itemS1 - itemS2);
   }
@@ -377,23 +390,25 @@ ma = function (values, order, targetAttr) {
 /**
  * Exponential moving average
  */
-ema = function (serie, period, targetAttr) 
+ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
-  var result = new Array();
+  newAttr = valueIfUndef (newAttr, "ema")
+  var emaValues = new Array();
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
   var previousDay = avgVector (initSlice, targetAttr);
-  result.push(previousDay)
+  emaValues.push(previousDay)
   var emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
     var value = isUndef(targetAttr) ? elem : elem[targetAttr]
     previousDay = value * k + previousDay * (1-k)
-    result.push (previousDay);
+    emaValues.push (previousDay);
   });
-  return reverseAppend(serie, result, "ema")
+  var newSerie = serie.slice()
+  return reverseAppend(newSerie, emaValues, newAttr)
 }
 
 ///////////////////////////////////////////////////////
@@ -539,22 +554,29 @@ macd = function (closeValues, targetAttr)
   slow = 26;
   fast = 12;
   signal = 9;
-  slowEMA = ema (closeValues, slow, targetAttr);
-  fastEMA = ema (closeValues, fast, targetAttr);
+  slowEMA = ema (closeValues, slow, targetAttr, "slowema");
+  fastEMA = ema (closeValues, fast, targetAttr, "fastema");
   macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
-    if (slow == 0)
+    if (slow.slowema == 0 || isUndef(slow.slowema))
     {
-      return 0; // avoid div by 0
+      return ({macd:0}); // avoid div by 0
     };
-    return (100 * ((fast/slow) - 1));
+    return ({macd:100 * ((fast.fastema/slow.slowema) - 1)});
   });
-  signalLine = ema (macdLine.slice(25), signal); // avoid first 25 (padding)
+  signalLine = ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
   for (var i = 0; i < 25; i++)
   {
-    signalLine.unshift(0); // append again 25 zeros
+    signalLine.unshift({macd:0}); // append again 25 zeros
   }
-  histLine = diffVectors(macdLine, signalLine);
-  return { macd: macdLine, signal:signalLine, hist: histLine };
+  histLine = diffVectors(macdLine, signalLine, "macd");
+  //return { macd: flat(macdLine, "macd"), signal:flat(signalLine,"ema"), hist: histLine };
+  fill(signalLine, "ema", 0);
+  macdItems = [];
+  for (var i = 0; i < macdLine.length; i++) {
+    macdItems.push({macd:{line:macdLine[i].macd, signal:signalLine[i].ema, hist:histLine[i]}});
+  }
+  var returnList = closeValues.slice()
+  return reverseAppend (returnList, macdItems, "macd");
 }
 
 ////////////////////////////////////////////

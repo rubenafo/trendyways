@@ -34,3 +34,16 @@ reverseAppend = function (refList, addList, field) {
   })
   return refList;
 }
+
+flat = function (list, attr) {
+  return list.map (function (i) {
+    return isUndef(i[attr]) ? 0 : i[attr];
+  });
+}
+
+fill = function (list, attr, defaultValue) {
+  list.forEach(function(l) {
+    if (isUndef(l[attr]))
+      l[attr] = defaultValue;
+  });
+}
