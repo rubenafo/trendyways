@@ -569,7 +569,6 @@ macd = function (closeValues, targetAttr)
     signalLine.unshift({macd:0}); // append again 25 zeros
   }
   histLine = diffVectors(macdLine, signalLine, "macd");
-  //return { macd: flat(macdLine, "macd"), signal:flat(signalLine,"ema"), hist: histLine };
   fill(signalLine, "ema", 0);
   macdItems = [];
   for (var i = 0; i < macdLine.length; i++) {
@@ -596,7 +595,9 @@ momentum = function(values, order)
   {
     return chunk[chunk.length-1].c - chunk[0].c
   };
-  return windowOp (values, order+1, momentumN);
+  var returnValues = values.slice()
+  var newValues = windowOp (values, order+1, momentumN);
+  return reverseAppend(returnValues, newValues, "mom")
 }
 
 ////////////////////////////////////////////
@@ -616,7 +617,9 @@ roc = function(values, order, targetAttr)
   {
     return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  return windowOp (values, order+1, rocN);
+  var returnValues = values.slice()
+  var rocValues = windowOp (values, order+1, rocN);
+  return reverseAppend(returnValues, rocValues, "roc");
 }
 
 
@@ -672,7 +675,8 @@ rsi = function (values, order)
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
-  return result;
+  var newValues = values.slice()
+  return reverseAppend(newValues, result, "rsi");
 }
 
 //////////////////////////////
@@ -710,7 +714,8 @@ atr = function (values) {
       results.push({tr:tr, atr:atr});
     }
   }
-  return results;
+  var newValues = values.slice()
+  return reverseAppend(newValues, results, "at");
 }
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)

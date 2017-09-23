@@ -158,7 +158,9 @@ momentum = function(values, order)
   {
     return chunk[chunk.length-1].c - chunk[0].c
   };
-  return windowOp (values, order+1, momentumN);
+  var returnValues = values.slice()
+  var newValues = windowOp (values, order+1, momentumN);
+  return reverseAppend(returnValues, newValues, "mom")
 }
 
 ////////////////////////////////////////////
@@ -178,7 +180,9 @@ roc = function(values, order, targetAttr)
   {
     return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  return windowOp (values, order+1, rocN);
+  var returnValues = values.slice()
+  var rocValues = windowOp (values, order+1, rocN);
+  return reverseAppend(returnValues, rocValues, "roc");
 }
 
 
@@ -234,7 +238,8 @@ rsi = function (values, order)
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
-  return result;
+  var newValues = values.slice()
+  return reverseAppend(newValues, result, "rsi");
 }
 
 //////////////////////////////
@@ -272,5 +277,6 @@ atr = function (values) {
       results.push({tr:tr, atr:atr});
     }
   }
-  return results;
+  var newValues = values.slice()
+  return reverseAppend(newValues, results, "at");
 }

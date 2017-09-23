@@ -149,16 +149,16 @@ it ("Momentum Test", function () {
   var resultOrder1 = [-1.08, -1.28, -0.85, -0.27, -0.55, 0.56, 1.57, -1.83, -0.12];
   var resultOrder3 = [-3.21, -2.4, -1.67, -0.26, 1.58, 0.3, -0.38];
   var momentumValues = momentum (values, 1);
-  assert.deepEqual (momentumValues.length, resultOrder1.length,"Momentum order 1 length is ok");
-  for (var i = 0; i < momentumValues.length; i++)
+  assert.deepEqual (momentumValues.length, values.length,"Momentum order 1 length is ok");
+  for (var i = 1; i < momentumValues.length; i++)
   {
-    assert.deepEqual (momentumValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues[i].mom.toFixed(5), resultOrder1[i-1].toFixed(5), "Testing value " + i);
   }
   var momentumValues3 = momentum (values, 3);
-  assert.deepEqual (momentumValues3.length, resultOrder3.length,"Momentum order 3 length is ok");
-  for (var i = 0; i < momentumValues3.length; i++)
+  assert.deepEqual (momentumValues3.length, values.length,"Momentum order 3 length is ok");
+  for (var i = 3; i < momentumValues3.length; i++)
   {
-    assert.deepEqual (momentumValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+    assert.deepEqual (momentumValues3[i].mom.toFixed(5), resultOrder3[i-3].toFixed(5), "Testing value " + i);
   }
 });
 
@@ -170,16 +170,16 @@ it ("Momentum Test", function () {
    var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
    var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
    var rocValues = roc (values, 1);
-   assert.deepEqual (rocValues.length, resultOrder1.length,"ROC order 1 length is ok");
-   for (var i = 0; i < rocValues.length; i++)
+   assert.deepEqual (rocValues.length, values.length, "ROC order 1 length is ok");
+   for (var i = 1; i < rocValues.length; i++)
    {
-     assert.deepEqual (rocValues[i].toFixed(5), resultOrder1[i].toFixed(5), "Testing value " + i);
+     assert.deepEqual (rocValues[i].roc.toFixed(5), resultOrder1[i-1].toFixed(5), "Testing value " + i);
    }
    var rocValues3 = roc (values, 3);
-   assert.deepEqual (rocValues3.length, resultOrder3.length,"ROC order 3 length is ok");
-   for (var i = 0; i < rocValues3.length; i++)
+   assert.deepEqual (rocValues3.length, values.length,"ROC order 3 length is ok");
+   for (var i = 3; i < rocValues3.length; i++)
    {
-     assert.deepEqual (rocValues3[i].toFixed(5), resultOrder3[i].toFixed(5), "Testing value " + i);
+     assert.deepEqual (rocValues3[i].roc.toFixed(5), resultOrder3[i-3].toFixed(5), "Testing value " + i);
    }
  });
 
@@ -196,10 +196,10 @@ it ("Momentum Test", function () {
                   56.01, 62.33, 54.67, 50.38, 40.01, 41.49, 41.9, 45.49,
                   37.32, 33.09, 37.78];
     var result = rsi (values, 14);
-    assert.deepEqual (result.length, expected.length, "RSI result length matches");
-    for (var i = 0; i < result.length; i++)
+    assert.deepEqual (result.length, values.length, "RSI result length matches");
+    for (var i = 14; i < result.length; i++)
     {
-      assert.deepEqual (result[i].toFixed(1), expected[i].toFixed(1), "RSI value " + i + " matches");
+      assert.deepEqual (result[i].rsi.toFixed(1), expected[i-14].toFixed(1), "RSI value " + i + " matches");
     }
   });
 
@@ -216,8 +216,8 @@ it ("Momentum Test", function () {
     var expectedTR = [0.91, 0.58, 0.51, 0.5, 0.58, 0.41, 0.26, 0.49, 0.60, 0.32, 0.93, 0.76, 0.45, 0.46, 1.10, 0.48, 0.35, 1.22, 0.65, 0.96];
     var expectedATR =[0,    0,    0,    0,   0,    0,    0,    0,    0,    0,    0,    0,    0,    0.55, 0.59, 0.59, 0.57, 0.62, 0.62, 0.64];
     for (var i = 0; i < result.length; i++) {
-      assert.deepEqual(result[i].tr.toFixed(2), expectedTR[i].toFixed(2));
-      assert.deepEqual(result[i].atr.toFixed(2), expectedATR[i].toFixed(2));
+      assert.deepEqual(result[i].at.tr.toFixed(2), expectedTR[i].toFixed(2));
+      assert.deepEqual(result[i].at.atr.toFixed(2), expectedATR[i].toFixed(2));
     }
   });
 });
