@@ -60,8 +60,6 @@ __Technical Indicators:__
 * RSI (Relative Strength Index) (n-th order)
 * Average True Value (ATV)
 
-Detailed documentation is provided in the /docs folder.
-
 Tests
 -------------
 At the top of this README there is a link to the coverage and test results from Travis and CoverAll.
