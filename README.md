@@ -23,10 +23,7 @@ to create the trendyways.js lib and related docs.
 
 Documentation
 -------------
-The full dcument preview is available [here](https://cdn.rawgit.com/rubenafo/trendyways/master/docs/index.html) 
-and in the docs folder of the cloned repository.
-
-The list below includes the methods implemented so far,
+Please refer to the wiki of the project to access the latest documentation: https://github.com/rubenafo/trendyways/wiki
 
 __General purpose functions:__
  
@@ -62,8 +59,6 @@ __Technical Indicators:__
 * Rate of Change (ROC) (n-th order)
 * RSI (Relative Strength Index) (n-th order)
 * Average True Value (ATV)
-
-Detailed documentation is provided in the /docs folder.
 
 Tests
 -------------
