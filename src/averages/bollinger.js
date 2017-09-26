@@ -22,15 +22,13 @@ bollinger = function (list, n, k, targetAttr) {
   var lowerBand = new Array();
   var movingAvgElem = 0;
   var movingSdElem = 0;
+  var result = new Array();
   for (var index = 0; index < movingSd.length; index++) {
     movingAvgElem = movingAvg[index].ma;
     movingSdElem = movingSd[index] * k;
     upperBand.push (movingAvgElem + movingSdElem);
     lowerBand.push (movingAvgElem - movingSdElem);
+    result.push({ma: movingAvg[index].ma, ub: movingAvgElem + movingSdElem, lb: movingAvgElem - movingSdElem});
   }
-  return {
-      upperBand: upperBand,
-      ma: movingAvg,
-      lowerBand: lowerBand
-  };
+  return result;
 }

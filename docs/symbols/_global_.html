@@ -254,7 +254,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#avgVector">avgVector</a></b>(vector)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#avgVector">avgVector</a></b>(vector, targetAttr)
 								</div>
 								<div class="description">Returns the average of the sum of all vector elements</div>
 							</td>
@@ -263,7 +263,7 @@ ul.inheritsList
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#camarillaPoints">camarillaPoints</a></b>(highList, lowList, closeList)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#camarillaPoints">camarillaPoints</a></b>(values)
 								</div>
 								<div class="description">Returns the Camarilla points: supports (s1,s2,3 and s4)) and
 resistance values (r1, r2, r3 and r4).</div>
@@ -282,7 +282,7 @@ resistance values (r1, r2, r3 and r4).</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#diffVectors">diffVectors</a></b>(series1, series2)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#diffVectors">diffVectors</a></b>(series1, series2, targetAttr)
 								</div>
 								<div class="description">Returns a vector containing the difference of the parameters.</div>
 							</td>
@@ -300,7 +300,7 @@ resistance values (r1, r2, r3 and r4).</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#ema">ema</a></b>(serie, period)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#ema">ema</a></b>(serie, period, targetAttr, newAttr)
 								</div>
 								<div class="description">Exponential moving average</div>
 							</td>
@@ -309,7 +309,7 @@ resistance values (r1, r2, r3 and r4).</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#floorPivots">floorPivots</a></b>(highList, lowList, closeList)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#floorPivots">floorPivots</a></b>(values)
 								</div>
 								<div class="description">Returns the Floor pivot level, three support levels (s1,s2 and s3)
 and three resistance levels (r1, r2 and r3) of the
@@ -320,7 +320,7 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#macd">macd</a></b>(closePrices)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#macd">macd</a></b>(closePrices, targetAttr)
 								</div>
 								<div class="description">Returns the MACD</div>
 							</td>
@@ -347,7 +347,7 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#mean">mean</a></b>(values)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#mean">mean</a></b>(values, targetAttr)
 								</div>
 								<div class="description">Mean of values in a serie</div>
 							</td>
@@ -410,6 +410,15 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#resolveParam">resolveParam</a></b>(objects, list)
+								</div>
+								<div class="description">This is an internal function and is not supposed to be used directly.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
 								<div class="fixedFont"><b><a href="../symbols/_global_.html#rmse">rmse</a></b>(series1, series2)
 								</div>
 								<div class="description">Returns the RMSE error (squared MSE)</div>
@@ -419,7 +428,7 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#roc">roc</a></b>(closePrices, order)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#roc">roc</a></b>(closePrices, order, targetAttr)
 								</div>
 								<div class="description">Returns the Rate of Change value (ROC)</div>
 							</td>
@@ -437,7 +446,7 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#sd">sd</a></b>(values)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#sd">sd</a></b>(values, targetAttr)
 								</div>
 								<div class="description">Standar deviation of values in a serie.</div>
 							</td>
@@ -446,7 +455,7 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#sumVector">sumVector</a></b>(vector)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#sumVector">sumVector</a></b>(vector, targetAttr)
 								</div>
 								<div class="description">Returns the sum of all elements in a vector</div>
 							</td>
@@ -464,10 +473,19 @@ given data series.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#tomDemarksPoints">tomDemarksPoints</a></b>(highList, lowList, openList, closeList)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#tomDemarksPoints">tomDemarksPoints</a></b>(values)
 								</div>
 								<div class="description">Returns the Tom Demark points, the predicted low and highs
 of the period.</div>
+							</td>
+						</tr>
+					
+						<tr>
+							<td class="attributes">&nbsp;</td>
+							<td class="nameDescription">
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#valueIfUndef">valueIfUndef</a></b>(object, value)
+								</div>
+								<div class="description">returns the given value if the object is undefined</div>
 							</td>
 						</tr>
 					
@@ -483,7 +501,7 @@ of the period.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#windowOp">windowOp</a></b>(values, value, fun)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#windowOp">windowOp</a></b>(values, value, fun, targetAttr)
 								</div>
 								<div class="description">This is an internal function and is not supposed to be used directly.</div>
 							</td>
@@ -492,7 +510,7 @@ of the period.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#wma">wma</a></b>(series, weights)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#wma">wma</a></b>(series, weights, targetAttr)
 								</div>
 								<div class="description">Weighted moving average.</div>
 							</td>
@@ -501,7 +519,7 @@ of the period.</div>
 						<tr>
 							<td class="attributes">&nbsp;</td>
 							<td class="nameDescription">
-								<div class="fixedFont"><b><a href="../symbols/_global_.html#woodiesPoints">woodiesPoints</a></b>(highList, lowList, closeList)
+								<div class="fixedFont"><b><a href="../symbols/_global_.html#woodiesPoints">woodiesPoints</a></b>(values)
 								</div>
 								<div class="description">Returns the Woodies points: pivot, supports (s1 and s2) and
 resistance values (r1 and r2).</div>
@@ -631,7 +649,7 @@ console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr
 					<div class="fixedFont">
 					
 					<span class="light">{value}</span>
-					<b>avgVector</b>(vector)
+					<b>avgVector</b>(vector, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -655,6 +673,12 @@ console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr
 								</dt>
 								<dd>values array</dd>
 							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -677,7 +701,7 @@ console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr
 					<div class="fixedFont">
 					
 					
-					<b>camarillaPoints</b>(highList, lowList, closeList)
+					<b>camarillaPoints</b>(values)
 					
 					</div>
 					<div class="description">
@@ -712,19 +736,7 @@ The result is a list of elements with fields:
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>highList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>lowList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>closeList</b>
+									<b>values</b>
 									
 								</dt>
 								<dd></dd>
@@ -803,7 +815,7 @@ Both series must have the same length.
 					<div class="fixedFont">
 					
 					<span class="light">{array}</span>
-					<b>diffVectors</b>(series1, series2)
+					<b>diffVectors</b>(series1, series2, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -832,6 +844,12 @@ Both series must have the same length.
 									
 								</dt>
 								<dd>second values array</dd>
+							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -907,7 +925,7 @@ Both series must have the same length.
 					<div class="fixedFont">
 					
 					
-					<b>ema</b>(serie, period)
+					<b>ema</b>(serie, period, targetAttr, newAttr)
 					
 					</div>
 					<div class="description">
@@ -937,6 +955,18 @@ Both series must have the same length.
 								</dt>
 								<dd></dd>
 							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
+								<dt>
+									<b>newAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -952,7 +982,7 @@ Both series must have the same length.
 					<div class="fixedFont">
 					
 					
-					<b>floorPivots</b>(highList, lowList, closeList)
+					<b>floorPivots</b>(values)
 					
 					</div>
 					<div class="description">
@@ -987,19 +1017,7 @@ The result is a list of elements with fields:
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>highList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>lowList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>closeList</b>
+									<b>values</b>
 									
 								</dt>
 								<dd></dd>
@@ -1019,7 +1037,7 @@ The result is a list of elements with fields:
 					<div class="fixedFont">
 					
 					<span class="light">{object}</span>
-					<b>macd</b>(closePrices)
+					<b>macd</b>(closePrices, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1042,6 +1060,12 @@ The result is a list of elements with fields:
 									
 								</dt>
 								<dd>list of closing prices</dd>
+							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -1157,7 +1181,7 @@ The result is a list of elements with fields:
 					<div class="fixedFont">
 					
 					<span class="light">{value}</span>
-					<b>mean</b>(values)
+					<b>mean</b>(values, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1180,6 +1204,12 @@ The result is a list of elements with fields:
 									
 								</dt>
 								<dd>array of numerical values</dd>
+							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -1510,6 +1540,58 @@ console.log(m)  // [22, -11, 58]</pre>
 
 					<hr />
 				
+					<a name="resolveParam"> </a>
+					<div class="fixedFont">
+					
+					<span class="light">{value}</span>
+					<b>resolveParam</b>(objects, list)
+					
+					</div>
+					<div class="description">
+						This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/trendyways.js.html">trendyways.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
+							
+								<dt>
+									<span class="light fixedFont">{object}</span> <b>objects</b>
+									
+								</dt>
+								<dd>list</dd>
+							
+								<dt>
+									<span class="light fixedFont">{attrs}</span> <b>list</b>
+									
+								</dt>
+								<dd>of attributes to look for</dd>
+							
+							</dl>
+						
+						
+						
+						
+						
+							<dl class="detailList">
+							<dt class="heading">Returns:</dt>
+							
+								<dd><span class="light fixedFont">{value}</span> object attribute</dd>
+							
+							</dl>
+						
+						
+						
+
+					<hr />
+				
 					<a name="rmse"> </a>
 					<div class="fixedFont">
 					
@@ -1559,7 +1641,7 @@ console.log(m)  // [22, -11, 58]</pre>
 					<div class="fixedFont">
 					
 					<span class="light">{array}</span>
-					<b>roc</b>(closePrices, order)
+					<b>roc</b>(closePrices, order, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1594,6 +1676,12 @@ console.log(roc)  // [-0.09, 0.36, -0.33]</pre>
 									
 								</dt>
 								<dd>order of the ROC</dd>
+							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -1675,7 +1763,7 @@ console.log(rsi)  // [70.53, 66.32, ..., 56.05]</pre>
 					<div class="fixedFont">
 					
 					<span class="light">{value}</span>
-					<b>sd</b>(values)
+					<b>sd</b>(values, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1699,6 +1787,12 @@ console.log(rsi)  // [70.53, 66.32, ..., 56.05]</pre>
 								</dt>
 								<dd>array of numerical values</dd>
 							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -1721,7 +1815,7 @@ console.log(rsi)  // [70.53, 66.32, ..., 56.05]</pre>
 					<div class="fixedFont">
 					
 					<span class="light">{value}</span>
-					<b>sumVector</b>(vector)
+					<b>sumVector</b>(vector, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1744,6 +1838,12 @@ console.log(rsi)  // [70.53, 66.32, ..., 56.05]</pre>
 									
 								</dt>
 								<dd>values array</dd>
+							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
 							
 							</dl>
 						
@@ -1806,7 +1906,7 @@ console.log(rsi)  // [70.53, 66.32, ..., 56.05]</pre>
 					<div class="fixedFont">
 					
 					
-					<b>tomDemarksPoints</b>(highList, lowList, openList, closeList)
+					<b>tomDemarksPoints</b>(values)
 					
 					</div>
 					<div class="description">
@@ -1835,28 +1935,55 @@ The result is a list of elements with fields:
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>highList</b>
+									<b>values</b>
 									
 								</dt>
 								<dd></dd>
 							
-								<dt>
-									<b>lowList</b>
-									
-								</dt>
-								<dd></dd>
+							</dl>
+						
+						
+						
+						
+						
+						
+						
+
+					<hr />
+				
+					<a name="valueIfUndef"> </a>
+					<div class="fixedFont">
+					
+					
+					<b>valueIfUndef</b>(object, value)
+					
+					</div>
+					<div class="description">
+						returns the given value if the object is undefined
+						
+							<br />
+							<i>Defined in: </i> <a href="../symbols/src/trendyways.js.html">trendyways.js</a>.
+						
+						
+					</div>
+					
+					
+					
+						
+							<dl class="detailList">
+							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>openList</b>
+									<span class="light fixedFont">{obj}</span> <b>object</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>to check</dd>
 							
 								<dt>
-									<b>closeList</b>
+									<span class="light fixedFont">{val}</span> <b>value</b>
 									
 								</dt>
-								<dd></dd>
+								<dd>to return</dd>
 							
 							</dl>
 						
@@ -1925,7 +2052,7 @@ The result is a list of elements with fields:
 					<div class="fixedFont">
 					
 					<span class="light">{array}</span>
-					<b>windowOp</b>(values, value, fun)
+					<b>windowOp</b>(values, value, fun, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -1961,6 +2088,12 @@ The result is a list of elements with fields:
 								</dt>
 								<dd>function to apply on each chunk</dd>
 							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -1983,7 +2116,7 @@ The result is a list of elements with fields:
 					<div class="fixedFont">
 					
 					
-					<b>wma</b>(series, weights)
+					<b>wma</b>(series, weights, targetAttr)
 					
 					</div>
 					<div class="description">
@@ -2016,6 +2149,12 @@ The sum of weights should be 1.
 								</dt>
 								<dd></dd>
 							
+								<dt>
+									<b>targetAttr</b>
+									
+								</dt>
+								<dd></dd>
+							
 							</dl>
 						
 						
@@ -2031,7 +2170,7 @@ The sum of weights should be 1.
 					<div class="fixedFont">
 					
 					
-					<b>woodiesPoints</b>(highList, lowList, closeList)
+					<b>woodiesPoints</b>(values)
 					
 					</div>
 					<div class="description">
@@ -2063,19 +2202,7 @@ The result is a list of elements with fields:
 							<dt class="heading">Parameters:</dt>
 							
 								<dt>
-									<b>highList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>lowList</b>
-									
-								</dt>
-								<dd></dd>
-							
-								<dt>
-									<b>closeList</b>
+									<b>values</b>
 									
 								</dt>
 								<dd></dd>
@@ -2103,7 +2230,7 @@ The result is a list of elements with fields:
 <!-- ============================== footer ================================= -->
 		<div class="fineprint" style="clear:both">
 			
-			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Tue Aug 22 2017 20:15:12 GMT+0100 (IST)
+			Documentation generated by <a href="http://code.google.com/p/jsdoc-toolkit/" target="_blank">JsDoc Toolkit</a> 2.4.0 on Mon Sep 25 2017 06:29:52 GMT+0100 (IST)
 		</div>
 	</body>
 </html>
