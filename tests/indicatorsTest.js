@@ -18,10 +18,9 @@ describe ("Indicators", function () {
     }
     var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791, 64.67398, 73.14163, 72.71666, 65.73574];
     var mfiResult = mfi (values, 14);
-    assert.equal (mfiResult.length, result.length,"MoneyFlow result values match length");
-    for (var i = 0; i < mfiResult.length; i++)
+    for (var i = 14; i < mfiResult.length; i++)
     {
-      assert.deepEqual (mfiResult[i].toFixed(1), result[i].toFixed(1), "MoneyFlow " + i + " value ok");
+      assert.deepEqual (mfiResult[i].mfi.toFixed(1), result[i-14].toFixed(1), "MoneyFlow " + i + " value ok");
     }
   });
 
@@ -204,14 +203,14 @@ it ("Momentum Test", function () {
   });
 
   it ("ATR test", function () {
-    var values = [{high:48.70, low:47.79, close:48.16},{high:48.72, low:48.14, close:48.61},
-                  {high:48.90, low:48.39, close:48.75},{high:48.87, low:48.37, close:48.63},
-                  {high:48.82, low:48.24, close:48.74},{high:49.05, low:48.64, close:49.03},
-                  {high:49.20, low:48.94, close:49.07},{high:49.35, low:48.86, close:49.32},
-                  {high:49.92, low:49.50, close:49.91},{high:50.19, low:49.87, close:50.13},
-                  {high:50.12, low:49.20, close:49.53},{high:49.66, low:48.90, close:49.50},
-                  {high:49.88, low:49.43, close:49.75},{high:50.19, low:49.73, close:50.03},
-                  {high:50.36, low:49.26, close:50.31},{high:50.57, low:50.09, close:50.52}]
+    var values = [{h:48.70, l:47.79, c:48.16},{h:48.72, l:48.14, c:48.61},
+                  {h:48.90, l:48.39, c:48.75},{h:48.87, l:48.37, c:48.63},
+                  {h:48.82, l:48.24, c:48.74},{h:49.05, l:48.64, c:49.03},
+                  {h:49.20, l:48.94, c:49.07},{h:49.35, l:48.86, c:49.32},
+                  {h:49.92, l:49.50, c:49.91},{h:50.19, l:49.87, c:50.13},
+                  {h:50.12, l:49.20, c:49.53},{h:49.66, l:48.90, c:49.50},
+                  {h:49.88, l:49.43, c:49.75},{h:50.19, l:49.73, c:50.03},
+                  {h:50.36, l:49.26, c:50.31},{h:50.57, l:50.09, c:50.52}]
     var result = atr(values);
     var expectedTR = [0.91, 0.58, 0.51, 0.5, 0.58, 0.41, 0.26, 0.49, 0.60, 0.32, 0.93, 0.76, 0.45, 0.46, 1.10, 0.48, 0.35, 1.22, 0.65, 0.96];
     var expectedATR =[0,    0,    0,    0,   0,    0,    0,    0,    0,    0,    0,    0,    0,    0.55, 0.59, 0.59, 0.57, 0.62, 0.62, 0.64];

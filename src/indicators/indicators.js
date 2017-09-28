@@ -100,7 +100,7 @@ mfi = function (values)
   {
     mfi.push (100 - (100/(1+value)));
   });
-  return mfi;
+  return reverseAppend (values, mfi, "mfi");
 }
 
 ////////////////////////////////////////////
@@ -256,12 +256,12 @@ atr = function (values) {
   var results = [];
   for (var i = 0; i < values.length; i++) {
     if (i == 0) {
-      results.push({tr:values[i].high - values[i].low, atr:0})
+      results.push({tr:values[i].h - values[i].l, atr:0})
     }
     else {
-      var hl = values[i].high - values[i].low;
-      var hcp = Math.abs(values[i].high - values[i-1].close);
-      var lcp = Math.abs(values[i].low - values[i-1].close);
+      var hl = values[i].h - values[i].l;
+      var hcp = Math.abs(values[i].h - values[i-1].c);
+      var lcp = Math.abs(values[i].l - values[i-1].c);
       var tr = Math.max(hl,hcp,lcp);
       var atr = 0;
       if (i == 13) {
