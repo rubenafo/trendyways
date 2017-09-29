@@ -748,7 +748,7 @@ floorPivots = function (values) {
     elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
-  return result;
+  return reverseAppend(values, result, "floor");
 }
 
 ////////////////////////////////////////////////////////
@@ -758,10 +758,6 @@ floorPivots = function (values) {
  * of the period.
  * These values for a given day are calculated based on the day before
  * so expect n values as output for a given list of n days.
- * Note that three lists must have the same length.
- * Params: - higList: list of high values
- *         - lowList: list of low values
- *         - cliseList: list of closing values
  * The result is a list of elements with fields:
  *         - low: predicted low value.
  *         - high: predicted high value.
@@ -785,10 +781,10 @@ tomDemarksPoints = function (values) {
     }
     newHigh = (x/2) - values[i].l;
     newLow = (x/2) - values[i].h;
-    elem = {low: newLow, high: newHigh};
+    elem = {l: newLow, h: newHigh};
     result.push(elem);
   }
-  return result;
+  return reverseAppend(values, result, "tom");
 }
 
 ////////////////////////////////////////////////////////
@@ -798,10 +794,6 @@ tomDemarksPoints = function (values) {
  * resistance values (r1 and r2).
  * These values for a given day are calculated based on the day before
  * so expect n values as output for a given list of n days.
- * Note that the three lists must have the same length.
- * Params: - higList: list of high values
- *         - lowList: list of low values
- *         - closeList: list of closing values
  * The result is a list of elements with fields:
  *         - pivot: predicted pivot value.
  *         - s1: predicted support (s1).
@@ -823,7 +815,7 @@ woodiesPoints = function (values) {
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
-  return result;
+  return reverseAppend (values, result, "wood");
 }
 
 ////////////////////////////////////////////////////////
@@ -831,12 +823,6 @@ woodiesPoints = function (values) {
 /**
  * Returns the Camarilla points: supports (s1,s2,3 and s4)) and
  * resistance values (r1, r2, r3 and r4).
- * These values for a given day are calculated based on the day before
- * so expect n values as output for a given list of n days.
- * Note that the three lists must have the same length.
- * Params: - higList: list of high values
- *         - lowList: list of low values
- *         - closeList: list of closing values
  * The result is a list of elements with fields:
  *         - s1: predicted s1 support.
  *         - s2: predicted s2 support.
@@ -864,7 +850,7 @@ camarillaPoints = function (values) {
             s4: s4};
     result.push(elem);
   }
-  return result;
+  return reverseAppend(values, result, "cam");
 }
 
 
