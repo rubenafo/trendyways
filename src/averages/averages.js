@@ -4,8 +4,9 @@
  * also known as simple moving average, rolling average, moving mean
  * and a million of similar combinations
  */
-ma = function (values, order, targetAttr) {
-  targetAttr = valueIfUndef(targetAttr, ["c"])
+ma = function (values, order, targetAttr, outputAttr) {
+  targetAttr = valueIfUndef(targetAttr, ["c"]);
+  outputAttr = valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
   sumWindow = function (serie) {
     var sum = 0;
@@ -15,7 +16,7 @@ ma = function (values, order, targetAttr) {
     return (sum/serie.length);
   }
   newVal = windowOp (values, order, sumWindow);
-  return reverseAppend(values, newVal, "ma")
+  return reverseAppend(values, newVal, outputAttr)
 }
 
 ///////////////////////////////////////////////////////

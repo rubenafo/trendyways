@@ -58,7 +58,8 @@ __Technical Indicators:__
 * Momentum (n-th order momentum)
 * Rate of Change (ROC) (n-th order)
 * RSI (Relative Strength Index) (n-th order)
-* Average True Value (ATV)
+* Average True Range (ATR)
+* Average Directional Index (ADV)
 
 Tests
 -------------

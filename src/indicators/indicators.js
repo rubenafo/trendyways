@@ -246,13 +246,15 @@ rsi = function (values, order)
 /**
  * @description Returns the ATR (Average True Value). ATR is provided after 14th element.
  * @param {array} values containing {high,low,close}
+ * @param {number} period, default to 14
  * @returns {array} list containing {tr,atr} values for each period.
  * @example 
  * var atr = atr ([{high:48.7, low:45.3, close:46}, ...])
  * console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr:_value_} ]
  */
 
-atr = function (values) {
+atr = function (values, p) {
+  p = valueIfUndef(p, 14);
   var results = [];
   for (var i = 0; i < values.length; i++) {
     if (i == 0) {
@@ -264,15 +266,15 @@ atr = function (values) {
       var lcp = Math.abs(values[i].l - values[i-1].c);
       var tr = Math.max(hl,hcp,lcp);
       var atr = 0;
-      if (i == 13) {
+      if (i == p-1) {
         atr = tr;
         for (var j = 0; j < results.length; j++) {
           atr += results[j].tr;
         }
-        atr = atr / 14.0;
+        atr = atr / p;
       }
-      else if (i > 13) {
-        atr = ((results[i-1].atr * 13) + tr) / 14;
+      else if (i > (p-1)) {
+        atr = ((results[i-1].atr * (p-1) + tr) / p);
       }
       results.push({tr:tr, atr:atr});
     }
