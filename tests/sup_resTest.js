@@ -16,8 +16,8 @@ describe ("Supports and resistances", function () {
   });
 
   it ("Tom Demarks's predicted low and high value (support and resistance)", function () {
-    var points = [{h:10, l:5, o:6, c:7}, 
-                  {h:15, l:8, o:10, c:11}, 
+    var points = [{h:10, l:5, o:6, c:7},
+                  {h:15, l:8, o:10, c:11},
                   {h:25, l:10, o:17, c:12}];
     var values = tomDemarksPoints (points);
     assert.deepEqual (values.length, 3, "Returned values ok");
@@ -33,7 +33,7 @@ describe ("Supports and resistances", function () {
   });
 
   it ("Woodies predicted points (support and resistance)", function () {
-    var points = [{h:10, l:5, c:7},  {h:15, l:8, c:11}, 
+    var points = [{h:10, l:5, c:7},  {h:15, l:8, c:11},
                   {h:25, l:10, c:12},{h:10, l:8, c:9}];
     var values = woodiesPoints (points);
     assert.deepEqual (values.length, 4, "Returned values ok");

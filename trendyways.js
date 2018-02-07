@@ -873,8 +873,8 @@ woodiesPoints = function (values) {
     var r1 = (2 * pivot) - values[i].l;
     var r2 = pivot + values[i].h - values[i].l;
     var s1 = (2 * pivot) - values[i].h;
-    var s2 = pivot - values[i].h + values[i].l; 
-    elem = {pivot: pivot, r1: r1, 
+    var s2 = pivot - values[i].h + values[i].l;
+    elem = {pivot: pivot, r1: r1,
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
@@ -923,33 +923,19 @@ fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
-  if (trend == 'DOWNTREND') 
-  {
-    for (var i = 0; i < values.length; i++)
-    {
+    for (var i = 0; i < values.length; i++) {
       var diff = values[i].h - values[i].l;
       var elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = values[i].h - diff * retracements[r];
+        var level = 0;
+        if (trend == 'DOWNTREND')
+          level = values[i].h - diff * retracements[r];
+        else
+          level = values[i].l + diff * retracements[r];
         elem.push(level);
       }
       result.push(elem);
     }
-  }
-  else  // UPTREND
-  {
-    for (var i = 0; i < values.length; i++)
-    {
-      var diff = values[i].h - values[i].l;
-      var elem = new Array();
-      for (var r = 0; r < retracements.length; r++)
-      {
-        var level = values[i].l + diff * retracements[r];
-        elem.push (level);
-      }
-      result.push(elem);
-    }
-  }
-  return result;
+  return result
 }
