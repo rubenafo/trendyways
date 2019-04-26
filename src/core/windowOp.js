@@ -5,7 +5,7 @@
  * @param {function} fun function to apply on each chunk
  * @return {array} values returned by the given function in each chunck
  */
-windowOp = function (values, value, fun, targetAttr) {
+module.exports.windowOp = function (values, value, fun, targetAttr) {
   var result = new Array();
   for (var i = value; i <= values.length; i++)
   {

@@ -25,7 +25,7 @@ if ( !Array.prototype.forEach ) {
  * @param {array} series2 second values array
  * @return {array} series1 - series2
  */
-diffVectors = function (series1, series2, targetAttr)
+module.exports.diffVectors = function (series1, series2, targetAttr)
 {
   var size = max([series1.length, series2.length])
   var result = [];
@@ -55,7 +55,7 @@ diffVectors = function (series1, series2, targetAttr)
  * @param {array} serie values array
  * @return {array} values array ^ 2
  */
-powVector = function (serie)
+module.exports.powVector = function (serie)
 {
   var result = [];
   pow = function (x) {
@@ -72,7 +72,7 @@ powVector = function (serie)
  * @param {array} vector values array
  * @returns {value} the sum of all elements
  */
-sumVector = function (values, targetAttr)
+module.exports.sumVector = function (values, targetAttr)
 {
   var result = 0;
   sum = function (x) {
@@ -92,7 +92,7 @@ sumVector = function (values, targetAttr)
  * @param {array} vector values array
  * @returns {value} the average of the all elements
  */
-avgVector = function (vector, targetAttr)
+module.exports.avgVector = function (vector, targetAttr)
 {
   var result = sumVector (vector, targetAttr);
   if (!vector.length)
@@ -108,7 +108,7 @@ avgVector = function (vector, targetAttr)
  * @param {array} vector values array
  * @return {array} the absolute values of the given array
  */
-absVector = function (vector)
+module.exports.absVector = function (vector)
 {
   var result = [];
   vector.forEach (function ab(x)
@@ -126,7 +126,7 @@ absVector = function (vector)
  * @param {array} v2 values array
  * @return {array} v1 / v2
  */
-divVector = function (v1, v2)
+module.exports.divVector = function (v1, v2)
 {
   var result = [];
   for (var i = 0; i < v1.length; i++)
@@ -146,7 +146,7 @@ divVector = function (v1, v2)
  * @param {function} fun
  * @return {array} values fun(serie1, serie2)
  */
-combineVectors = function (serie1, serie2, fun)
+module.exports.combineVectors = function (serie1, serie2, fun)
 {
   if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
   {

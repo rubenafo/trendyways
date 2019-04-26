@@ -4,7 +4,7 @@
  * @param {attrs} list of attributes to look for
  * @return {value} object attribute
  */
-resolveParam = function (obj, attrs) {
+module.exports.resolveParam = function (obj, attrs) {
   for (var i = 0; i < attrs.length; i++) {
     var field = attrs[i]
     if (obj[field] != undefined)
@@ -18,15 +18,15 @@ resolveParam = function (obj, attrs) {
  * @param {obj} object to check
  * @param {val} value to return
  */
-valueIfUndef = function (obj, val) {
+module.exports.valueIfUndef = function (obj, val) {
   return isUndef(obj) ? val : obj;
 }
 
-isUndef = function (obj) {
+module.exports.isUndef = function (obj) {
   return typeof obj == "undefined";
 }
 
-reverseAppend = function (refList, addList, field) {
+module.exports.reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
   addList.forEach (function (add, i) {
@@ -35,13 +35,13 @@ reverseAppend = function (refList, addList, field) {
   return refList;
 }
 
-flat = function (list, attr) {
+module.exports.flat = function (list, attr) {
   return list.map (function (i) {
     return isUndef(i[attr]) ? 0 : i[attr];
   });
 }
 
-fill = function (list, attr, defaultValue) {
+module.exports.fill = function (list, attr, defaultValue) {
   list.forEach(function(l) {
     if (isUndef(l[attr]))
       l[attr] = defaultValue;

@@ -4,7 +4,7 @@
  */
 
 var assert = require ("assert");
-var Trendyways = require ("../trendyways.js");
+var tw = require ("../trendyways.js");
 
 describe ("Bollinger", function () {
   it ("Bollinger bands values for a sample serie", function () {
@@ -13,10 +13,10 @@ describe ("Bollinger", function () {
     {
       for (var n = 1; n < serie.length; n++)
       {
-         var bands = bollinger (serie, n, k); // window size n = 3, k = 3
+         var bands = tw.bollinger (serie, n, k); // window size n = 3, k = 3
          for (var i = n; i < serie.length-n+1; i++)
          {
-            var stdDev = sd(serie.slice(i,i+n), ["c"]);
+            var stdDev = tw.sd(serie.slice(i,i+n), ["c"]);
             assert.deepEqual (bands[i].ub, bands[i].ma + stdDev * k, "Upper value nº " + i + " correct (n="+n+",k="+k+")");
             assert.deepEqual (bands[i].lb, bands[i].ma - stdDev * k, "Lower value nº " + i + " correct (n="+n+",k="+k+")");
          }

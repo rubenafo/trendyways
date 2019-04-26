@@ -1,12 +1,12 @@
 var assert = require ("assert");
-var Trendyways = require ("../trendyways.js");
+var tw = require ("../trendyways.js");
 
 describe ("Averages", function () {
 
   it ("Moving Average of a sample serie", function () {
     var serie = [{c:2},{c:6},{c:5},{c:7},{c:10},{c:9},{c:12},{c:5}]
     var correctValues = [5, 7, 7.75, 9.5, 9];
-    var movingAvg = ma(serie,4);
+    var movingAvg = tw.ma(serie,4);
     assert.deepEqual (movingAvg.length, serie.length, "Moving Average result's length is correct");
     for (var i = 0; i < 5; i++)
     {
@@ -23,7 +23,7 @@ describe ("Averages", function () {
     var expected = [ 63.682,63.254,62.937,62.743,62.290,
                      61.755,61.427,60.973,60.374,60.092,
                      59.870];
-    var result = ema(series, 10, ["c"]);
+    var result = tw.ema(series, 10, ["c"]);
     assert.equal (result.length, series.length, "EMA length = " + result.length);
     for (var i = 0; i < expected.length; i++)
     {
@@ -40,7 +40,7 @@ describe ("Averages", function () {
   {
     var series = [{c:1}, {c:2}, {c:3}, {c:4}, {c:5}, {c:6}];
     var expected = [0.5, 0.83333, 1.16667, 1.5]
-    var result = wma (series, [0.6, 0.3, 0.1]);
+    var result = tw.wma (series, [0.6, 0.3, 0.1]);
     for (var i = 0; i < expected.length; i++)
     {
       assert.equal (expected[i], result[i+2].wma.toFixed(5), "WMA i = " + i + ", "+ expected[i]);

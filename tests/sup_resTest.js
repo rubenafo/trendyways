@@ -1,11 +1,11 @@
 var assert = require ("assert");
-var Trendyways = require ("../trendyways.js");
+var tw = require ("../trendyways.js");
 
 describe ("Supports and resistances", function () {
 
   it ("Floor pivot level, supports and resistances", function () {
     var point = [{c:15, h:18, l:5}]
-    var values = floorPivots (point);
+    var values = tw.floorPivots (point);
     assert.deepEqual (values[0].floor.r3, 33.33333333333333, "Resistance R3 ok");
     assert.deepEqual (values[0].floor.r2, 25.666666666666664, "Resistance R2 ok");
     assert.deepEqual (values[0].floor.r1, 20.333333333333332, "Resistance R1 ok");
@@ -19,7 +19,7 @@ describe ("Supports and resistances", function () {
     var points = [{h:10, l:5, o:6, c:7},
                   {h:15, l:8, o:10, c:11},
                   {h:25, l:10, o:17, c:12}];
-    var values = tomDemarksPoints (points);
+    var values = tw.tomDemarksPoints (points);
     assert.deepEqual (values.length, 3, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].tom.l, 6 , "Support for first value ok");
@@ -35,7 +35,7 @@ describe ("Supports and resistances", function () {
   it ("Woodies predicted points (support and resistance)", function () {
     var points = [{h:10, l:5, c:7},  {h:15, l:8, c:11},
                   {h:25, l:10, c:12},{h:10, l:8, c:9}];
-    var values = woodiesPoints (points);
+    var values = tw.woodiesPoints (points);
     assert.deepEqual (values.length, 4, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].wood.pivot, 7.25, "Pivot for first value ok");
@@ -65,7 +65,7 @@ describe ("Supports and resistances", function () {
 
   it ("Camarilla predicted points (supports and resistances)", function () {
     var points = [{h:10, l:5, c:7}, {h:15, l:8, c:11}, {h:25, l:10, c:12}, {h:10, l:8, c:9}];
-    var values = camarillaPoints (points);
+    var values = tw.camarillaPoints (points);
     assert.deepEqual (values.length, 4, "Returned values ok");
     // first predicted values
     assert.deepEqual (values[0].cam.r1, 7.458333333333333, "Resistance r1 for first value ok");
@@ -108,7 +108,7 @@ describe ("Supports and resistances", function () {
   it ("Fibonacci retracement uptrend ([5,8,7,6,9], [10,12,9,15,16], 'UPTREND')", function ()
   {
     var points = [{h:10, l:5}, {h:12, l:8}, {h:9, l:7}, {h:15, l:6}, {h:16, l:9}];
-    var values = fibonacciRetrs (points, 'UPTREND');
+    var values = tw.fibonacciRetrs (points, 'UPTREND');
     assert.deepEqual (values.length, 5, "Returned values ok");
     for (var i = 0; i < values.length; i++)
     {
@@ -132,7 +132,7 @@ describe ("Supports and resistances", function () {
   it ("Fibonacci retracement downtrend ([10,9,5,7,2], [5,6,3,6,1], 'DOWNTREND')", function ()
   {
     var points = [{h:10, l:5}, {h:9, l:6}, {h:5, l:3}, {h:7, l:6}, {h:2, l:1}];
-    var values = fibonacciRetrs (points, 'DOWNTREND');
+    var values = tw.fibonacciRetrs (points, 'DOWNTREND');
     assert.deepEqual (values.length, 5, "Returned values ok");
     for (var i = 0; i < values.length; i++)
     {

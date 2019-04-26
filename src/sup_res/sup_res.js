@@ -17,7 +17,7 @@
  *         - s2: support second level
  *         - s1: support first level
  */
-floorPivots = function (values) {
+module.exports.floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -45,7 +45,7 @@ floorPivots = function (values) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-tomDemarksPoints = function (values) {
+module.exports.tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -84,7 +84,7 @@ tomDemarksPoints = function (values) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-woodiesPoints = function (values) {
+module.exports.woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -116,7 +116,7 @@ woodiesPoints = function (values) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-camarillaPoints = function (values) {
+module.exports.camarillaPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -139,7 +139,7 @@ camarillaPoints = function (values) {
 
 ////////////////////////////////////////////////////////
 
-fibonacciRetrs = function (values, trend)
+module.exports.fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];

@@ -4,7 +4,7 @@
  * @param{array} values array of numerical values
  * @returns {value} the max element in the series
  */
-max = function (values) {
+module.exports.max = function (values) {
   var ret = Number.MIN_VALUE
   for (var i = 0; i < values.length; i++) {
     if (values[i] > ret) {
@@ -21,7 +21,7 @@ max = function (values) {
  * @param {array} values array of numerical values
  * @returns {value} min value in the series
  */
-min = function (values) {
+module.exports.min = function (values) {
   var ret = Number.MAX_VALUE
   for (var i = 0; i < values.length; i++) {
     if (values[i] < ret) {
@@ -38,7 +38,7 @@ min = function (values) {
  * @param {array} values array of numerical values
  * @return {value} mean of the series
  */
-mean = function (values, targetAttr) {
+module.exports.mean = function (values, targetAttr) {
   var mean = 0;
   if (values.length == 0)
     return mean;
@@ -55,7 +55,7 @@ mean = function (values, targetAttr) {
  * @param {array} values array of numerical values
  * @return {value} standard deviation of the series values.
  */
-sd = function (values, targetAttr) {
+module.exports.sd = function (values, targetAttr) {
   var meanVal = mean(values, targetAttr);
   var sqrSum = 0;
   for (var i = 0; i < values.length; i++) {
@@ -71,7 +71,7 @@ sd = function (values, targetAttr) {
  * @param {function} fun function to apply on each chunk
  * @return {array} values returned by the given function in each chunck
  */
-windowOp = function (values, value, fun, targetAttr) {
+module.exports.windowOp = function (values, value, fun, targetAttr) {
   var result = new Array();
   for (var i = value; i <= values.length; i++)
   {
@@ -86,7 +86,7 @@ windowOp = function (values, value, fun, targetAttr) {
  * @param {attrs} list of attributes to look for
  * @return {value} object attribute
  */
-resolveParam = function (obj, attrs) {
+module.exports.resolveParam = function (obj, attrs) {
   for (var i = 0; i < attrs.length; i++) {
     var field = attrs[i]
     if (obj[field] != undefined)
@@ -100,15 +100,15 @@ resolveParam = function (obj, attrs) {
  * @param {obj} object to check
  * @param {val} value to return
  */
-valueIfUndef = function (obj, val) {
+module.exports.valueIfUndef = function (obj, val) {
   return isUndef(obj) ? val : obj;
 }
 
-isUndef = function (obj) {
+module.exports.isUndef = function (obj) {
   return typeof obj == "undefined";
 }
 
-reverseAppend = function (refList, addList, field) {
+module.exports.reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
   addList.forEach (function (add, i) {
@@ -117,13 +117,13 @@ reverseAppend = function (refList, addList, field) {
   return refList;
 }
 
-flat = function (list, attr) {
+module.exports.flat = function (list, attr) {
   return list.map (function (i) {
     return isUndef(i[attr]) ? 0 : i[attr];
   });
 }
 
-fill = function (list, attr, defaultValue) {
+module.exports.fill = function (list, attr, defaultValue) {
   list.forEach(function(l) {
     if (isUndef(l[attr]))
       l[attr] = defaultValue;
@@ -156,7 +156,7 @@ if ( !Array.prototype.forEach ) {
  * @param {array} series2 second values array
  * @return {array} series1 - series2
  */
-diffVectors = function (series1, series2, targetAttr)
+module.exports.diffVectors = function (series1, series2, targetAttr)
 {
   var size = max([series1.length, series2.length])
   var result = [];
@@ -186,7 +186,7 @@ diffVectors = function (series1, series2, targetAttr)
  * @param {array} serie values array
  * @return {array} values array ^ 2
  */
-powVector = function (serie)
+module.exports.powVector = function (serie)
 {
   var result = [];
   pow = function (x) {
@@ -203,7 +203,7 @@ powVector = function (serie)
  * @param {array} vector values array
  * @returns {value} the sum of all elements
  */
-sumVector = function (values, targetAttr)
+module.exports.sumVector = function (values, targetAttr)
 {
   var result = 0;
   sum = function (x) {
@@ -223,7 +223,7 @@ sumVector = function (values, targetAttr)
  * @param {array} vector values array
  * @returns {value} the average of the all elements
  */
-avgVector = function (vector, targetAttr)
+module.exports.avgVector = function (vector, targetAttr)
 {
   var result = sumVector (vector, targetAttr);
   if (!vector.length)
@@ -239,7 +239,7 @@ avgVector = function (vector, targetAttr)
  * @param {array} vector values array
  * @return {array} the absolute values of the given array
  */
-absVector = function (vector)
+module.exports.absVector = function (vector)
 {
   var result = [];
   vector.forEach (function ab(x)
@@ -257,7 +257,7 @@ absVector = function (vector)
  * @param {array} v2 values array
  * @return {array} v1 / v2
  */
-divVector = function (v1, v2)
+module.exports.divVector = function (v1, v2)
 {
   var result = [];
   for (var i = 0; i < v1.length; i++)
@@ -277,7 +277,7 @@ divVector = function (v1, v2)
  * @param {function} fun
  * @return {array} values fun(serie1, serie2)
  */
-combineVectors = function (serie1, serie2, fun)
+module.exports.combineVectors = function (serie1, serie2, fun)
 {
   if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
   {
@@ -299,7 +299,7 @@ combineVectors = function (serie1, serie2, fun)
  * @param{array} series2 values array
  * @return{value} the mse error
  */
-mse = function (series1, series2)
+module.exports.mse = function (series1, series2)
 {
   return avgVector (powVector (diffVectors(series1, series2)));
 }
@@ -312,7 +312,7 @@ mse = function (series1, series2)
  * @param{array} series2 values array
  * @return{value} the RMSE error
  */
-rmse = function (series1, series2)
+module.exports.rmse = function (series1, series2)
 {
   return Math.sqrt (mse(series1, series2));
 }
@@ -325,7 +325,7 @@ rmse = function (series1, series2)
  * @param{array} series2 values array
  * @return{value} the mae error
  */
-mae = function (series1, series2)
+module.exports.mae = function (series1, series2)
 {
   return avgVector(absVector(diffVectors(series1, series2)));
 }
@@ -345,7 +345,7 @@ mae = function (series1, series2)
  * elems for a elem and upper and lower bands are
  * located +2*sd and -2*sd from the central moving average.
  */
-bollinger = function (list, n, k, targetAttr) {
+module.exports.bollinger = function (list, n, k, targetAttr) {
   targetAttr = valueIfUndef(targetAttr, ["c"])
   var movingAvg = ma (list, n, targetAttr);
   var movingSd = windowOp (list, n, sd, targetAttr);
@@ -369,7 +369,7 @@ bollinger = function (list, n, k, targetAttr) {
  * also known as simple moving average, rolling average, moving mean
  * and a million of similar combinations
  */
-ma = function (values, order, targetAttr, outputAttr) {
+module.exports.ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = valueIfUndef(targetAttr, ["c"]);
   outputAttr = valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
@@ -389,7 +389,7 @@ ma = function (values, order, targetAttr, outputAttr) {
 /**
  * Exponential moving average
  */
-ema = function (serie, period, targetAttr, newAttr) 
+module.exports.ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
@@ -418,7 +418,7 @@ ema = function (serie, period, targetAttr, newAttr)
  * is based on the weight's length.
  * The sum of weights should be 1.
  */
-wma = function (series, weights, targetAttr)
+module.exports.wma = function (series, weights, targetAttr)
 {
   targetAttr = valueIfUndef(targetAttr, ["c"])
   sumWindow = function (elems) {
@@ -442,7 +442,7 @@ wma = function (series, weights, targetAttr)
  *
  * Source: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
  */
-adx = function (values) {
+module.exports.adx = function (values) {
 	dmWindow = function (serie) {
 		var sum = 0;
 		todayMax = serie[1].h - serie[0].h
@@ -495,13 +495,14 @@ adx = function (values) {
 	}
 	return result;
 }
+
 /**
  * @description On-Balance Volume (obv).
  * @param {array} closeList list of closing prices
  * @param {array} volumeList list of volumes
  * @return {array} the OBV values list
  */
-obv = function (closeList, volumeList)
+module.exports.obv = function (closeList, volumeList)
 {
   var result = [];
   var prevObv = volumeList[0];
@@ -533,7 +534,7 @@ obv = function (closeList, volumeList)
  * @param {array} volumeList list of volume
  * @return {array} vpt values array
  */
-vpt = function (closeList, volumeList)
+module.exports.vpt = function (closeList, volumeList)
 {
   var result = [];
   var vpt = volumeList[0]
@@ -555,7 +556,7 @@ vpt = function (closeList, volumeList)
  * @param {array} volumes list of volumes
  * @return {value} the money-flow index
  */
-mfi = function (values)
+module.exports.mfi = function (values)
 {
   var typicalMoney = [];
   var moneyFlow = [];
@@ -607,7 +608,7 @@ mfi = function (values)
  * @return {object} object containing the macd, signal
  *                  and hist series.
  */
-macd = function (closeValues, targetAttr)
+module.exports.macd = function (closeValues, targetAttr)
 {
   targetAttr = valueIfUndef(targetAttr, ["c"])
   slow = 26;
@@ -648,7 +649,7 @@ macd = function (closeValues, targetAttr)
  * var m = momemtum ([12,34,23, 81], 1) 
  * console.log(m)  // [22, -11, 58]
  */
-momentum = function(values, order)
+module.exports.momentum = function(values, order)
 {
   momentumN = function (chunk)
   {
@@ -670,7 +671,7 @@ momentum = function(values, order)
  * var roc = roc ([12, 11, 15, 10], 1) 
  * console.log(roc)  // [-0.09, 0.36, -0.33]
  */
-roc = function(values, order, targetAttr)
+module.exports.roc = function(values, order, targetAttr)
 {
   rocN = function (chunk)
   {
@@ -692,7 +693,7 @@ roc = function(values, order, targetAttr)
  * var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
  * console.log(rsi)  // [70.53, 66.32, ..., 56.05]
  */
-rsi = function (values, order)
+module.exports.rsi = function (values, order)
 {
   if (values.length < order+1)
   {
@@ -749,7 +750,7 @@ rsi = function (values, order)
  * console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr:_value_} ]
  */
 
-atr = function (values, p) {
+module.exports.atr = function (values, p) {
   p = valueIfUndef(p, 14);
   var results = [];
   for (var i = 0; i < values.length; i++) {
@@ -797,7 +798,7 @@ atr = function (values, p) {
  *         - s2: support second level
  *         - s1: support first level
  */
-floorPivots = function (values) {
+module.exports.floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -825,7 +826,7 @@ floorPivots = function (values) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-tomDemarksPoints = function (values) {
+module.exports.tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -864,7 +865,7 @@ tomDemarksPoints = function (values) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-woodiesPoints = function (values) {
+module.exports.woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -896,7 +897,7 @@ woodiesPoints = function (values) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-camarillaPoints = function (values) {
+module.exports.camarillaPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -919,7 +920,7 @@ camarillaPoints = function (values) {
 
 ////////////////////////////////////////////////////////
 
-fibonacciRetrs = function (values, trend)
+module.exports.fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];

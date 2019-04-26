@@ -1,5 +1,5 @@
 var assert = require ("assert");
-var Trendyways = require ("../trendyways.js");
+var tw = require ("../trendyways.js");
 
 describe ("Indicators", function () {
 
@@ -17,7 +17,7 @@ describe ("Indicators", function () {
       values[i].v = volumes[i];
     }
     var result = [59.76142, 53.17167, 59.62856, 66.1453, 71.79791, 64.67398, 73.14163, 72.71666, 65.73574];
-    var mfiResult = mfi (values, 14);
+    var mfiResult = tw.mfi (values, 14);
     for (var i = 14; i < mfiResult.length; i++)
     {
       assert.deepEqual (mfiResult[i].mfi.toFixed(1), result[i-14].toFixed(1), "MoneyFlow " + i + " value ok");
@@ -123,7 +123,7 @@ describe ("Indicators", function () {
     -0.726992089,-0.652061906,-0.546759494,-0.417978570,-0.261523627,-0.097946732,0.073262912,0.250042718,
     0.402451934,0.540252674,0.654774263,0.779235732,0.886387296,0.969878048,1.030865267,1.045533903,1.043167320,
     1.043497276,1.051811291,1.073581927];
-    var macdResults = macd (testData);
+    var macdResults = tw.macd (testData);
     assert.equal (flat(macdResults,"macd").length, macdTest.length, "MACD values match length ");
     for (var i = 0; i < flat(macdResults,"macd").length; i++)
     {
@@ -147,13 +147,13 @@ describe ("Indicators", function () {
   var values = [{c:196.35},{c:195.27},{c:193.99},{c:193.14},{c:192.87},{c:192.32},{c:192.88},{c:194.45}, {c:192.62}, {c:192.50}];
   var resultOrder1 = [-1.08, -1.28, -0.85, -0.27, -0.55, 0.56, 1.57, -1.83, -0.12];
   var resultOrder3 = [-3.21, -2.4, -1.67, -0.26, 1.58, 0.3, -0.38];
-  var momentumValues = momentum (values, 1);
+  var momentumValues = tw.momentum (values, 1);
   assert.deepEqual (momentumValues.length, values.length,"Momentum order 1 length is ok");
   for (var i = 1; i < momentumValues.length; i++)
   {
     assert.deepEqual (momentumValues[i].mom.toFixed(5), resultOrder1[i-1].toFixed(5), "Testing value " + i);
   }
-  var momentumValues3 = momentum (values, 3);
+  var momentumValues3 = tw.momentum (values, 3);
   assert.deepEqual (momentumValues3.length, values.length,"Momentum order 3 length is ok");
   for (var i = 3; i < momentumValues3.length; i++)
   {
@@ -168,13 +168,13 @@ describe ("Indicators", function () {
    var values = [{c:196.35},{c:195.27},{c:193.99},{c:193.14},{c:192.87},{c:192.32},{c:192.88},{c:194.45}, {c:192.62}, {c:192.50}];
    var resultOrder1 = [-0.00550, -0.00656, -0.00438, -0.001397, -0.00285, 0.00291, 0.00814, -0.00941, -0.00062];
    var resultOrder3 = [-0.016348, -0.01229, -0.008608, -0.0013461, 0.008192046, 0.001559, -0.001970];
-   var rocValues = roc (values, 1);
+   var rocValues = tw.roc (values, 1);
    assert.deepEqual (rocValues.length, values.length, "ROC order 1 length is ok");
    for (var i = 1; i < rocValues.length; i++)
    {
      assert.deepEqual (rocValues[i].roc.toFixed(5), resultOrder1[i-1].toFixed(5), "Testing value " + i);
    }
-   var rocValues3 = roc (values, 3);
+   var rocValues3 = tw.roc (values, 3);
    assert.deepEqual (rocValues3.length, values.length,"ROC order 3 length is ok");
    for (var i = 3; i < rocValues3.length; i++)
    {
@@ -194,7 +194,7 @@ describe ("Indicators", function () {
     var expected = [70.46, 66.24, 66.48, 69.34, 66.29, 57.91, 62.88, 63.20,
     56.01, 62.33, 54.67, 50.38, 40.01, 41.49, 41.9, 45.49,
     37.32, 33.09, 37.78];
-    var result = rsi (values, 14);
+    var result = tw.rsi (values, 14);
     assert.deepEqual (result.length, values.length, "RSI result length matches");
     for (var i = 14; i < result.length; i++)
     {
@@ -211,7 +211,7 @@ describe ("Indicators", function () {
     {h:50.12, l:49.20, c:49.53},{h:49.66, l:48.90, c:49.50},
     {h:49.88, l:49.43, c:49.75},{h:50.19, l:49.73, c:50.03},
     {h:50.36, l:49.26, c:50.31},{h:50.57, l:50.09, c:50.52}]
-    var result = atr(values);
+    var result = tw.atr(values);
     var expectedTR = [0.91, 0.58, 0.51, 0.5, 0.58, 0.41, 0.26, 0.49, 0.60, 0.32, 0.93, 0.76, 0.45, 0.46, 1.10, 0.48, 0.35, 1.22, 0.65, 0.96];
     var expectedATR =[0,    0,    0,    0,   0,    0,    0,    0,    0,    0,    0,    0,    0,    0.55, 0.59, 0.59, 0.57, 0.62, 0.62, 0.64];
     for (var i = 0; i < result.length; i++) {

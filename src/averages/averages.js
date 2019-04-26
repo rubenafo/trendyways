@@ -4,7 +4,7 @@
  * also known as simple moving average, rolling average, moving mean
  * and a million of similar combinations
  */
-ma = function (values, order, targetAttr, outputAttr) {
+module.exports.ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = valueIfUndef(targetAttr, ["c"]);
   outputAttr = valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
@@ -24,7 +24,7 @@ ma = function (values, order, targetAttr, outputAttr) {
 /**
  * Exponential moving average
  */
-ema = function (serie, period, targetAttr, newAttr) 
+module.exports.ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
@@ -53,7 +53,7 @@ ema = function (serie, period, targetAttr, newAttr)
  * is based on the weight's length.
  * The sum of weights should be 1.
  */
-wma = function (series, weights, targetAttr)
+module.exports.wma = function (series, weights, targetAttr)
 {
   targetAttr = valueIfUndef(targetAttr, ["c"])
   sumWindow = function (elems) {

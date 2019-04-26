@@ -4,7 +4,7 @@
  * @param{array} series2 values array
  * @return{value} the mse error
  */
-mse = function (series1, series2)
+module.exports.mse = function (series1, series2)
 {
   return avgVector (powVector (diffVectors(series1, series2)));
 }
@@ -17,7 +17,7 @@ mse = function (series1, series2)
  * @param{array} series2 values array
  * @return{value} the RMSE error
  */
-rmse = function (series1, series2)
+module.exports.rmse = function (series1, series2)
 {
   return Math.sqrt (mse(series1, series2));
 }
@@ -30,7 +30,7 @@ rmse = function (series1, series2)
  * @param{array} series2 values array
  * @return{value} the mae error
  */
-mae = function (series1, series2)
+module.exports.mae = function (series1, series2)
 {
   return avgVector(absVector(diffVectors(series1, series2)));
 }

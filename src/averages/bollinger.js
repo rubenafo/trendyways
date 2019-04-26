@@ -14,7 +14,7 @@
  * elems for a elem and upper and lower bands are
  * located +2*sd and -2*sd from the central moving average.
  */
-bollinger = function (list, n, k, targetAttr) {
+module.exports.bollinger = function (list, n, k, targetAttr) {
   targetAttr = valueIfUndef(targetAttr, ["c"])
   var movingAvg = ma (list, n, targetAttr);
   var movingSd = windowOp (list, n, sd, targetAttr);
