@@ -1,6 +1,6 @@
 
-let utils = require ("../core/windowOp")
-let vectors = require ("../core/vectors")
+var utils = require ("./utils")
+var vectors = require ("./vectors")
 
 /**
  * @description Average Directional Index (ADX)
@@ -9,7 +9,7 @@ let vectors = require ("../core/vectors")
  *
  * Source: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
  */
-module.exports.adx = function (values) {
+let adx = function (values) {
 	dmWindow = function (serie) {
 		var sum = 0;
 		todayMax = serie[1].h - serie[0].h
@@ -27,7 +27,7 @@ module.exports.adx = function (values) {
 			Math.abs(serie[1].l - serie[0].c));
 		return {dmp:dmPos, dmn:dmNeg, tr:tr}
 	}
-	result = utils.windowOp(values, 2, dmWindow);
+	result = Utils.windowOp(values, 2, dmWindow);
 	result.unshift({dmp:0, dmn:0, tr:0});
 
 	firstTr14 = vectors.sumVector(result.slice(0, 15), "tr");
@@ -62,3 +62,4 @@ module.exports.adx = function (values) {
 	}
 	return result;
 }
+module.exports.adx = adx;

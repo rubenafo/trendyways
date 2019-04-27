@@ -3,30 +3,26 @@ LOCALE ?= en_US
 GENERATED_FILES = \
 	trendyways.js \
 	trendyways.min.js \
+  trendyways_raw.js \
 	tests
 
-SRC_FILES = \
-	src/core/ \
-	src/error/ \
-	src/averages/ \
-	src/indicators/ \
-	src/sup_res
-
-all: clean $(GENERATED_FILES)
-
-trendyways.js: 
-	$(shell for js in `find $(SRC_FILES) | grep js$$ | grep -v Test.`; do cat $$js >> trendyways.js; done)
-	@echo generating trendyways.js ...
-
-trendyways.min.js: trendyways.js
-	@echo generating trendyways.min.js ...
-	@nodejs node_modules/uglify-js/bin/uglifyjs trendyways.js -o trendyways.min.js 
+all:
+	rm -Rf ./build
+	mkdir build
+	cp ./src/*.js ./build
+	for js in `find ./build/*`; do cat $$js >> ./build/trendyways_raw.js; done
+	echo generating trendyways.js ...
+	nodejs ./node_modules/browserify/bin/cmd.js ./build/trendyways_raw.js --standalone tw > trendyways.js
+	rm -Rf ./build
+	echo generating trendyways.min.js ...
+	nodejs ./node_modules/uglify-es/bin/uglifyjs trendyways.js -o trendyways.min.js 
 
 docs: trendyways.js
 	rm -Rf ./docs
 	jsdoc trendyways.js -d=docs
 
 clean:
-	rm -f trendyways.js trendyways.min.js tests.js
+	rm -Rf build
+	rm -f trendyways.js trendyways.min.js
 
 .PHONY: all docs clean

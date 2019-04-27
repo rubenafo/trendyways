@@ -1,4 +1,6 @@
 
+var utils = require ("./utils");
+var stats = require ("./statistics");
 /**
  * @description Alternative forEach for all those browsers like IE8 and below
  * @param {function} function to apply to each element
@@ -25,9 +27,9 @@ if ( !Array.prototype.forEach ) {
  * @param {array} series2 second values array
  * @return {array} series1 - series2
  */
-module.exports.diffVectors = function (series1, series2, targetAttr)
+let diffVectors = function (series1, series2, targetAttr)
 {
-  var size = max([series1.length, series2.length])
+  var size = stats.max([series1.length, series2.length])
   var result = [];
   var s1Size = series1.length;
   var s2Size = series2.length;
@@ -37,16 +39,17 @@ module.exports.diffVectors = function (series1, series2, targetAttr)
     var itemS2 = 0;
     if (s1Size > i)
     {
-      itemS1 = isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
+      itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
     }
     if (s2Size > i)
     {
-      itemS2 = isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
+      itemS2 = utils.isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
     }
     result.push (itemS1 - itemS2);
   }
   return result;
 }
+module.exports.diffVectors = diffVectors
 
 ////////////////////////////////////////////////////////
 
@@ -55,7 +58,7 @@ module.exports.diffVectors = function (series1, series2, targetAttr)
  * @param {array} serie values array
  * @return {array} values array ^ 2
  */
-module.exports.powVector = function (serie)
+let powVector = function (serie)
 {
   var result = [];
   pow = function (x) {
@@ -64,6 +67,7 @@ module.exports.powVector = function (serie)
   serie.forEach (pow);
   return result;
 }
+module.exports.powVector = powVector
 
 ////////////////////////////////////////////////////////
 
@@ -72,11 +76,11 @@ module.exports.powVector = function (serie)
  * @param {array} vector values array
  * @returns {value} the sum of all elements
  */
-module.exports.sumVector = function (values, targetAttr)
+let sumVector = function (values, targetAttr)
 {
   var result = 0;
   sum = function (x) {
-    if (isUndef(x[targetAttr]))
+    if (utils.isUndef(x[targetAttr]))
       result += x
     else
       result += x[targetAttr]
@@ -84,7 +88,7 @@ module.exports.sumVector = function (values, targetAttr)
   values.forEach (sum);
   return result;
 }
-
+module.exports.sumVector = sumVector;
 ////////////////////////////////////////////////////////
 
 /**
@@ -92,15 +96,15 @@ module.exports.sumVector = function (values, targetAttr)
  * @param {array} vector values array
  * @returns {value} the average of the all elements
  */
-module.exports.avgVector = function (vector, targetAttr)
+let avgVector = function (vector, targetAttr)
 {
-  var result = sumVector (vector, targetAttr);
+  var result = module.exports.sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else
     return result / vector.length;
 }
-
+module.exports.avgVector = avgVector
 ////////////////////////////////////////////////////////
 
 /**
@@ -108,7 +112,7 @@ module.exports.avgVector = function (vector, targetAttr)
  * @param {array} vector values array
  * @return {array} the absolute values of the given array
  */
-module.exports.absVector = function (vector)
+let absVector = function (vector)
 {
   var result = [];
   vector.forEach (function ab(x)
@@ -117,7 +121,7 @@ module.exports.absVector = function (vector)
   });
   return result;
 }
-
+module.exports.absVector = absVector
 ////////////////////////////////////////////////////////
 
 /**
@@ -126,7 +130,7 @@ module.exports.absVector = function (vector)
  * @param {array} v2 values array
  * @return {array} v1 / v2
  */
-module.exports.divVector = function (v1, v2)
+let divVector = function (v1, v2)
 {
   var result = [];
   for (var i = 0; i < v1.length; i++)
@@ -135,7 +139,7 @@ module.exports.divVector = function (v1, v2)
   }
   return result;
 }
-
+module.exports.divVector = divVector
 ////////////////////////////////////////////////////////
 
 /**
@@ -146,7 +150,7 @@ module.exports.divVector = function (v1, v2)
  * @param {function} fun
  * @return {array} values fun(serie1, serie2)
  */
-module.exports.combineVectors = function (serie1, serie2, fun)
+let combineVectors = function (serie1, serie2, fun)
 {
   if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
   {
@@ -162,3 +166,4 @@ module.exports.combineVectors = function (serie1, serie2, fun)
     return result;
   }
 }
+module.exports.combineVectors = combineVectors

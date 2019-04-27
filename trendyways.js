@@ -1,414 +1,55 @@
+(function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.tw = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
-/**
- * @description Max value in a series
- * @param{array} values array of numerical values
- * @returns {value} the max element in the series
- */
-module.exports.max = function (values) {
-  var ret = Number.MIN_VALUE
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] > ret) {
-      ret = values[i];
-    }
-  }
-  return ret;
-}
-
-//////////////////////////////////////////////////////////
-
-/**
- * @description Min value in a series
- * @param {array} values array of numerical values
- * @returns {value} min value in the series
- */
-module.exports.min = function (values) {
-  var ret = Number.MAX_VALUE
-  for (var i = 0; i < values.length; i++) {
-    if (values[i] < ret) {
-      ret = values[i];
-    }
-  }
-  return ret;
-}
-
-//////////////////////////////////////////////////////////
-
-/**
- * @description Mean of values in a serie
- * @param {array} values array of numerical values
- * @return {value} mean of the series
- */
-module.exports.mean = function (values, targetAttr) {
-  var mean = 0;
-  if (values.length == 0)
-    return mean;
-  for (var i = 0; i < values.length; i++) {
-      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
-  }
-  return mean/values.length;
-}
-
-//////////////////////////////////////////////////////////
-
-/**
- * @description Standar deviation of values in a serie.
- * @param {array} values array of numerical values
- * @return {value} standard deviation of the series values.
- */
-module.exports.sd = function (values, targetAttr) {
-  var meanVal = mean(values, targetAttr);
-  var sqrSum = 0;
-  for (var i = 0; i < values.length; i++) {
-    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
-    sqrSum += Math.pow(value-meanVal, 2);
-  }
-  return Math.sqrt (sqrSum/values.length);
-}
-/**
- * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
- * @param {array} values values array
- * @param {value} value size of the window
- * @param {function} fun function to apply on each chunk
- * @return {array} values returned by the given function in each chunck
- */
-module.exports.windowOp = function (values, value, fun, targetAttr) {
-  var result = new Array();
-  for (var i = value; i <= values.length; i++)
-  {
-    var windowVal = fun (values.slice(i-value, i), targetAttr);
-    result.push (windowVal);
-  }
-  return result;
-}
-/**
- * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
- * @param {object} objects list
- * @param {attrs} list of attributes to look for
- * @return {value} object attribute
- */
-module.exports.resolveParam = function (obj, attrs) {
-  for (var i = 0; i < attrs.length; i++) {
-    var field = attrs[i]
-    if (obj[field] != undefined)
-      return obj[field]
-  }
-  throw new Error( "No valid (" + attrs + ") found in obj");
-}
-
-/**
- * @description returns the given value if the object is undefined
- * @param {obj} object to check
- * @param {val} value to return
- */
-module.exports.valueIfUndef = function (obj, val) {
-  return isUndef(obj) ? val : obj;
-}
-
-module.exports.isUndef = function (obj) {
-  return typeof obj == "undefined";
-}
-
-module.exports.reverseAppend = function (refList, addList, field) {
-  if (isUndef(field))
-    throw new Error ("Unable to append values, no field given")
-  addList.forEach (function (add, i) {
-    refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
-  })
-  return refList;
-}
-
-module.exports.flat = function (list, attr) {
-  return list.map (function (i) {
-    return isUndef(i[attr]) ? 0 : i[attr];
-  });
-}
-
-module.exports.fill = function (list, attr, defaultValue) {
-  list.forEach(function(l) {
-    if (isUndef(l[attr]))
-      l[attr] = defaultValue;
-  });
-}
-
-/**
- * @description Alternative forEach for all those browsers like IE8 and below
- * @param {function} function to apply to each element
- * @param {scope} scope
- */
-if ( !Array.prototype.forEach ) {
-  Array.prototype.forEach = function(fn, scope)
-  {
-    for(var i = 0, len = this.length; i < len; ++i)
-    {
-      if (i in this)
-      {
-        fn.call(scope, this[i], i, this);
-      }
-    }
-  };
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns a vector containing the difference of the parameters.
- * @param {array} series1 first values array
- * @param {array} series2 second values array
- * @return {array} series1 - series2
- */
-module.exports.diffVectors = function (series1, series2, targetAttr)
-{
-  var size = max([series1.length, series2.length])
-  var result = [];
-  var s1Size = series1.length;
-  var s2Size = series2.length;
-  for (var i = 0; i < size; i++)
-  {
-    var itemS1 = 0;
-    var itemS2 = 0;
-    if (s1Size > i)
-    {
-      itemS1 = isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
-    }
-    if (s2Size > i)
-    {
-      itemS2 = isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
-    }
-    result.push (itemS1 - itemS2);
-  }
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns a vector to the 2nd power
- * @param {array} serie values array
- * @return {array} values array ^ 2
- */
-module.exports.powVector = function (serie)
-{
-  var result = [];
-  pow = function (x) {
-    result.push (Math.pow(x, 2));
-  };
-  serie.forEach (pow);
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the sum of all elements in a vector
- * @param {array} vector values array
- * @returns {value} the sum of all elements
- */
-module.exports.sumVector = function (values, targetAttr)
-{
-  var result = 0;
-  sum = function (x) {
-    if (isUndef(x[targetAttr]))
-      result += x
-    else
-      result += x[targetAttr]
-  }
-  values.forEach (sum);
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the average of the sum of all vector elements
- * @param {array} vector values array
- * @returns {value} the average of the all elements
- */
-module.exports.avgVector = function (vector, targetAttr)
-{
-  var result = sumVector (vector, targetAttr);
-  if (!vector.length)
-    return 0;
-  else
-    return result / vector.length;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the vector containing absolutes values of the input
- * @param {array} vector values array
- * @return {array} the absolute values of the given array
- */
-module.exports.absVector = function (vector)
-{
-  var result = [];
-  vector.forEach (function ab(x)
-  {
-    result.push(Math.abs(x));
-  });
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the values of the first vector divided by the second
- * @param {array} v1 values array
- * @param {array} v2 values array
- * @return {array} v1 / v2
- */
-module.exports.divVector = function (v1, v2)
-{
-  var result = [];
-  for (var i = 0; i < v1.length; i++)
-  {
-    result.push (v1[i] / v2[i]);
-  }
-  return result;
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Combine two vectors using the provided function.
- * Both series must have the same length.
- * @param {array} serie1
- * @param {array} serie2
- * @param {function} fun
- * @return {array} values fun(serie1, serie2)
- */
-module.exports.combineVectors = function (serie1, serie2, fun)
-{
-  if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
-  {
-    return [-1];
-  }
-  else
-  {
-    var result = [];
-    for (var i = 0; i < serie1.length; i++)
-    {
-      result.push (fun(serie1[i], serie2[i]));
-    }
-    return result;
-  }
-}
-/**
- * @description Returns the MSE error of two series
- * @param{array} series1 values array
- * @param{array} series2 values array
- * @return{value} the mse error
- */
-module.exports.mse = function (series1, series2)
-{
-  return avgVector (powVector (diffVectors(series1, series2)));
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the RMSE error (squared MSE)
- * @param{array} series1 values array
- * @param{array} series2 values array
- * @return{value} the RMSE error
- */
-module.exports.rmse = function (series1, series2)
-{
-  return Math.sqrt (mse(series1, series2));
-}
-
-////////////////////////////////////////////////////////
-
-/**
- * @description Returns the MAE erro (mean absolute error)
- * @param{array} series1 values array
- * @param{array} series2 values array
- * @return{value} the mae error
- */
-module.exports.mae = function (series1, series2)
-{
-  return avgVector(absVector(diffVectors(series1, series2)));
-}
-
-/*
- * Returns the Bollinger Band values as an object
- * containing three arrays:
- *         - the upper values (upperBand),
- *         - central moving average values (ma),
- *         - lower band values (lowerBand).
- *         
- * Params: list - values
- *         n - size of the sample window
- *         k - height of the band (sd multiplier)
- * Usual values are n = 20 and k = 2 (i.e. the base
- * moving average is calculated on the previous 20 
- * elems for a elem and upper and lower bands are
- * located +2*sd and -2*sd from the central moving average.
- */
-module.exports.bollinger = function (list, n, k, targetAttr) {
-  targetAttr = valueIfUndef(targetAttr, ["c"])
-  var movingAvg = ma (list, n, targetAttr);
-  var movingSd = windowOp (list, n, sd, targetAttr);
-  var upperBand = new Array();
-  var lowerBand = new Array();
-  var movingAvgElem = 0;
-  var movingSdElem = 0;
-  var result = new Array();
-  for (var index = 0; index < movingSd.length; index++) {
-    movingAvgElem = movingAvg[index].ma;
-    movingSdElem = movingSd[index] * k;
-    upperBand.push (movingAvgElem + movingSdElem);
-    lowerBand.push (movingAvgElem - movingSdElem);
-    result.push({ma: movingAvg[index].ma, ub: movingAvgElem + movingSdElem, lb: movingAvgElem - movingSdElem});
-  }
-  return result;
-}
+var utils = require ("./utils")
+var vectors = require ("./vectors")
 
 /*
  * Moving Average: 
  * also known as simple moving average, rolling average, moving mean
  * and a million of similar combinations
  */
-module.exports.ma = function (values, order, targetAttr, outputAttr) {
-  targetAttr = valueIfUndef(targetAttr, ["c"]);
-  outputAttr = valueIfUndef(outputAttr, "ma");
+let ma = function (values, order, targetAttr, outputAttr) {
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
+  outputAttr = utils.valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
   sumWindow = function (serie) {
     var sum = 0;
     for (var init = 0; init < serie.length; init++) {
-      sum += resolveParam(serie[init], targetAttr);
+      sum += utils.resolveParam(serie[init], targetAttr);
     }
     return (sum/serie.length);
   }
-  newVal = windowOp (values, order, sumWindow);
-  return reverseAppend(values, newVal, outputAttr)
+  newVal = utils.windowOp (values, order, sumWindow);
+  return utils.reverseAppend(values, newVal, outputAttr)
 }
+module.exports.ma = ma;
 
 ///////////////////////////////////////////////////////
 
 /**
  * Exponential moving average
  */
-module.exports.ema = function (serie, period, targetAttr, newAttr) 
+let ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
-  newAttr = valueIfUndef (newAttr, "ema")
+  newAttr = utils.valueIfUndef (newAttr, "ema")
   var emaValues = new Array();
   var k = (2/(period+1));
   var initSlice = serie.slice (0, period);
-  var previousDay = avgVector (initSlice, targetAttr);
+  var previousDay = vectors.avgVector (initSlice, targetAttr);
   emaValues.push(previousDay)
   var emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
-    var value = isUndef(targetAttr) ? elem : elem[targetAttr]
+    var value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
     previousDay = value * k + previousDay * (1-k)
     emaValues.push (previousDay);
   });
   var newSerie = serie.slice()
-  return reverseAppend(newSerie, emaValues, newAttr)
+  return utils.reverseAppend(newSerie, emaValues, newAttr)
 }
+module.exports.ema = ema;
 
 ///////////////////////////////////////////////////////
 
@@ -418,9 +59,9 @@ module.exports.ema = function (serie, period, targetAttr, newAttr)
  * is based on the weight's length.
  * The sum of weights should be 1.
  */
-module.exports.wma = function (series, weights, targetAttr)
+let wma = function (series, weights, targetAttr)
 {
-  targetAttr = valueIfUndef(targetAttr, ["c"])
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
   sumWindow = function (elems) {
     var sum = 0;
     elems.forEach(function(elem,i) {
@@ -428,12 +69,131 @@ module.exports.wma = function (series, weights, targetAttr)
     });
     return (sum/elems.length);
   }
-  var wmaValues = windowOp (series, weights.length, sumWindow);
-  return reverseAppend(series, wmaValues, "wma")
+  var wmaValues = utils.windowOp (series, weights.length, sumWindow);
+  return utils.reverseAppend(series, wmaValues, "wma")
 }
+module.exports.wma = wma;
 
-///////////////////////////////////////////////////////
 
+
+},{"./utils":4,"./vectors":5}],2:[function(require,module,exports){
+
+/**
+ * @description Max value in a series
+ * @param{array} values array of numerical values
+ * @returns {value} the max element in the series
+ */
+let max = function (values) {
+  var ret = Number.MIN_VALUE
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] > ret) {
+      ret = values[i];
+    }
+  }
+  return ret;
+}
+module.exports.max = max
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Min value in a series
+ * @param {array} values array of numerical values
+ * @returns {value} min value in the series
+ */
+let min = function (values) {
+  var ret = Number.MAX_VALUE
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] < ret) {
+      ret = values[i];
+    }
+  }
+  return ret;
+}
+module.exports.min = min
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Mean of values in a serie
+ * @param {array} values array of numerical values
+ * @return {value} mean of the series
+ */
+let mean = function (values, targetAttr) {
+  var mean = 0;
+  if (values.length == 0)
+    return mean;
+  for (var i = 0; i < values.length; i++) {
+      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+  }
+  return mean/values.length;
+}
+module.exports.mean = mean
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Standar deviation of values in a serie.
+ * @param {array} values array of numerical values
+ * @return {value} standard deviation of the series values.
+ */
+let sd = function (values, targetAttr) {
+  var meanVal = mean(values, targetAttr);
+  var sqrSum = 0;
+  for (var i = 0; i < values.length; i++) {
+    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+    sqrSum += Math.pow(value-meanVal, 2);
+  }
+  return Math.sqrt (sqrSum/values.length);
+}
+module.exports.sd = sd
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the MSE error of two series
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mse error
+ */
+let mse = function (series1, series2)
+{
+  return avgVector (powVector (diffVectors(series1, series2)));
+}
+module.exports.mse = mse;
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the RMSE error (squared MSE)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the RMSE error
+ */
+let rmse = function (series1, series2)
+{
+  return Math.sqrt (mse(series1, series2));
+}
+module.exports.rmse = rmse;
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the MAE erro (mean absolute error)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mae error
+ */
+let mae = function (series1, series2)
+{
+  return avgVector(absVector(diffVectors(series1, series2)));
+}
+module.exports.mae = mae;
+
+},{}],3:[function(require,module,exports){
+
+var utils = require ("./utils")
+var vectors = require ("./vectors")
 
 /**
  * @description Average Directional Index (ADX)
@@ -442,7 +202,7 @@ module.exports.wma = function (series, weights, targetAttr)
  *
  * Source: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
  */
-module.exports.adx = function (values) {
+let adx = function (values) {
 	dmWindow = function (serie) {
 		var sum = 0;
 		todayMax = serie[1].h - serie[0].h
@@ -460,12 +220,12 @@ module.exports.adx = function (values) {
 			Math.abs(serie[1].l - serie[0].c));
 		return {dmp:dmPos, dmn:dmNeg, tr:tr}
 	}
-	result = windowOp(values, 2, dmWindow);
+	result = Utils.windowOp(values, 2, dmWindow);
 	result.unshift({dmp:0, dmn:0, tr:0});
 
-	firstTr14 = sumVector(result.slice(0, 15), "tr");
-	firstDM14Pos = sumVector(result.slice(0,15), "dmp");
-	firstDM14Neg = sumVector(result.slice(0,15), "dmn");
+	firstTr14 = vectors.sumVector(result.slice(0, 15), "tr");
+	firstDM14Pos = vectors.sumVector(result.slice(0,15), "dmp");
+	firstDM14Neg = vectors.sumVector(result.slice(0,15), "dmn");
 	result[14].tr14 = firstTr14;
 	result[14].dmp14 = firstDM14Pos;
 	result[14].dmn14 = firstDM14Neg;
@@ -486,7 +246,7 @@ module.exports.adx = function (values) {
 		result[i].dx = 100 * (result[i].diff / result[i].sum);
 		if (i >= 28) {
 			if (i == 28)
-				adx = avgVector(result.slice(i-14, i), "dx")
+				adx = vectors.avgVector(result.slice(i-14, i), "dx")
 			else {
 				adx = ((result[i-1].adx * 13 ) + result[i].dx)/14
 			}
@@ -495,6 +255,125 @@ module.exports.adx = function (values) {
 	}
 	return result;
 }
+module.exports.adx = adx;
+
+var utils = require ("./utils")
+var vectors = require ("./vectors")
+
+/*
+ * Moving Average: 
+ * also known as simple moving average, rolling average, moving mean
+ * and a million of similar combinations
+ */
+let ma = function (values, order, targetAttr, outputAttr) {
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
+  outputAttr = utils.valueIfUndef(outputAttr, "ma");
+  // Sums the content of a window
+  sumWindow = function (serie) {
+    var sum = 0;
+    for (var init = 0; init < serie.length; init++) {
+      sum += utils.resolveParam(serie[init], targetAttr);
+    }
+    return (sum/serie.length);
+  }
+  newVal = utils.windowOp (values, order, sumWindow);
+  return utils.reverseAppend(values, newVal, outputAttr)
+}
+module.exports.ma = ma;
+
+///////////////////////////////////////////////////////
+
+/**
+ * Exponential moving average
+ */
+let ema = function (serie, period, targetAttr, newAttr) 
+{
+  if (typeof serie[0] == "object" && !targetAttr)
+    throw new Error("targetAttr not provided")
+  newAttr = utils.valueIfUndef (newAttr, "ema")
+  var emaValues = new Array();
+  var k = (2/(period+1));
+  var initSlice = serie.slice (0, period);
+  var previousDay = vectors.avgVector (initSlice, targetAttr);
+  emaValues.push(previousDay)
+  var emaSlice = serie.slice (period);
+  emaSlice.forEach (function (elem)
+  {
+    var value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
+    previousDay = value * k + previousDay * (1-k)
+    emaValues.push (previousDay);
+  });
+  var newSerie = serie.slice()
+  return utils.reverseAppend(newSerie, emaValues, newAttr)
+}
+module.exports.ema = ema;
+
+///////////////////////////////////////////////////////
+
+/**
+ * Weighted moving average.
+ * The order of the mean (the number of elements to sum) 
+ * is based on the weight's length.
+ * The sum of weights should be 1.
+ */
+let wma = function (series, weights, targetAttr)
+{
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
+  sumWindow = function (elems) {
+    var sum = 0;
+    elems.forEach(function(elem,i) {
+      sum = sum + (elem[targetAttr] * weights[i]);
+    });
+    return (sum/elems.length);
+  }
+  var wmaValues = utils.windowOp (series, weights.length, sumWindow);
+  return utils.reverseAppend(series, wmaValues, "wma")
+}
+module.exports.wma = wma;
+
+
+
+var Utils = require ("./utils") 
+var Avg = require ("./averages")
+
+/*
+ * Returns the Bollinger Band values as an object
+ * containing three arrays:
+ *         - the upper values (upperBand),
+ *         - central moving average values (ma),
+ *         - lower band values (lowerBand).
+ *         
+ * Params: list - values
+ *         n - size of the sample window
+ *         k - height of the band (sd multiplier)
+ * Usual values are n = 20 and k = 2 (i.e. the base
+ * moving average is calculated on the previous 20 
+ * elems for a elem and upper and lower bands are
+ * located +2*sd and -2*sd from the central moving average.
+ */
+let bollinger = function (list, n, k, targetAttr) {
+  targetAttr = Utils.valueIfUndef(targetAttr, ["c"])
+  var movingAvg = Avg.ma (list, n, targetAttr);
+  var movingSd = Utils.windowOp (list, n, sd, targetAttr);
+  var upperBand = new Array();
+  var lowerBand = new Array();
+  var movingAvgElem = 0;
+  var movingSdElem = 0;
+  var result = new Array();
+  for (var index = 0; index < movingSd.length; index++) {
+    movingAvgElem = movingAvg[index].ma;
+    movingSdElem = movingSd[index] * k;
+    upperBand.push (movingAvgElem + movingSdElem);
+    lowerBand.push (movingAvgElem - movingSdElem);
+    result.push({ma: movingAvg[index].ma, ub: movingAvgElem + movingSdElem, lb: movingAvgElem - movingSdElem});
+  }
+  return result;
+}
+module.exports.bollinger = bollinger;
+
+var utils = require ("./utils")
+var vectors = require ("./vectors")
+var averages = require ("./averages")
 
 /**
  * @description On-Balance Volume (obv).
@@ -502,7 +381,7 @@ module.exports.adx = function (values) {
  * @param {array} volumeList list of volumes
  * @return {array} the OBV values list
  */
-module.exports.obv = function (closeList, volumeList)
+let obv = function (closeList, volumeList)
 {
   var result = [];
   var prevObv = volumeList[0];
@@ -528,13 +407,15 @@ module.exports.obv = function (closeList, volumeList)
   }
   return result;
 }
+module.exports.obv = obv;
+
 /**
  * @description Returns the VPT (Volume-price Trend)
  * @param {array} closeList list of closing prices
  * @param {array} volumeList list of volume
  * @return {array} vpt values array
  */
-module.exports.vpt = function (closeList, volumeList)
+let vpt = function (closeList, volumeList)
 {
   var result = [];
   var vpt = volumeList[0]
@@ -547,6 +428,7 @@ module.exports.vpt = function (closeList, volumeList)
   }
   return result;
 }
+module.exports.vpt = vpt;
 
 /**
  * @description Returns the Money-flow Index
@@ -556,7 +438,7 @@ module.exports.vpt = function (closeList, volumeList)
  * @param {array} volumes list of volumes
  * @return {value} the money-flow index
  */
-module.exports.mfi = function (values)
+let mfi = function (values)
 {
   var typicalMoney = [];
   var moneyFlow = [];
@@ -588,17 +470,18 @@ module.exports.mfi = function (values)
     }
   }
 
-  var sumPosFlow = windowOp (posMoneyFlow, 14, sumVector);
-  var sumNegFlow = windowOp (negMoneyFlow, 14, sumVector);
-  var moneyRatio = divVector (sumPosFlow, sumNegFlow);
+  var sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
+  var sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
+  var moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
 
   var mfi = [];
   moneyRatio.forEach (function (value)
   {
     mfi.push (100 - (100/(1+value)));
   });
-  return reverseAppend (values, mfi, "mfi");
+  return utils.reverseAppend (values, mfi, "mfi");
 }
+module.exports.mfi = mfi;
 
 ////////////////////////////////////////////
 
@@ -608,35 +491,36 @@ module.exports.mfi = function (values)
  * @return {object} object containing the macd, signal
  *                  and hist series.
  */
-module.exports.macd = function (closeValues, targetAttr)
+let macd = function (closeValues, targetAttr)
 {
-  targetAttr = valueIfUndef(targetAttr, ["c"])
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
   slow = 26;
   fast = 12;
   signal = 9;
-  slowEMA = ema (closeValues, slow, targetAttr, "slowema");
-  fastEMA = ema (closeValues, fast, targetAttr, "fastema");
-  macdLine = combineVectors (slowEMA, fastEMA, function (slow,fast) {
-    if (slow.slowema == 0 || isUndef(slow.slowema))
+  slowEMA = averages.ema (closeValues, slow, targetAttr, "slowema");
+  fastEMA = averages.ema (closeValues, fast, targetAttr, "fastema");
+  macdLine = vectors.combineVectors (slowEMA, fastEMA, function (slow,fast) {
+    if (slow.slowema == 0 || utils.isUndef(slow.slowema))
     {
       return ({macd:0}); // avoid div by 0
     };
     return ({macd:100 * ((fast.fastema/slow.slowema) - 1)});
   });
-  signalLine = ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
+  signalLine = averages.ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
   for (var i = 0; i < 25; i++)
   {
     signalLine.unshift({macd:0}); // append again 25 zeros
   }
-  histLine = diffVectors(macdLine, signalLine, "macd");
-  fill(signalLine, "ema", 0);
+  histLine = vectors.diffVectors(macdLine, signalLine, "macd");
+  utils.fill(signalLine, "ema", 0);
   macdItems = [];
   for (var i = 0; i < macdLine.length; i++) {
     macdItems.push({macd:{line:macdLine[i].macd, signal:signalLine[i].ema, hist:histLine[i]}});
   }
   var returnList = closeValues.slice()
-  return reverseAppend (returnList, macdItems, "macd");
+  return utils.reverseAppend (returnList, macdItems, "macd");
 }
+module.exports.macd = macd;
 
 ////////////////////////////////////////////
 
@@ -649,16 +533,17 @@ module.exports.macd = function (closeValues, targetAttr)
  * var m = momemtum ([12,34,23, 81], 1) 
  * console.log(m)  // [22, -11, 58]
  */
-module.exports.momentum = function(values, order)
+let momentum = function(values, order)
 {
   momentumN = function (chunk)
   {
     return chunk[chunk.length-1].c - chunk[0].c
   };
   var returnValues = values.slice()
-  var newValues = windowOp (values, order+1, momentumN);
-  return reverseAppend(returnValues, newValues, "mom")
+  var newValues = utils.windowOp (values, order+1, momentumN);
+  return utils.reverseAppend(returnValues, newValues, "mom")
 }
+module.exports.momentum = momentum;
 
 ////////////////////////////////////////////
 
@@ -671,17 +556,17 @@ module.exports.momentum = function(values, order)
  * var roc = roc ([12, 11, 15, 10], 1) 
  * console.log(roc)  // [-0.09, 0.36, -0.33]
  */
-module.exports.roc = function(values, order, targetAttr)
+let roc = function(values, order, targetAttr)
 {
   rocN = function (chunk)
   {
     return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
   var returnValues = values.slice()
-  var rocValues = windowOp (values, order+1, rocN);
-  return reverseAppend(returnValues, rocValues, "roc");
+  var rocValues = utils.windowOp (values, order+1, rocN);
+  return utils.reverseAppend(returnValues, rocValues, "roc");
 }
-
+module.exports.roc = roc;
 
 ////////////////////////////////////////////
 /**
@@ -693,7 +578,7 @@ module.exports.roc = function(values, order, targetAttr)
  * var rsi = rsi ([45.34, 44, ..., 42,9, 45.23], 14) 
  * console.log(rsi)  // [70.53, 66.32, ..., 56.05]
  */
-module.exports.rsi = function (values, order)
+let rsi = function (values, order)
 {
   if (values.length < order+1)
   {
@@ -721,8 +606,8 @@ module.exports.rsi = function (values, order)
     }
   }
   result = [];
-  avgGain = avgVector (gains.slice(0, order));
-  avgLoss = avgVector (losses.slice (0, order));
+  avgGain = vectors.avgVector (gains.slice(0, order));
+  avgLoss = vectors.avgVector (losses.slice (0, order));
   firstRS = avgGain / avgLoss;
   result.push (100 - (100 / (1 + firstRS)));
   for (var i = order; i < values.length-1; i++)
@@ -736,8 +621,9 @@ module.exports.rsi = function (values, order)
     avgLoss = partialCurrentLoss;
   }
   var newValues = values.slice()
-  return reverseAppend(newValues, result, "rsi");
+  return utils.reverseAppend(newValues, result, "rsi");
 }
+module.exports.rsi = rsi;
 
 //////////////////////////////
 /**
@@ -750,7 +636,7 @@ module.exports.rsi = function (values, order)
  * console.log(atr)  // [{tr:2.4, atr:0}, ... 13 empty atr's, ... ,{atr:_value_, tr:_value_} ]
  */
 
-module.exports.atr = function (values, p) {
+let atr = function (values, p) {
   p = valueIfUndef(p, 14);
   var results = [];
   for (var i = 0; i < values.length; i++) {
@@ -777,8 +663,124 @@ module.exports.atr = function (values, p) {
     }
   }
   var newValues = values.slice()
-  return reverseAppend(newValues, results, "at");
+  return utils.reverseAppend(newValues, results, "at");
 }
+module.exports.atr = atr;
+
+/**
+ * @description Max value in a series
+ * @param{array} values array of numerical values
+ * @returns {value} the max element in the series
+ */
+let max = function (values) {
+  var ret = Number.MIN_VALUE
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] > ret) {
+      ret = values[i];
+    }
+  }
+  return ret;
+}
+module.exports.max = max
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Min value in a series
+ * @param {array} values array of numerical values
+ * @returns {value} min value in the series
+ */
+let min = function (values) {
+  var ret = Number.MAX_VALUE
+  for (var i = 0; i < values.length; i++) {
+    if (values[i] < ret) {
+      ret = values[i];
+    }
+  }
+  return ret;
+}
+module.exports.min = min
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Mean of values in a serie
+ * @param {array} values array of numerical values
+ * @return {value} mean of the series
+ */
+let mean = function (values, targetAttr) {
+  var mean = 0;
+  if (values.length == 0)
+    return mean;
+  for (var i = 0; i < values.length; i++) {
+      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+  }
+  return mean/values.length;
+}
+module.exports.mean = mean
+
+//////////////////////////////////////////////////////////
+
+/**
+ * @description Standar deviation of values in a serie.
+ * @param {array} values array of numerical values
+ * @return {value} standard deviation of the series values.
+ */
+let sd = function (values, targetAttr) {
+  var meanVal = mean(values, targetAttr);
+  var sqrSum = 0;
+  for (var i = 0; i < values.length; i++) {
+    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+    sqrSum += Math.pow(value-meanVal, 2);
+  }
+  return Math.sqrt (sqrSum/values.length);
+}
+module.exports.sd = sd
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the MSE error of two series
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mse error
+ */
+let mse = function (series1, series2)
+{
+  return avgVector (powVector (diffVectors(series1, series2)));
+}
+module.exports.mse = mse;
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the RMSE error (squared MSE)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the RMSE error
+ */
+let rmse = function (series1, series2)
+{
+  return Math.sqrt (mse(series1, series2));
+}
+module.exports.rmse = rmse;
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the MAE erro (mean absolute error)
+ * @param{array} series1 values array
+ * @param{array} series2 values array
+ * @return{value} the mae error
+ */
+let mae = function (series1, series2)
+{
+  return avgVector(absVector(diffVectors(series1, series2)));
+}
+module.exports.mae = mae;
+
+var Utils = require ("./utils")
+
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)
  * and three resistance levels (r1, r2 and r3) of the
@@ -798,7 +800,7 @@ module.exports.atr = function (values, p) {
  *         - s2: support second level
  *         - s1: support first level
  */
-module.exports.floorPivots = function (values) {
+let floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -812,8 +814,9 @@ module.exports.floorPivots = function (values) {
     elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
-  return reverseAppend(values, result, "floor");
+  return Utils.reverseAppend(values, result, "floor");
 }
+module.exports.floorPivots = floorPivots;
 
 ////////////////////////////////////////////////////////
 
@@ -826,7 +829,7 @@ module.exports.floorPivots = function (values) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-module.exports.tomDemarksPoints = function (values) {
+let tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -848,8 +851,9 @@ module.exports.tomDemarksPoints = function (values) {
     elem = {l: newLow, h: newHigh};
     result.push(elem);
   }
-  return reverseAppend(values, result, "tom");
+  return utils.reverseAppend(values, result, "tom");
 }
+module.exports.tomDemarksPoints = tomDemarksPoints;
 
 ////////////////////////////////////////////////////////
 
@@ -865,7 +869,7 @@ module.exports.tomDemarksPoints = function (values) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-module.exports.woodiesPoints = function (values) {
+let woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -879,8 +883,9 @@ module.exports.woodiesPoints = function (values) {
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
-  return reverseAppend (values, result, "wood");
+  return utils.reverseAppend (values, result, "wood");
 }
+module.exports.woodiesPoints = woodiesPoints;
 
 ////////////////////////////////////////////////////////
 
@@ -897,7 +902,7 @@ module.exports.woodiesPoints = function (values) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-module.exports.camarillaPoints = function (values) {
+let camarillaPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -916,11 +921,11 @@ module.exports.camarillaPoints = function (values) {
   }
   return reverseAppend(values, result, "cam");
 }
-
+module.exports.camarillaPoints = camarillaPoints;
 
 ////////////////////////////////////////////////////////
 
-module.exports.fibonacciRetrs = function (values, trend)
+let fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
@@ -940,3 +945,495 @@ module.exports.fibonacciRetrs = function (values, trend)
     }
   return result
 }
+module.exports.fibonacciRetrs = fibonacciRetrs;
+/**
+ * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+ * @param {object} objects list
+ * @param {attrs} list of attributes to look for
+ * @return {value} object attribute
+ */
+let resolveParam = function (obj, attrs) {
+  for (var i = 0; i < attrs.length; i++) {
+    var field = attrs[i]
+    if (obj[field] != undefined)
+      return obj[field]
+  }
+  throw new Error( "No valid (" + attrs + ") found in obj");
+}
+module.exports.resolveParam = resolveParam
+
+/**
+ * @description returns the given value if the object is undefined
+ * @param {obj} object to check
+ * @param {val} value to return
+ */
+let valueIfUndef = function (obj, val) {
+  return isUndef(obj) ? val : obj;
+}
+module.exports.valueIfUndef = valueIfUndef
+
+let isUndef = function (obj) {
+  return typeof obj === "undefined";
+}
+module.exports.isUndef = isUndef;
+
+let reverseAppend = function (refList, addList, field) {
+  if (isUndef(field))
+    throw new Error ("Unable to append values, no field given")
+  addList.forEach (function (add, i) {
+    refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
+  })
+  return refList;
+}
+module.exports.reverseAppend = reverseAppend
+
+let flat = function (list, attr) {
+  return list.map (function (i) {
+    return isUndef(i[attr]) ? 0 : i[attr];
+  });
+}
+module.exports.flat = flat
+
+let fill = function (list, attr, defaultValue) {
+  list.forEach(function(l) {
+    if (isUndef(l[attr]))
+      l[attr] = defaultValue;
+  });
+}
+module.exports.fill = fill
+
+/**
+ * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+ * @param {array} values values array
+ * @param {value} value size of the window
+ * @param {function} fun function to apply on each chunk
+ * @return {array} values returned by the given function in each chunck
+ */
+let windowOp = function (values, value, fun, targetAttr) {
+  var result = new Array();
+  for (var i = value; i <= values.length; i++)
+  {
+    var windowVal = fun (values.slice(i-value, i), targetAttr);
+    result.push (windowVal);
+  }
+  return result;
+}
+module.exports.windowOp = windowOp
+
+var utils = require ("./utils");
+var stats = require ("./statistics");
+/**
+ * @description Alternative forEach for all those browsers like IE8 and below
+ * @param {function} function to apply to each element
+ * @param {scope} scope
+ */
+if ( !Array.prototype.forEach ) {
+  Array.prototype.forEach = function(fn, scope)
+  {
+    for(var i = 0, len = this.length; i < len; ++i)
+    {
+      if (i in this)
+      {
+        fn.call(scope, this[i], i, this);
+      }
+    }
+  };
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns a vector containing the difference of the parameters.
+ * @param {array} series1 first values array
+ * @param {array} series2 second values array
+ * @return {array} series1 - series2
+ */
+let diffVectors = function (series1, series2, targetAttr)
+{
+  var size = stats.max([series1.length, series2.length])
+  var result = [];
+  var s1Size = series1.length;
+  var s2Size = series2.length;
+  for (var i = 0; i < size; i++)
+  {
+    var itemS1 = 0;
+    var itemS2 = 0;
+    if (s1Size > i)
+    {
+      itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
+    }
+    if (s2Size > i)
+    {
+      itemS2 = utils.isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
+    }
+    result.push (itemS1 - itemS2);
+  }
+  return result;
+}
+module.exports.diffVectors = diffVectors
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns a vector to the 2nd power
+ * @param {array} serie values array
+ * @return {array} values array ^ 2
+ */
+let powVector = function (serie)
+{
+  var result = [];
+  pow = function (x) {
+    result.push (Math.pow(x, 2));
+  };
+  serie.forEach (pow);
+  return result;
+}
+module.exports.powVector = powVector
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the sum of all elements in a vector
+ * @param {array} vector values array
+ * @returns {value} the sum of all elements
+ */
+let sumVector = function (values, targetAttr)
+{
+  var result = 0;
+  sum = function (x) {
+    if (utils.isUndef(x[targetAttr]))
+      result += x
+    else
+      result += x[targetAttr]
+  }
+  values.forEach (sum);
+  return result;
+}
+module.exports.sumVector = sumVector;
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the average of the sum of all vector elements
+ * @param {array} vector values array
+ * @returns {value} the average of the all elements
+ */
+let avgVector = function (vector, targetAttr)
+{
+  var result = module.exports.sumVector (vector, targetAttr);
+  if (!vector.length)
+    return 0;
+  else
+    return result / vector.length;
+}
+module.exports.avgVector = avgVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the vector containing absolutes values of the input
+ * @param {array} vector values array
+ * @return {array} the absolute values of the given array
+ */
+let absVector = function (vector)
+{
+  var result = [];
+  vector.forEach (function ab(x)
+  {
+    result.push(Math.abs(x));
+  });
+  return result;
+}
+module.exports.absVector = absVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the values of the first vector divided by the second
+ * @param {array} v1 values array
+ * @param {array} v2 values array
+ * @return {array} v1 / v2
+ */
+let divVector = function (v1, v2)
+{
+  var result = [];
+  for (var i = 0; i < v1.length; i++)
+  {
+    result.push (v1[i] / v2[i]);
+  }
+  return result;
+}
+module.exports.divVector = divVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Combine two vectors using the provided function.
+ * Both series must have the same length.
+ * @param {array} serie1
+ * @param {array} serie2
+ * @param {function} fun
+ * @return {array} values fun(serie1, serie2)
+ */
+let combineVectors = function (serie1, serie2, fun)
+{
+  if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
+  {
+    return [-1];
+  }
+  else
+  {
+    var result = [];
+    for (var i = 0; i < serie1.length; i++)
+    {
+      result.push (fun(serie1[i], serie2[i]));
+    }
+    return result;
+  }
+}
+module.exports.combineVectors = combineVectors
+
+},{"./averages":1,"./statistics":2,"./utils":4,"./vectors":5}],4:[function(require,module,exports){
+/**
+ * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+ * @param {object} objects list
+ * @param {attrs} list of attributes to look for
+ * @return {value} object attribute
+ */
+let resolveParam = function (obj, attrs) {
+  for (var i = 0; i < attrs.length; i++) {
+    var field = attrs[i]
+    if (obj[field] != undefined)
+      return obj[field]
+  }
+  throw new Error( "No valid (" + attrs + ") found in obj");
+}
+module.exports.resolveParam = resolveParam
+
+/**
+ * @description returns the given value if the object is undefined
+ * @param {obj} object to check
+ * @param {val} value to return
+ */
+let valueIfUndef = function (obj, val) {
+  return isUndef(obj) ? val : obj;
+}
+module.exports.valueIfUndef = valueIfUndef
+
+let isUndef = function (obj) {
+  return typeof obj === "undefined";
+}
+module.exports.isUndef = isUndef;
+
+let reverseAppend = function (refList, addList, field) {
+  if (isUndef(field))
+    throw new Error ("Unable to append values, no field given")
+  addList.forEach (function (add, i) {
+    refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
+  })
+  return refList;
+}
+module.exports.reverseAppend = reverseAppend
+
+let flat = function (list, attr) {
+  return list.map (function (i) {
+    return isUndef(i[attr]) ? 0 : i[attr];
+  });
+}
+module.exports.flat = flat
+
+let fill = function (list, attr, defaultValue) {
+  list.forEach(function(l) {
+    if (isUndef(l[attr]))
+      l[attr] = defaultValue;
+  });
+}
+module.exports.fill = fill
+
+/**
+ * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
+ * @param {array} values values array
+ * @param {value} value size of the window
+ * @param {function} fun function to apply on each chunk
+ * @return {array} values returned by the given function in each chunck
+ */
+let windowOp = function (values, value, fun, targetAttr) {
+  var result = new Array();
+  for (var i = value; i <= values.length; i++)
+  {
+    var windowVal = fun (values.slice(i-value, i), targetAttr);
+    result.push (windowVal);
+  }
+  return result;
+}
+module.exports.windowOp = windowOp
+
+},{}],5:[function(require,module,exports){
+
+var utils = require ("./utils");
+var stats = require ("./statistics");
+/**
+ * @description Alternative forEach for all those browsers like IE8 and below
+ * @param {function} function to apply to each element
+ * @param {scope} scope
+ */
+if ( !Array.prototype.forEach ) {
+  Array.prototype.forEach = function(fn, scope)
+  {
+    for(var i = 0, len = this.length; i < len; ++i)
+    {
+      if (i in this)
+      {
+        fn.call(scope, this[i], i, this);
+      }
+    }
+  };
+}
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns a vector containing the difference of the parameters.
+ * @param {array} series1 first values array
+ * @param {array} series2 second values array
+ * @return {array} series1 - series2
+ */
+let diffVectors = function (series1, series2, targetAttr)
+{
+  var size = stats.max([series1.length, series2.length])
+  var result = [];
+  var s1Size = series1.length;
+  var s2Size = series2.length;
+  for (var i = 0; i < size; i++)
+  {
+    var itemS1 = 0;
+    var itemS2 = 0;
+    if (s1Size > i)
+    {
+      itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
+    }
+    if (s2Size > i)
+    {
+      itemS2 = utils.isUndef(targetAttr) ? series2[i] : series2[i][targetAttr];
+    }
+    result.push (itemS1 - itemS2);
+  }
+  return result;
+}
+module.exports.diffVectors = diffVectors
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns a vector to the 2nd power
+ * @param {array} serie values array
+ * @return {array} values array ^ 2
+ */
+let powVector = function (serie)
+{
+  var result = [];
+  pow = function (x) {
+    result.push (Math.pow(x, 2));
+  };
+  serie.forEach (pow);
+  return result;
+}
+module.exports.powVector = powVector
+
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the sum of all elements in a vector
+ * @param {array} vector values array
+ * @returns {value} the sum of all elements
+ */
+let sumVector = function (values, targetAttr)
+{
+  var result = 0;
+  sum = function (x) {
+    if (utils.isUndef(x[targetAttr]))
+      result += x
+    else
+      result += x[targetAttr]
+  }
+  values.forEach (sum);
+  return result;
+}
+module.exports.sumVector = sumVector;
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the average of the sum of all vector elements
+ * @param {array} vector values array
+ * @returns {value} the average of the all elements
+ */
+let avgVector = function (vector, targetAttr)
+{
+  var result = module.exports.sumVector (vector, targetAttr);
+  if (!vector.length)
+    return 0;
+  else
+    return result / vector.length;
+}
+module.exports.avgVector = avgVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the vector containing absolutes values of the input
+ * @param {array} vector values array
+ * @return {array} the absolute values of the given array
+ */
+let absVector = function (vector)
+{
+  var result = [];
+  vector.forEach (function ab(x)
+  {
+    result.push(Math.abs(x));
+  });
+  return result;
+}
+module.exports.absVector = absVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Returns the values of the first vector divided by the second
+ * @param {array} v1 values array
+ * @param {array} v2 values array
+ * @return {array} v1 / v2
+ */
+let divVector = function (v1, v2)
+{
+  var result = [];
+  for (var i = 0; i < v1.length; i++)
+  {
+    result.push (v1[i] / v2[i]);
+  }
+  return result;
+}
+module.exports.divVector = divVector
+////////////////////////////////////////////////////////
+
+/**
+ * @description Combine two vectors using the provided function.
+ * Both series must have the same length.
+ * @param {array} serie1
+ * @param {array} serie2
+ * @param {function} fun
+ * @return {array} values fun(serie1, serie2)
+ */
+let combineVectors = function (serie1, serie2, fun)
+{
+  if (serie1.length != serie2.length || serie1.length + serie2.length < 2)
+  {
+    return [-1];
+  }
+  else
+  {
+    var result = [];
+    for (var i = 0; i < serie1.length; i++)
+    {
+      result.push (fun(serie1[i], serie2[i]));
+    }
+    return result;
+  }
+}
+module.exports.combineVectors = combineVectors
+
+},{"./statistics":2,"./utils":4}]},{},[3])(3)
+});

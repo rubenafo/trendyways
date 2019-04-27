@@ -26,10 +26,13 @@
     "jsdoc"
   ],
   "devDependencies": {
-    "mocha": ">=2.3.4",
+    "browserify": "^16.2.3",
     "coveralls": "^2.11.6",
     "istanbul": "^0.4.2",
-    "jsdoc": "^3.5"
+    "jsdoc": "^3.5",
+    "mocha": ">=2.3.4",
+    "uglify-es": "^3.3.9",
+    "uglifyjs-webpack-plugin": "^2.1.1"
   },
   "license": "Apache-2.0",
   "engines": {

@@ -1,3 +1,6 @@
+
+var Utils = require ("./utils")
+
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)
  * and three resistance levels (r1, r2 and r3) of the
@@ -17,7 +20,7 @@
  *         - s2: support second level
  *         - s1: support first level
  */
-module.exports.floorPivots = function (values) {
+let floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -31,8 +34,9 @@ module.exports.floorPivots = function (values) {
     elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
-  return reverseAppend(values, result, "floor");
+  return Utils.reverseAppend(values, result, "floor");
 }
+module.exports.floorPivots = floorPivots;
 
 ////////////////////////////////////////////////////////
 
@@ -45,7 +49,7 @@ module.exports.floorPivots = function (values) {
  *         - low: predicted low value.
  *         - high: predicted high value.
  */
-module.exports.tomDemarksPoints = function (values) {
+let tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -67,8 +71,9 @@ module.exports.tomDemarksPoints = function (values) {
     elem = {l: newLow, h: newHigh};
     result.push(elem);
   }
-  return reverseAppend(values, result, "tom");
+  return utils.reverseAppend(values, result, "tom");
 }
+module.exports.tomDemarksPoints = tomDemarksPoints;
 
 ////////////////////////////////////////////////////////
 
@@ -84,7 +89,7 @@ module.exports.tomDemarksPoints = function (values) {
  *         - r2: predicted secondary resistance (r2).
  *         - s2: predicted secondary support (s2).
  */
-module.exports.woodiesPoints = function (values) {
+let woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -98,8 +103,9 @@ module.exports.woodiesPoints = function (values) {
             s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
-  return reverseAppend (values, result, "wood");
+  return utils.reverseAppend (values, result, "wood");
 }
+module.exports.woodiesPoints = woodiesPoints;
 
 ////////////////////////////////////////////////////////
 
@@ -116,7 +122,7 @@ module.exports.woodiesPoints = function (values) {
  *         - r3: predicted r3 resistance.
  *         - r4: predicted r4 resistance.
  */
-module.exports.camarillaPoints = function (values) {
+let camarillaPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
@@ -135,11 +141,11 @@ module.exports.camarillaPoints = function (values) {
   }
   return reverseAppend(values, result, "cam");
 }
-
+module.exports.camarillaPoints = camarillaPoints;
 
 ////////////////////////////////////////////////////////
 
-module.exports.fibonacciRetrs = function (values, trend)
+let fibonacciRetrs = function (values, trend)
 {
   var result = new Array();
   var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
@@ -159,3 +165,4 @@ module.exports.fibonacciRetrs = function (values, trend)
     }
   return result
 }
+module.exports.fibonacciRetrs = fibonacciRetrs;

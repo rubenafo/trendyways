@@ -29,7 +29,7 @@ describe ("Averages", function () {
     {
       assert.equal (result[i+9].ema.toFixed(3), expected[i].toFixed(3), "Checking EMA i = " + i)
     }
-    result = ema(series, 1, ["c"]);
+    result = tw.ema(series, 1, ["c"]);
     for (var i = 0; i < result.length; i++)
     {
       assert.equal (result[i].ema.toFixed(3), series[i].c, "EMA = 1, value " + i + " unchanged");

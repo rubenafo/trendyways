@@ -124,13 +124,13 @@ describe ("Indicators", function () {
     0.402451934,0.540252674,0.654774263,0.779235732,0.886387296,0.969878048,1.030865267,1.045533903,1.043167320,
     1.043497276,1.051811291,1.073581927];
     var macdResults = tw.macd (testData);
-    assert.equal (flat(macdResults,"macd").length, macdTest.length, "MACD values match length ");
-    for (var i = 0; i < flat(macdResults,"macd").length; i++)
+    assert.equal (tw.flat(macdResults,"macd").length, macdTest.length, "MACD values match length ");
+    for (var i = 0; i < tw.flat(macdResults,"macd").length; i++)
     {
       assert.deepEqual (macdResults[i].macd.line.toFixed(5), macdTest[i].toFixed(5), "Testing MACD value " + i);
     }
-    assert.equal (flat(macdResults,"signal").length, signalTest.length, "MACD signal values match length");
-    for (var i = 0; i < flat(macdResults,"signal").length; i++)
+    assert.equal (tw.flat(macdResults,"signal").length, signalTest.length, "MACD signal values match length");
+    for (var i = 0; i < tw.flat(macdResults,"signal").length; i++)
     {
       assert.deepEqual (macdResults[i].macd.signal.toFixed(5), signalTest[i].toFixed(5), "Testing signal value " + i);
     }
