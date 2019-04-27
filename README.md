@@ -13,7 +13,7 @@ Compatibily: IE[7,8,9,...], Chrome and Firefox.
 Install
 -------
 
-   npm install trendyways
+   `npm install trendyways`
 
 How to use it
 -------------
