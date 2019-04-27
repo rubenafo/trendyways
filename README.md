@@ -17,16 +17,14 @@ Install
 
 How to use it
 -------------
-The minified version of trendyways ([trendyways.min.js]) (https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough to use it in a production environment.   
-A non minified version is available in the same dir ([trendyways.js])(https://github.com/rubenafo/trendyways/blob/master/trendyways.js)
+From NPM, load the module to access the methods:
 
-Building from source is also possible if nodejs is installed on your system. In this case after clone this repo, run 
- 
-   make all
+`let tw = require ("trendyways")`   
+`console.log(tw.ma([1.1, 2.2, 3.4, 2.1], 2)` 
 
-to create the trendyways.js lib.
-The 
-
+If you use the module in a browser as a JS dependency, _trendyways.js_ or _trendyways.min.js_ just include the file:   
+`<script src="trendyways.min.js" />`   
+and the file will be available as the __tw__ module: e.g. `tw.max([4,5,6])`
 
 Documentation
 -------------
