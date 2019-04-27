@@ -10,6 +10,11 @@ It is intended to be a simple library, suitable to be inserted in any visulizati
 
 Compatibily: IE[7,8,9,...], Chrome and Firefox.
 
+Install
+-------
+
+   npm install trendyways
+
 How to use it
 -------------
 The minified version of trendyways ([trendyways.min.js]) (https://github.com/rubenafo/trendyways/blob/master/trendyways.min.js) is enough to use it in a production environment.   
@@ -19,7 +24,9 @@ Building from source is also possible if nodejs is installed on your system. In 
  
    make all
 
-to create the trendyways.js lib and related docs.
+to create the trendyways.js lib.
+The 
+
 
 Documentation
 -------------
