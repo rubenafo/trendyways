@@ -1,5 +1,5 @@
 var assert = require ("assert");
-var tw = require ("../trendyways.js");
+var tw = require ("../dist/trendyways.js");
 
 describe ("Averages", function () {
 

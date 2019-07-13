@@ -4,7 +4,7 @@
  */
 
 var assert = require ("assert");
-var tw = require ("../trendyways.js");
+var tw = require ("../dist/trendyways.js");
 
 describe ("Bollinger", function () {
   it ("Bollinger bands values for a sample serie", function () {

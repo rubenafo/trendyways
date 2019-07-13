@@ -1,5 +1,5 @@
 var assert = require ("assert");
-var tr = require ("../trendyways.js");
+var tr = require ("../dist/trendyways.js");
 
 it ("ADX test", function () {
 	var data = [
