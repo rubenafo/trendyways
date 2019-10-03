@@ -1,3 +1,4 @@
+"use strict";
 
 var Utils = require ("./utils")
 
@@ -24,14 +25,14 @@ let floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
-    r1 = 2 * pivotLevel - values[i].l;
-    r2 = pivotLevel + values[i].h - values[i].l;
-    r3 = r1 + values[i].h - values[i].l;
-    s1 = 2 * pivotLevel - values[i].h;
-    s2 = pivotLevel - values[i].h + values[i].l;
-    s3 = s1 - values[i].h + values[i].l;
-    elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
+    let pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
+    let r1 = 2 * pivotLevel - values[i].l;
+    let r2 = pivotLevel + values[i].h - values[i].l;
+    let r3 = r1 + values[i].h - values[i].l;
+    let s1 = 2 * pivotLevel - values[i].h;
+    let s2 = pivotLevel - values[i].h + values[i].l;
+    let s3 = s1 - values[i].h + values[i].l;
+    let elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
   return Utils.reverseAppend(values, result, "floor");
@@ -53,7 +54,7 @@ let tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var x = 0;
+    let x = 0;
     if (values[i].c < values[i].o)
     {
       x = values[i].h + (2 * (values[i].l) + values[i].c);
@@ -66,9 +67,9 @@ let tomDemarksPoints = function (values) {
     {
       x = values[i].h + values[i].l + (2 * values[i].c);
     }
-    newHigh = (x/2) - values[i].l;
-    newLow = (x/2) - values[i].h;
-    elem = {l: newLow, h: newHigh};
+    let newHigh = (x/2) - values[i].l;
+    let newLow = (x/2) - values[i].h;
+    let elem = {l: newLow, h: newHigh};
     result.push(elem);
   }
   return utils.reverseAppend(values, result, "tom");
@@ -93,14 +94,13 @@ let woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var x = 0;
-    var pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
-    var r1 = (2 * pivot) - values[i].l;
-    var r2 = pivot + values[i].h - values[i].l;
-    var s1 = (2 * pivot) - values[i].h;
-    var s2 = pivot - values[i].h + values[i].l;
-    elem = {pivot: pivot, r1: r1,
-            s1: s1, s2: s2, r2: r2};
+    let x = 0;
+    let pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
+    let r1 = (2 * pivot) - values[i].l;
+    let r2 = pivot + values[i].h - values[i].l;
+    let s1 = (2 * pivot) - values[i].h;
+    let s2 = pivot - values[i].h + values[i].l;
+    let elem = {pivot: pivot, r1: r1, s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
   return utils.reverseAppend (values, result, "wood");
@@ -123,20 +123,19 @@ module.exports.woodiesPoints = woodiesPoints;
  *         - r4: predicted r4 resistance.
  */
 let camarillaPoints = function (values) {
-  var result = new Array();
+  let result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var diff = values[i].h - values[i].l;
-    var r4 = (diff * 1.1) / 2 + values[i].c;
-    var r3 = (diff *1.1) / 4 + values[i].c;
-    var r2 = (diff * 1.1) / 6 + values[i].c;
-    var r1 = (diff * 1.1) / 12 + values[i].c;
-    var s1 = values[i].c - (diff * 1.1 / 12);
-    var s2 = values[i].c - (diff *1.1 /6);
-    var s3 = values[i].c - (diff * 1.1 / 4);
-    var s4 = values[i].c - (diff *1.1 / 2);
-    elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3,
-            s4: s4};
+    let diff = values[i].h - values[i].l;
+    let r4 = (diff * 1.1) / 2 + values[i].c;
+    let r3 = (diff *1.1) / 4 + values[i].c;
+    let r2 = (diff * 1.1) / 6 + values[i].c;
+    let r1 = (diff * 1.1) / 12 + values[i].c;
+    let s1 = values[i].c - (diff * 1.1 / 12);
+    let s2 = values[i].c - (diff *1.1 /6);
+    let s3 = values[i].c - (diff * 1.1 / 4);
+    let s4 = values[i].c - (diff *1.1 / 2);
+    let elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3, s4: s4};
     result.push(elem);
   }
   return reverseAppend(values, result, "cam");
@@ -147,14 +146,14 @@ module.exports.camarillaPoints = camarillaPoints;
 
 let fibonacciRetrs = function (values, trend)
 {
-  var result = new Array();
-  var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
+  let result = new Array();
+  let retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
     for (var i = 0; i < values.length; i++) {
-      var diff = values[i].h - values[i].l;
-      var elem = new Array();
+      let diff = values[i].h - values[i].l;
+      let elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = 0;
+        let level = 0;
         if (trend == 'DOWNTREND')
           level = values[i].h - diff * retracements[r];
         else

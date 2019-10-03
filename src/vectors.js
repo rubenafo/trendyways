@@ -29,14 +29,14 @@ if ( !Array.prototype.forEach ) {
  */
 let diffVectors = function (series1, series2, targetAttr)
 {
-  var size = stats.max([series1.length, series2.length])
-  var result = [];
-  var s1Size = series1.length;
-  var s2Size = series2.length;
+  let size = stats.max([series1.length, series2.length])
+  let result = [];
+  let s1Size = series1.length;
+  let s2Size = series2.length;
   for (var i = 0; i < size; i++)
   {
-    var itemS1 = 0;
-    var itemS2 = 0;
+    let itemS1 = 0;
+    let itemS2 = 0;
     if (s1Size > i)
     {
       itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
@@ -61,7 +61,7 @@ module.exports.diffVectors = diffVectors
 let powVector = function (serie)
 {
   var result = [];
-  pow = function (x) {
+  let pow = function (x) {
     result.push (Math.pow(x, 2));
   };
   serie.forEach (pow);
@@ -79,7 +79,7 @@ module.exports.powVector = powVector
 let sumVector = function (values, targetAttr)
 {
   var result = 0;
-  sum = function (x) {
+  let sum = function (x) {
     if (utils.isUndef(x[targetAttr]))
       result += x
     else
@@ -98,7 +98,7 @@ module.exports.sumVector = sumVector;
  */
 let avgVector = function (vector, targetAttr)
 {
-  var result = module.exports.sumVector (vector, targetAttr);
+  let result = module.exports.sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else
@@ -114,7 +114,7 @@ module.exports.avgVector = avgVector
  */
 let absVector = function (vector)
 {
-  var result = [];
+  let result = [];
   vector.forEach (function ab(x)
   {
     result.push(Math.abs(x));
@@ -132,7 +132,7 @@ module.exports.absVector = absVector
  */
 let divVector = function (v1, v2)
 {
-  var result = [];
+  let result = [];
   for (var i = 0; i < v1.length; i++)
   {
     result.push (v1[i] / v2[i]);
@@ -158,7 +158,7 @@ let combineVectors = function (serie1, serie2, fun)
   }
   else
   {
-    var result = [];
+    let result = [];
     for (var i = 0; i < serie1.length; i++)
     {
       result.push (fun(serie1[i], serie2[i]));

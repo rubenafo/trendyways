@@ -1,3 +1,4 @@
+"use strict";
 
 var Utils = require ("./utils") 
 var Avg = require ("./averages")
@@ -19,13 +20,13 @@ var Avg = require ("./averages")
  */
 let bollinger = function (list, n, k, targetAttr) {
   targetAttr = Utils.valueIfUndef(targetAttr, ["c"])
-  var movingAvg = Avg.ma (list, n, targetAttr);
-  var movingSd = Utils.windowOp (list, n, sd, targetAttr);
-  var upperBand = new Array();
-  var lowerBand = new Array();
-  var movingAvgElem = 0;
-  var movingSdElem = 0;
-  var result = new Array();
+  let movingAvg = Avg.ma (list, n, targetAttr);
+  let movingSd = Utils.windowOp (list, n, sd, targetAttr);
+  let upperBand = new Array();
+  let lowerBand = new Array();
+  let movingAvgElem = 0;
+  let movingSdElem = 0;
+  let result = new Array();
   for (var index = 0; index < movingSd.length; index++) {
     movingAvgElem = movingAvg[index].ma;
     movingSdElem = movingSd[index] * k;

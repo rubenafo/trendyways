@@ -3,6 +3,8 @@
  * a sample serie.
  */
 
+"use strict";
+
 var assert = require ("assert");
 var tw = require ("../dist/trendyways.js");
 

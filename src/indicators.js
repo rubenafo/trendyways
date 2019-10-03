@@ -1,3 +1,4 @@
+"use strict";
 
 var utils = require ("./utils")
 var vectors = require ("./vectors")
@@ -11,8 +12,8 @@ var averages = require ("./averages")
  */
 let obv = function (closeList, volumeList)
 {
-  var result = [];
-  var prevObv = volumeList[0];
+  let result = [];
+  let prevObv = volumeList[0];
   result.push (prevObv);
   for (var i = 1; i < closeList.length; i++)
   {
@@ -45,12 +46,12 @@ module.exports.obv = obv;
  */
 let vpt = function (closeList, volumeList)
 {
-  var result = [];
-  var vpt = volumeList[0]
+  let result = [];
+  let vpt = volumeList[0]
   result.push (vpt);
   for (var i = 1; i < closeList.length; i++)
   {
-    var newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
+    let newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
     result.push (newVpt);
     vpt = newVpt;
   }
@@ -68,17 +69,17 @@ module.exports.vpt = vpt;
  */
 let mfi = function (values)
 {
-  var typicalMoney = [];
-  var moneyFlow = [];
+  let typicalMoney = [];
+  let moneyFlow = [];
   for (var i = 0; i < values.length; i++)
   {
-    var tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
+    let tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
     typicalMoney.push(tpMoney);
     moneyFlow.push (tpMoney * values[i].v);
   }
 
-  var posMoneyFlow = [];
-  var negMoneyFlow = [];
+  let posMoneyFlow = [];
+  let negMoneyFlow = [];
   for (var i = 0; i < typicalMoney.length-1; i++)
   {
     if (typicalMoney[i] <= typicalMoney[i+1])
@@ -98,11 +99,11 @@ let mfi = function (values)
     }
   }
 
-  var sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
-  var sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
-  var moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
+  let sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
+  let sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
+  let moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
 
-  var mfi = [];
+  let mfi = [];
   moneyRatio.forEach (function (value)
   {
     mfi.push (100 - (100/(1+value)));
@@ -122,30 +123,30 @@ module.exports.mfi = mfi;
 let macd = function (closeValues, targetAttr)
 {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"])
-  slow = 26;
-  fast = 12;
-  signal = 9;
-  slowEMA = averages.ema (closeValues, slow, targetAttr, "slowema");
-  fastEMA = averages.ema (closeValues, fast, targetAttr, "fastema");
-  macdLine = vectors.combineVectors (slowEMA, fastEMA, function (slow,fast) {
+  let slow = 26;
+  let fast = 12;
+  let signal = 9;
+  let slowEMA = averages.ema (closeValues, slow, targetAttr, "slowema");
+  let fastEMA = averages.ema (closeValues, fast, targetAttr, "fastema");
+  let macdLine = vectors.combineVectors (slowEMA, fastEMA, function (slow,fast) {
     if (slow.slowema == 0 || utils.isUndef(slow.slowema))
     {
       return ({macd:0}); // avoid div by 0
     };
     return ({macd:100 * ((fast.fastema/slow.slowema) - 1)});
   });
-  signalLine = averages.ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
+  let signalLine = averages.ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
   for (var i = 0; i < 25; i++)
   {
     signalLine.unshift({macd:0}); // append again 25 zeros
   }
-  histLine = vectors.diffVectors(macdLine, signalLine, "macd");
+  let histLine = vectors.diffVectors(macdLine, signalLine, "macd");
   utils.fill(signalLine, "ema", 0);
-  macdItems = [];
+  let macdItems = [];
   for (var i = 0; i < macdLine.length; i++) {
     macdItems.push({macd:{line:macdLine[i].macd, signal:signalLine[i].ema, hist:histLine[i]}});
   }
-  var returnList = closeValues.slice()
+  let returnList = closeValues.slice()
   return utils.reverseAppend (returnList, macdItems, "macd");
 }
 module.exports.macd = macd;
@@ -163,12 +164,12 @@ module.exports.macd = macd;
  */
 let momentum = function(values, order)
 {
-  momentumN = function (chunk)
+  let momentumN = function (chunk)
   {
     return chunk[chunk.length-1].c - chunk[0].c
   };
-  var returnValues = values.slice()
-  var newValues = utils.windowOp (values, order+1, momentumN);
+  let returnValues = values.slice()
+  let newValues = utils.windowOp (values, order+1, momentumN);
   return utils.reverseAppend(returnValues, newValues, "mom")
 }
 module.exports.momentum = momentum;
@@ -186,12 +187,12 @@ module.exports.momentum = momentum;
  */
 let roc = function(values, order, targetAttr)
 {
-  rocN = function (chunk)
+  let rocN = function (chunk)
   {
     return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  var returnValues = values.slice()
-  var rocValues = utils.windowOp (values, order+1, rocN);
+  let returnValues = values.slice()
+  let rocValues = utils.windowOp (values, order+1, rocN);
   return utils.reverseAppend(returnValues, rocValues, "roc");
 }
 module.exports.roc = roc;
@@ -212,11 +213,11 @@ let rsi = function (values, order)
   {
     return [-1]; // not enough params
   }
-  gains = [];
-  losses = [];
+  let gains = [];
+  let losses = [];
   for (var i = 0; i < values.length-1; i++)
   {
-    diff = values[i+1].c - values[i].c;
+    let diff = values[i+1].c - values[i].c;
     if (diff > 0) 
     {
       gains.push(diff);
@@ -233,22 +234,22 @@ let rsi = function (values, order)
       losses.push(0);
     }
   }
-  result = [];
-  avgGain = vectors.avgVector (gains.slice(0, order));
-  avgLoss = vectors.avgVector (losses.slice (0, order));
-  firstRS = avgGain / avgLoss;
+  let result = [];
+  let avgGain = vectors.avgVector (gains.slice(0, order));
+  let avgLoss = vectors.avgVector (losses.slice (0, order));
+  let firstRS = avgGain / avgLoss;
   result.push (100 - (100 / (1 + firstRS)));
   for (var i = order; i < values.length-1; i++)
   {
-    partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
-    partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
-    smoothedRS = partialCurrentGain / partialCurrentLoss;
-    currentRSI = 100 - (100 / (1 + smoothedRS))
+    let partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
+    let partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
+    let smoothedRS = partialCurrentGain / partialCurrentLoss;
+    let currentRSI = 100 - (100 / (1 + smoothedRS))
     result.push(currentRSI);
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
-  var newValues = values.slice()
+  let newValues = values.slice()
   return utils.reverseAppend(newValues, result, "rsi");
 }
 module.exports.rsi = rsi;
@@ -266,17 +267,17 @@ module.exports.rsi = rsi;
 
 let atr = function (values, p) {
   p = valueIfUndef(p, 14);
-  var results = [];
+  let results = [];
   for (var i = 0; i < values.length; i++) {
     if (i == 0) {
       results.push({tr:values[i].h - values[i].l, atr:0})
     }
     else {
-      var hl = values[i].h - values[i].l;
-      var hcp = Math.abs(values[i].h - values[i-1].c);
-      var lcp = Math.abs(values[i].l - values[i-1].c);
-      var tr = Math.max(hl,hcp,lcp);
-      var atr = 0;
+      let hl = values[i].h - values[i].l;
+      let hcp = Math.abs(values[i].h - values[i-1].c);
+      let lcp = Math.abs(values[i].l - values[i-1].c);
+      let tr = Math.max(hl,hcp,lcp);
+      let atr = 0;
       if (i == p-1) {
         atr = tr;
         for (var j = 0; j < results.length; j++) {
@@ -290,7 +291,7 @@ let atr = function (values, p) {
       results.push({tr:tr, atr:atr});
     }
   }
-  var newValues = values.slice()
+  let newValues = values.slice()
   return utils.reverseAppend(newValues, results, "at");
 }
 module.exports.atr = atr;

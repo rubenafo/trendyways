@@ -1,3 +1,6 @@
+
+"use strict";
+
 /**
  * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
  * @param {object} objects list
@@ -62,7 +65,7 @@ module.exports.fill = fill
  * @return {array} values returned by the given function in each chunck
  */
 let windowOp = function (values, value, fun, targetAttr) {
-  var result = new Array();
+  let result = new Array();
   for (var i = value; i <= values.length; i++)
   {
     var windowVal = fun (values.slice(i-value, i), targetAttr);

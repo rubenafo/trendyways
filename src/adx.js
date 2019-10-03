@@ -2,6 +2,8 @@
 var utils = require ("./utils")
 var vectors = require ("./vectors")
 
+"use strict";
+
 /**
  * @description Average Directional Index (ADX)
  * @param {array} list of _ohlc_ values
@@ -10,29 +12,30 @@ var vectors = require ("./vectors")
  * Source: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
  */
 let adx = function (values) {
-	dmWindow = function (serie) {
-		var sum = 0;
-		todayMax = serie[1].h - serie[0].h
-		todayMin = serie[0].l - serie[1].l
+	let dmWindow = function (serie) {
+		let sum = 0
+		let todayMax = serie[1].h - serie[0].h
+		let todayMin = serie[0].l - serie[1].l
+    let dmPos = 0, dmNeg = 0
 		if (todayMax > 0 || todayMin > 0) {
-			dmPos = todayMax > todayMin ? Math.abs(todayMax) : 0;
-			dmNeg = todayMax < todayMin ? Math.abs(todayMin) : 0;
+			dmPos = todayMax > todayMin ? Math.abs(todayMax) : 0
+			dmNeg = todayMax < todayMin ? Math.abs(todayMin) : 0
 		}
 		else {
 			dmPos = 0;
 			dmNeg = 0;
 		}
-		tr = Math.max(Math.abs(serie[1].h - serie[1].l), 
+		let tr = Math.max(Math.abs(serie[1].h - serie[1].l), 
 			Math.abs(serie[1].h - serie[0].c), 
 			Math.abs(serie[1].l - serie[0].c));
 		return {dmp:dmPos, dmn:dmNeg, tr:tr}
 	}
-	result = Utils.windowOp(values, 2, dmWindow);
+	let result = Utils.windowOp(values, 2, dmWindow);
 	result.unshift({dmp:0, dmn:0, tr:0});
 
-	firstTr14 = vectors.sumVector(result.slice(0, 15), "tr");
-	firstDM14Pos = vectors.sumVector(result.slice(0,15), "dmp");
-	firstDM14Neg = vectors.sumVector(result.slice(0,15), "dmn");
+	let firstTr14 = vectors.sumVector(result.slice(0, 15), "tr"),
+	    firstDM14Pos = vectors.sumVector(result.slice(0,15), "dmp"),
+	    firstDM14Neg = vectors.sumVector(result.slice(0,15), "dmn");
 	result[14].tr14 = firstTr14;
 	result[14].dmp14 = firstDM14Pos;
 	result[14].dmn14 = firstDM14Neg;

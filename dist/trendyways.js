@@ -1,5 +1,7 @@
 (function(f){if(typeof exports==="object"&&typeof module!=="undefined"){module.exports=f()}else if(typeof define==="function"&&define.amd){define([],f)}else{var g;if(typeof window!=="undefined"){g=window}else if(typeof global!=="undefined"){g=global}else if(typeof self!=="undefined"){g=self}else{g=this}g.tw = f()}})(function(){var define,module,exports;return (function(){function r(e,n,t){function o(i,f){if(!n[i]){if(!e[i]){var c="function"==typeof require&&require;if(!f&&c)return c(i,!0);if(u)return u(i,!0);var a=new Error("Cannot find module '"+i+"'");throw a.code="MODULE_NOT_FOUND",a}var p=n[i]={exports:{}};e[i][0].call(p.exports,function(r){var n=e[i][1][r];return o(n||r)},p,p.exports,r,e,n,t)}return n[i].exports}for(var u="function"==typeof require&&require,i=0;i<t.length;i++)o(t[i]);return o}return r})()({1:[function(require,module,exports){
 
+"use strict";
+
 var utils = require ("./utils")
 var vectors = require ("./vectors")
 
@@ -12,14 +14,14 @@ let ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   outputAttr = utils.valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
-  sumWindow = function (serie) {
+  let sumWindow = function (serie) {
     var sum = 0;
     for (var init = 0; init < serie.length; init++) {
       sum += utils.resolveParam(serie[init], targetAttr);
     }
     return (sum/serie.length);
   }
-  newVal = utils.windowOp (values, order, sumWindow);
+  let newVal = utils.windowOp (values, order, sumWindow);
   return utils.reverseAppend(values, newVal, outputAttr)
 }
 module.exports.ma = ma;
@@ -34,19 +36,19 @@ let ema = function (serie, period, targetAttr, newAttr)
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
   newAttr = utils.valueIfUndef (newAttr, "ema")
-  var emaValues = new Array();
-  var k = (2/(period+1));
-  var initSlice = serie.slice (0, period);
-  var previousDay = vectors.avgVector (initSlice, targetAttr);
+  let emaValues = new Array();
+  let k = (2/(period+1));
+  let initSlice = serie.slice (0, period);
+  let previousDay = vectors.avgVector (initSlice, targetAttr);
   emaValues.push(previousDay)
-  var emaSlice = serie.slice (period);
+  let emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
-    var value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
+    let value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
     previousDay = value * k + previousDay * (1-k)
     emaValues.push (previousDay);
   });
-  var newSerie = serie.slice()
+  let newSerie = serie.slice()
   return utils.reverseAppend(newSerie, emaValues, newAttr)
 }
 module.exports.ema = ema;
@@ -62,14 +64,14 @@ module.exports.ema = ema;
 let wma = function (series, weights, targetAttr)
 {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"])
-  sumWindow = function (elems) {
-    var sum = 0;
+  let sumWindow = function (elems) {
+    let sum = 0;
     elems.forEach(function(elem,i) {
       sum = sum + (elem[targetAttr] * weights[i]);
     });
     return (sum/elems.length);
   }
-  var wmaValues = utils.windowOp (series, weights.length, sumWindow);
+  let wmaValues = utils.windowOp (series, weights.length, sumWindow);
   return utils.reverseAppend(series, wmaValues, "wma")
 }
 module.exports.wma = wma;
@@ -195,6 +197,8 @@ module.exports.mae = mae;
 var utils = require ("./utils")
 var vectors = require ("./vectors")
 
+"use strict";
+
 /**
  * @description Average Directional Index (ADX)
  * @param {array} list of _ohlc_ values
@@ -203,29 +207,30 @@ var vectors = require ("./vectors")
  * Source: http://stockcharts.com/school/doku.php?id=chart_school:technical_indicators:average_directional_index_adx
  */
 let adx = function (values) {
-	dmWindow = function (serie) {
-		var sum = 0;
-		todayMax = serie[1].h - serie[0].h
-		todayMin = serie[0].l - serie[1].l
+	let dmWindow = function (serie) {
+		let sum = 0
+		let todayMax = serie[1].h - serie[0].h
+		let todayMin = serie[0].l - serie[1].l
+    let dmPos = 0, dmNeg = 0
 		if (todayMax > 0 || todayMin > 0) {
-			dmPos = todayMax > todayMin ? Math.abs(todayMax) : 0;
-			dmNeg = todayMax < todayMin ? Math.abs(todayMin) : 0;
+			dmPos = todayMax > todayMin ? Math.abs(todayMax) : 0
+			dmNeg = todayMax < todayMin ? Math.abs(todayMin) : 0
 		}
 		else {
 			dmPos = 0;
 			dmNeg = 0;
 		}
-		tr = Math.max(Math.abs(serie[1].h - serie[1].l), 
+		let tr = Math.max(Math.abs(serie[1].h - serie[1].l), 
 			Math.abs(serie[1].h - serie[0].c), 
 			Math.abs(serie[1].l - serie[0].c));
 		return {dmp:dmPos, dmn:dmNeg, tr:tr}
 	}
-	result = Utils.windowOp(values, 2, dmWindow);
+	let result = Utils.windowOp(values, 2, dmWindow);
 	result.unshift({dmp:0, dmn:0, tr:0});
 
-	firstTr14 = vectors.sumVector(result.slice(0, 15), "tr");
-	firstDM14Pos = vectors.sumVector(result.slice(0,15), "dmp");
-	firstDM14Neg = vectors.sumVector(result.slice(0,15), "dmn");
+	let firstTr14 = vectors.sumVector(result.slice(0, 15), "tr"),
+	    firstDM14Pos = vectors.sumVector(result.slice(0,15), "dmp"),
+	    firstDM14Neg = vectors.sumVector(result.slice(0,15), "dmn");
 	result[14].tr14 = firstTr14;
 	result[14].dmp14 = firstDM14Pos;
 	result[14].dmn14 = firstDM14Neg;
@@ -257,6 +262,8 @@ let adx = function (values) {
 }
 module.exports.adx = adx;
 
+"use strict";
+
 var utils = require ("./utils")
 var vectors = require ("./vectors")
 
@@ -269,14 +276,14 @@ let ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   outputAttr = utils.valueIfUndef(outputAttr, "ma");
   // Sums the content of a window
-  sumWindow = function (serie) {
+  let sumWindow = function (serie) {
     var sum = 0;
     for (var init = 0; init < serie.length; init++) {
       sum += utils.resolveParam(serie[init], targetAttr);
     }
     return (sum/serie.length);
   }
-  newVal = utils.windowOp (values, order, sumWindow);
+  let newVal = utils.windowOp (values, order, sumWindow);
   return utils.reverseAppend(values, newVal, outputAttr)
 }
 module.exports.ma = ma;
@@ -291,19 +298,19 @@ let ema = function (serie, period, targetAttr, newAttr)
   if (typeof serie[0] == "object" && !targetAttr)
     throw new Error("targetAttr not provided")
   newAttr = utils.valueIfUndef (newAttr, "ema")
-  var emaValues = new Array();
-  var k = (2/(period+1));
-  var initSlice = serie.slice (0, period);
-  var previousDay = vectors.avgVector (initSlice, targetAttr);
+  let emaValues = new Array();
+  let k = (2/(period+1));
+  let initSlice = serie.slice (0, period);
+  let previousDay = vectors.avgVector (initSlice, targetAttr);
   emaValues.push(previousDay)
-  var emaSlice = serie.slice (period);
+  let emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
-    var value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
+    let value = utils.isUndef(targetAttr) ? elem : elem[targetAttr]
     previousDay = value * k + previousDay * (1-k)
     emaValues.push (previousDay);
   });
-  var newSerie = serie.slice()
+  let newSerie = serie.slice()
   return utils.reverseAppend(newSerie, emaValues, newAttr)
 }
 module.exports.ema = ema;
@@ -319,19 +326,20 @@ module.exports.ema = ema;
 let wma = function (series, weights, targetAttr)
 {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"])
-  sumWindow = function (elems) {
-    var sum = 0;
+  let sumWindow = function (elems) {
+    let sum = 0;
     elems.forEach(function(elem,i) {
       sum = sum + (elem[targetAttr] * weights[i]);
     });
     return (sum/elems.length);
   }
-  var wmaValues = utils.windowOp (series, weights.length, sumWindow);
+  let wmaValues = utils.windowOp (series, weights.length, sumWindow);
   return utils.reverseAppend(series, wmaValues, "wma")
 }
 module.exports.wma = wma;
 
 
+"use strict";
 
 var Utils = require ("./utils") 
 var Avg = require ("./averages")
@@ -353,13 +361,13 @@ var Avg = require ("./averages")
  */
 let bollinger = function (list, n, k, targetAttr) {
   targetAttr = Utils.valueIfUndef(targetAttr, ["c"])
-  var movingAvg = Avg.ma (list, n, targetAttr);
-  var movingSd = Utils.windowOp (list, n, sd, targetAttr);
-  var upperBand = new Array();
-  var lowerBand = new Array();
-  var movingAvgElem = 0;
-  var movingSdElem = 0;
-  var result = new Array();
+  let movingAvg = Avg.ma (list, n, targetAttr);
+  let movingSd = Utils.windowOp (list, n, sd, targetAttr);
+  let upperBand = new Array();
+  let lowerBand = new Array();
+  let movingAvgElem = 0;
+  let movingSdElem = 0;
+  let result = new Array();
   for (var index = 0; index < movingSd.length; index++) {
     movingAvgElem = movingAvg[index].ma;
     movingSdElem = movingSd[index] * k;
@@ -370,6 +378,7 @@ let bollinger = function (list, n, k, targetAttr) {
   return result;
 }
 module.exports.bollinger = bollinger;
+"use strict";
 
 var utils = require ("./utils")
 var vectors = require ("./vectors")
@@ -383,8 +392,8 @@ var averages = require ("./averages")
  */
 let obv = function (closeList, volumeList)
 {
-  var result = [];
-  var prevObv = volumeList[0];
+  let result = [];
+  let prevObv = volumeList[0];
   result.push (prevObv);
   for (var i = 1; i < closeList.length; i++)
   {
@@ -417,12 +426,12 @@ module.exports.obv = obv;
  */
 let vpt = function (closeList, volumeList)
 {
-  var result = [];
-  var vpt = volumeList[0]
+  let result = [];
+  let vpt = volumeList[0]
   result.push (vpt);
   for (var i = 1; i < closeList.length; i++)
   {
-    var newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
+    let newVpt = vpt + volumeList[i] * ((closeList[i] - closeList[i-1])/closeList[i-1])
     result.push (newVpt);
     vpt = newVpt;
   }
@@ -440,17 +449,17 @@ module.exports.vpt = vpt;
  */
 let mfi = function (values)
 {
-  var typicalMoney = [];
-  var moneyFlow = [];
+  let typicalMoney = [];
+  let moneyFlow = [];
   for (var i = 0; i < values.length; i++)
   {
-    var tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
+    let tpMoney = (values[i].h + values[i].l + values[i].c) / 3;
     typicalMoney.push(tpMoney);
     moneyFlow.push (tpMoney * values[i].v);
   }
 
-  var posMoneyFlow = [];
-  var negMoneyFlow = [];
+  let posMoneyFlow = [];
+  let negMoneyFlow = [];
   for (var i = 0; i < typicalMoney.length-1; i++)
   {
     if (typicalMoney[i] <= typicalMoney[i+1])
@@ -470,11 +479,11 @@ let mfi = function (values)
     }
   }
 
-  var sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
-  var sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
-  var moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
+  let sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
+  let sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
+  let moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
 
-  var mfi = [];
+  let mfi = [];
   moneyRatio.forEach (function (value)
   {
     mfi.push (100 - (100/(1+value)));
@@ -494,30 +503,30 @@ module.exports.mfi = mfi;
 let macd = function (closeValues, targetAttr)
 {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"])
-  slow = 26;
-  fast = 12;
-  signal = 9;
-  slowEMA = averages.ema (closeValues, slow, targetAttr, "slowema");
-  fastEMA = averages.ema (closeValues, fast, targetAttr, "fastema");
-  macdLine = vectors.combineVectors (slowEMA, fastEMA, function (slow,fast) {
+  let slow = 26;
+  let fast = 12;
+  let signal = 9;
+  let slowEMA = averages.ema (closeValues, slow, targetAttr, "slowema");
+  let fastEMA = averages.ema (closeValues, fast, targetAttr, "fastema");
+  let macdLine = vectors.combineVectors (slowEMA, fastEMA, function (slow,fast) {
     if (slow.slowema == 0 || utils.isUndef(slow.slowema))
     {
       return ({macd:0}); // avoid div by 0
     };
     return ({macd:100 * ((fast.fastema/slow.slowema) - 1)});
   });
-  signalLine = averages.ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
+  let signalLine = averages.ema (macdLine.slice(25), signal, "macd"); // avoid first 25 (padding)
   for (var i = 0; i < 25; i++)
   {
     signalLine.unshift({macd:0}); // append again 25 zeros
   }
-  histLine = vectors.diffVectors(macdLine, signalLine, "macd");
+  let histLine = vectors.diffVectors(macdLine, signalLine, "macd");
   utils.fill(signalLine, "ema", 0);
-  macdItems = [];
+  let macdItems = [];
   for (var i = 0; i < macdLine.length; i++) {
     macdItems.push({macd:{line:macdLine[i].macd, signal:signalLine[i].ema, hist:histLine[i]}});
   }
-  var returnList = closeValues.slice()
+  let returnList = closeValues.slice()
   return utils.reverseAppend (returnList, macdItems, "macd");
 }
 module.exports.macd = macd;
@@ -535,12 +544,12 @@ module.exports.macd = macd;
  */
 let momentum = function(values, order)
 {
-  momentumN = function (chunk)
+  let momentumN = function (chunk)
   {
     return chunk[chunk.length-1].c - chunk[0].c
   };
-  var returnValues = values.slice()
-  var newValues = utils.windowOp (values, order+1, momentumN);
+  let returnValues = values.slice()
+  let newValues = utils.windowOp (values, order+1, momentumN);
   return utils.reverseAppend(returnValues, newValues, "mom")
 }
 module.exports.momentum = momentum;
@@ -558,12 +567,12 @@ module.exports.momentum = momentum;
  */
 let roc = function(values, order, targetAttr)
 {
-  rocN = function (chunk)
+  let rocN = function (chunk)
   {
     return (chunk[chunk.length-1].c - chunk[0].c) / chunk[0].c;
   };
-  var returnValues = values.slice()
-  var rocValues = utils.windowOp (values, order+1, rocN);
+  let returnValues = values.slice()
+  let rocValues = utils.windowOp (values, order+1, rocN);
   return utils.reverseAppend(returnValues, rocValues, "roc");
 }
 module.exports.roc = roc;
@@ -584,11 +593,11 @@ let rsi = function (values, order)
   {
     return [-1]; // not enough params
   }
-  gains = [];
-  losses = [];
+  let gains = [];
+  let losses = [];
   for (var i = 0; i < values.length-1; i++)
   {
-    diff = values[i+1].c - values[i].c;
+    let diff = values[i+1].c - values[i].c;
     if (diff > 0) 
     {
       gains.push(diff);
@@ -605,22 +614,22 @@ let rsi = function (values, order)
       losses.push(0);
     }
   }
-  result = [];
-  avgGain = vectors.avgVector (gains.slice(0, order));
-  avgLoss = vectors.avgVector (losses.slice (0, order));
-  firstRS = avgGain / avgLoss;
+  let result = [];
+  let avgGain = vectors.avgVector (gains.slice(0, order));
+  let avgLoss = vectors.avgVector (losses.slice (0, order));
+  let firstRS = avgGain / avgLoss;
   result.push (100 - (100 / (1 + firstRS)));
   for (var i = order; i < values.length-1; i++)
   {
-    partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
-    partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
-    smoothedRS = partialCurrentGain / partialCurrentLoss;
-    currentRSI = 100 - (100 / (1 + smoothedRS))
+    let partialCurrentGain = ((avgGain * (order-1)) + gains[i]) / order;
+    let partialCurrentLoss = ((avgLoss * (order-1)) + losses[i]) / order;
+    let smoothedRS = partialCurrentGain / partialCurrentLoss;
+    let currentRSI = 100 - (100 / (1 + smoothedRS))
     result.push(currentRSI);
     avgGain = partialCurrentGain;
     avgLoss = partialCurrentLoss;
   }
-  var newValues = values.slice()
+  let newValues = values.slice()
   return utils.reverseAppend(newValues, result, "rsi");
 }
 module.exports.rsi = rsi;
@@ -638,17 +647,17 @@ module.exports.rsi = rsi;
 
 let atr = function (values, p) {
   p = valueIfUndef(p, 14);
-  var results = [];
+  let results = [];
   for (var i = 0; i < values.length; i++) {
     if (i == 0) {
       results.push({tr:values[i].h - values[i].l, atr:0})
     }
     else {
-      var hl = values[i].h - values[i].l;
-      var hcp = Math.abs(values[i].h - values[i-1].c);
-      var lcp = Math.abs(values[i].l - values[i-1].c);
-      var tr = Math.max(hl,hcp,lcp);
-      var atr = 0;
+      let hl = values[i].h - values[i].l;
+      let hcp = Math.abs(values[i].h - values[i-1].c);
+      let lcp = Math.abs(values[i].l - values[i-1].c);
+      let tr = Math.max(hl,hcp,lcp);
+      let atr = 0;
       if (i == p-1) {
         atr = tr;
         for (var j = 0; j < results.length; j++) {
@@ -662,7 +671,7 @@ let atr = function (values, p) {
       results.push({tr:tr, atr:atr});
     }
   }
-  var newValues = values.slice()
+  let newValues = values.slice()
   return utils.reverseAppend(newValues, results, "at");
 }
 module.exports.atr = atr;
@@ -778,6 +787,7 @@ let mae = function (series1, series2)
   return avgVector(absVector(diffVectors(series1, series2)));
 }
 module.exports.mae = mae;
+"use strict";
 
 var Utils = require ("./utils")
 
@@ -804,14 +814,14 @@ let floorPivots = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
-    r1 = 2 * pivotLevel - values[i].l;
-    r2 = pivotLevel + values[i].h - values[i].l;
-    r3 = r1 + values[i].h - values[i].l;
-    s1 = 2 * pivotLevel - values[i].h;
-    s2 = pivotLevel - values[i].h + values[i].l;
-    s3 = s1 - values[i].h + values[i].l;
-    elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
+    let pivotLevel = (values[i].h + values[i].l + values[i].c) / 3;
+    let r1 = 2 * pivotLevel - values[i].l;
+    let r2 = pivotLevel + values[i].h - values[i].l;
+    let r3 = r1 + values[i].h - values[i].l;
+    let s1 = 2 * pivotLevel - values[i].h;
+    let s2 = pivotLevel - values[i].h + values[i].l;
+    let s3 = s1 - values[i].h + values[i].l;
+    let elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
   return Utils.reverseAppend(values, result, "floor");
@@ -833,7 +843,7 @@ let tomDemarksPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var x = 0;
+    let x = 0;
     if (values[i].c < values[i].o)
     {
       x = values[i].h + (2 * (values[i].l) + values[i].c);
@@ -846,9 +856,9 @@ let tomDemarksPoints = function (values) {
     {
       x = values[i].h + values[i].l + (2 * values[i].c);
     }
-    newHigh = (x/2) - values[i].l;
-    newLow = (x/2) - values[i].h;
-    elem = {l: newLow, h: newHigh};
+    let newHigh = (x/2) - values[i].l;
+    let newLow = (x/2) - values[i].h;
+    let elem = {l: newLow, h: newHigh};
     result.push(elem);
   }
   return utils.reverseAppend(values, result, "tom");
@@ -873,14 +883,13 @@ let woodiesPoints = function (values) {
   var result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var x = 0;
-    var pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
-    var r1 = (2 * pivot) - values[i].l;
-    var r2 = pivot + values[i].h - values[i].l;
-    var s1 = (2 * pivot) - values[i].h;
-    var s2 = pivot - values[i].h + values[i].l;
-    elem = {pivot: pivot, r1: r1,
-            s1: s1, s2: s2, r2: r2};
+    let x = 0;
+    let pivot = (values[i].h + values[i].l + 2 * values[i].c) / 4;
+    let r1 = (2 * pivot) - values[i].l;
+    let r2 = pivot + values[i].h - values[i].l;
+    let s1 = (2 * pivot) - values[i].h;
+    let s2 = pivot - values[i].h + values[i].l;
+    let elem = {pivot: pivot, r1: r1, s1: s1, s2: s2, r2: r2};
     result.push(elem);
   }
   return utils.reverseAppend (values, result, "wood");
@@ -903,20 +912,19 @@ module.exports.woodiesPoints = woodiesPoints;
  *         - r4: predicted r4 resistance.
  */
 let camarillaPoints = function (values) {
-  var result = new Array();
+  let result = new Array();
   for (var i = 0; i < values.length; i++)
   {
-    var diff = values[i].h - values[i].l;
-    var r4 = (diff * 1.1) / 2 + values[i].c;
-    var r3 = (diff *1.1) / 4 + values[i].c;
-    var r2 = (diff * 1.1) / 6 + values[i].c;
-    var r1 = (diff * 1.1) / 12 + values[i].c;
-    var s1 = values[i].c - (diff * 1.1 / 12);
-    var s2 = values[i].c - (diff *1.1 /6);
-    var s3 = values[i].c - (diff * 1.1 / 4);
-    var s4 = values[i].c - (diff *1.1 / 2);
-    elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3,
-            s4: s4};
+    let diff = values[i].h - values[i].l;
+    let r4 = (diff * 1.1) / 2 + values[i].c;
+    let r3 = (diff *1.1) / 4 + values[i].c;
+    let r2 = (diff * 1.1) / 6 + values[i].c;
+    let r1 = (diff * 1.1) / 12 + values[i].c;
+    let s1 = values[i].c - (diff * 1.1 / 12);
+    let s2 = values[i].c - (diff *1.1 /6);
+    let s3 = values[i].c - (diff * 1.1 / 4);
+    let s4 = values[i].c - (diff *1.1 / 2);
+    let elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3, s4: s4};
     result.push(elem);
   }
   return reverseAppend(values, result, "cam");
@@ -927,14 +935,14 @@ module.exports.camarillaPoints = camarillaPoints;
 
 let fibonacciRetrs = function (values, trend)
 {
-  var result = new Array();
-  var retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
+  let result = new Array();
+  let retracements = [1, 0.618, 0.5, 0.382, 0.236, 0];
     for (var i = 0; i < values.length; i++) {
-      var diff = values[i].h - values[i].l;
-      var elem = new Array();
+      let diff = values[i].h - values[i].l;
+      let elem = new Array();
       for (var r = 0; r < retracements.length; r++)
       {
-        var level = 0;
+        let level = 0;
         if (trend == 'DOWNTREND')
           level = values[i].h - diff * retracements[r];
         else
@@ -946,6 +954,9 @@ let fibonacciRetrs = function (values, trend)
   return result
 }
 module.exports.fibonacciRetrs = fibonacciRetrs;
+
+"use strict";
+
 /**
  * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
  * @param {object} objects list
@@ -1010,7 +1021,7 @@ module.exports.fill = fill
  * @return {array} values returned by the given function in each chunck
  */
 let windowOp = function (values, value, fun, targetAttr) {
-  var result = new Array();
+  let result = new Array();
   for (var i = value; i <= values.length; i++)
   {
     var windowVal = fun (values.slice(i-value, i), targetAttr);
@@ -1050,14 +1061,14 @@ if ( !Array.prototype.forEach ) {
  */
 let diffVectors = function (series1, series2, targetAttr)
 {
-  var size = stats.max([series1.length, series2.length])
-  var result = [];
-  var s1Size = series1.length;
-  var s2Size = series2.length;
+  let size = stats.max([series1.length, series2.length])
+  let result = [];
+  let s1Size = series1.length;
+  let s2Size = series2.length;
   for (var i = 0; i < size; i++)
   {
-    var itemS1 = 0;
-    var itemS2 = 0;
+    let itemS1 = 0;
+    let itemS2 = 0;
     if (s1Size > i)
     {
       itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
@@ -1082,7 +1093,7 @@ module.exports.diffVectors = diffVectors
 let powVector = function (serie)
 {
   var result = [];
-  pow = function (x) {
+  let pow = function (x) {
     result.push (Math.pow(x, 2));
   };
   serie.forEach (pow);
@@ -1100,7 +1111,7 @@ module.exports.powVector = powVector
 let sumVector = function (values, targetAttr)
 {
   var result = 0;
-  sum = function (x) {
+  let sum = function (x) {
     if (utils.isUndef(x[targetAttr]))
       result += x
     else
@@ -1119,7 +1130,7 @@ module.exports.sumVector = sumVector;
  */
 let avgVector = function (vector, targetAttr)
 {
-  var result = module.exports.sumVector (vector, targetAttr);
+  let result = module.exports.sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else
@@ -1135,7 +1146,7 @@ module.exports.avgVector = avgVector
  */
 let absVector = function (vector)
 {
-  var result = [];
+  let result = [];
   vector.forEach (function ab(x)
   {
     result.push(Math.abs(x));
@@ -1153,7 +1164,7 @@ module.exports.absVector = absVector
  */
 let divVector = function (v1, v2)
 {
-  var result = [];
+  let result = [];
   for (var i = 0; i < v1.length; i++)
   {
     result.push (v1[i] / v2[i]);
@@ -1179,7 +1190,7 @@ let combineVectors = function (serie1, serie2, fun)
   }
   else
   {
-    var result = [];
+    let result = [];
     for (var i = 0; i < serie1.length; i++)
     {
       result.push (fun(serie1[i], serie2[i]));
@@ -1190,6 +1201,9 @@ let combineVectors = function (serie1, serie2, fun)
 module.exports.combineVectors = combineVectors
 
 },{"./averages":1,"./statistics":2,"./utils":4,"./vectors":5}],4:[function(require,module,exports){
+
+"use strict";
+
 /**
  * @description This is an internal function and is not supposed to be used directly. This function moves the window of size value along the values, applying the defined function on each chunk.
  * @param {object} objects list
@@ -1254,7 +1268,7 @@ module.exports.fill = fill
  * @return {array} values returned by the given function in each chunck
  */
 let windowOp = function (values, value, fun, targetAttr) {
-  var result = new Array();
+  let result = new Array();
   for (var i = value; i <= values.length; i++)
   {
     var windowVal = fun (values.slice(i-value, i), targetAttr);
@@ -1296,14 +1310,14 @@ if ( !Array.prototype.forEach ) {
  */
 let diffVectors = function (series1, series2, targetAttr)
 {
-  var size = stats.max([series1.length, series2.length])
-  var result = [];
-  var s1Size = series1.length;
-  var s2Size = series2.length;
+  let size = stats.max([series1.length, series2.length])
+  let result = [];
+  let s1Size = series1.length;
+  let s2Size = series2.length;
   for (var i = 0; i < size; i++)
   {
-    var itemS1 = 0;
-    var itemS2 = 0;
+    let itemS1 = 0;
+    let itemS2 = 0;
     if (s1Size > i)
     {
       itemS1 = utils.isUndef(targetAttr) ? series1[i] : series1[i][targetAttr];
@@ -1328,7 +1342,7 @@ module.exports.diffVectors = diffVectors
 let powVector = function (serie)
 {
   var result = [];
-  pow = function (x) {
+  let pow = function (x) {
     result.push (Math.pow(x, 2));
   };
   serie.forEach (pow);
@@ -1346,7 +1360,7 @@ module.exports.powVector = powVector
 let sumVector = function (values, targetAttr)
 {
   var result = 0;
-  sum = function (x) {
+  let sum = function (x) {
     if (utils.isUndef(x[targetAttr]))
       result += x
     else
@@ -1365,7 +1379,7 @@ module.exports.sumVector = sumVector;
  */
 let avgVector = function (vector, targetAttr)
 {
-  var result = module.exports.sumVector (vector, targetAttr);
+  let result = module.exports.sumVector (vector, targetAttr);
   if (!vector.length)
     return 0;
   else
@@ -1381,7 +1395,7 @@ module.exports.avgVector = avgVector
  */
 let absVector = function (vector)
 {
-  var result = [];
+  let result = [];
   vector.forEach (function ab(x)
   {
     result.push(Math.abs(x));
@@ -1399,7 +1413,7 @@ module.exports.absVector = absVector
  */
 let divVector = function (v1, v2)
 {
-  var result = [];
+  let result = [];
   for (var i = 0; i < v1.length; i++)
   {
     result.push (v1[i] / v2[i]);
@@ -1425,7 +1439,7 @@ let combineVectors = function (serie1, serie2, fun)
   }
   else
   {
-    var result = [];
+    let result = [];
     for (var i = 0; i < serie1.length; i++)
     {
       result.push (fun(serie1[i], serie2[i]));

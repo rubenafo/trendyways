@@ -1,5 +1,7 @@
+"use strict";
+
 var assert = require ("assert");
-var tr = require ("../dist/trendyways.js");
+var tr = require ("../dist/trendyways.min.js");
 
 it ("ADX test", function () {
 	var data = [
@@ -16,7 +18,7 @@ it ("ADX test", function () {
 	{h:31.17,l:30.14,c:31.12},{h:30.89,l:30.43,c:30.54},{h:30.04,l:29.35,c:29.78},
 	{h:30.66,l:29.99,c:30.04},{h:30.60,l:29.52,c:30.49},{h:31.97,l:30.94,c:31.47},
 	{h:32.10,l:31.54,c:32.05},{h:32.03,l:31.36,c:31.97}];
-	adxValues = tr.adx(data);
+	let adxValues = tr.adx(data);
   assert.equal(adxValues[28].adx.toFixed(2), 33.71);
 });
 
