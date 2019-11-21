@@ -13,16 +13,15 @@ var vectors = require ("./vectors")
 let ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   outputAttr = utils.valueIfUndef(outputAttr, "ma");
-  // Sums the content of a window
   let sumWindow = function (serie) {
     var sum = 0;
     for (var init = 0; init < serie.length; init++) {
       sum += utils.resolveParam(serie[init], targetAttr);
     }
     return (sum/serie.length);
-  }
+  };
   let newVal = utils.windowOp (values, order, sumWindow);
-  return utils.reverseAppend(values, newVal, outputAttr)
+  return utils.reverseAppend(values, newVal, outputAttr);
 }
 module.exports.ma = ma;
 
@@ -34,13 +33,13 @@ module.exports.ma = ma;
 let ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
-    throw new Error("targetAttr not provided")
-  newAttr = utils.valueIfUndef (newAttr, "ema")
+    throw new Error("targetAttr not provided");
+  newAttr = utils.valueIfUndef (newAttr, "ema");
   let emaValues = new Array();
   let k = (2/(period+1));
   let initSlice = serie.slice (0, period);
   let previousDay = vectors.avgVector (initSlice, targetAttr);
-  emaValues.push(previousDay)
+  emaValues.push(previousDay);
   let emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
@@ -48,8 +47,8 @@ let ema = function (serie, period, targetAttr, newAttr)
     previousDay = value * k + previousDay * (1-k)
     emaValues.push (previousDay);
   });
-  let newSerie = serie.slice()
-  return utils.reverseAppend(newSerie, emaValues, newAttr)
+  let newSerie = serie.slice();
+  return utils.reverseAppend(newSerie, emaValues, newAttr);
 }
 module.exports.ema = ema;
 
@@ -57,23 +56,22 @@ module.exports.ema = ema;
 
 /**
  * Weighted moving average.
- * The order of the mean (the number of elements to sum) 
- * is based on the weight's length.
+ * The order of the mean (the number of elements to sum) is based on the weight's length.
  * The sum of weights should be 1.
  */
 let wma = function (series, weights, targetAttr)
 {
-  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   let sumWindow = function (elems) {
     let sum = 0;
     elems.forEach(function(elem,i) {
-      sum = sum + (elem[targetAttr] * weights[i]);
+      sum = sum + (utils.resolveParam(elem, targetAttr) * weights[i]);
     });
     return (sum/elems.length);
-  }
+  };
   let wmaValues = utils.windowOp (series, weights.length, sumWindow);
-  return utils.reverseAppend(series, wmaValues, "wma")
-}
+  return utils.reverseAppend(series, wmaValues, "wma");
+};
 module.exports.wma = wma;
 
 
@@ -275,16 +273,15 @@ var vectors = require ("./vectors")
 let ma = function (values, order, targetAttr, outputAttr) {
   targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   outputAttr = utils.valueIfUndef(outputAttr, "ma");
-  // Sums the content of a window
   let sumWindow = function (serie) {
     var sum = 0;
     for (var init = 0; init < serie.length; init++) {
       sum += utils.resolveParam(serie[init], targetAttr);
     }
     return (sum/serie.length);
-  }
+  };
   let newVal = utils.windowOp (values, order, sumWindow);
-  return utils.reverseAppend(values, newVal, outputAttr)
+  return utils.reverseAppend(values, newVal, outputAttr);
 }
 module.exports.ma = ma;
 
@@ -296,13 +293,13 @@ module.exports.ma = ma;
 let ema = function (serie, period, targetAttr, newAttr) 
 {
   if (typeof serie[0] == "object" && !targetAttr)
-    throw new Error("targetAttr not provided")
-  newAttr = utils.valueIfUndef (newAttr, "ema")
+    throw new Error("targetAttr not provided");
+  newAttr = utils.valueIfUndef (newAttr, "ema");
   let emaValues = new Array();
   let k = (2/(period+1));
   let initSlice = serie.slice (0, period);
   let previousDay = vectors.avgVector (initSlice, targetAttr);
-  emaValues.push(previousDay)
+  emaValues.push(previousDay);
   let emaSlice = serie.slice (period);
   emaSlice.forEach (function (elem)
   {
@@ -310,8 +307,8 @@ let ema = function (serie, period, targetAttr, newAttr)
     previousDay = value * k + previousDay * (1-k)
     emaValues.push (previousDay);
   });
-  let newSerie = serie.slice()
-  return utils.reverseAppend(newSerie, emaValues, newAttr)
+  let newSerie = serie.slice();
+  return utils.reverseAppend(newSerie, emaValues, newAttr);
 }
 module.exports.ema = ema;
 
@@ -319,23 +316,22 @@ module.exports.ema = ema;
 
 /**
  * Weighted moving average.
- * The order of the mean (the number of elements to sum) 
- * is based on the weight's length.
+ * The order of the mean (the number of elements to sum) is based on the weight's length.
  * The sum of weights should be 1.
  */
 let wma = function (series, weights, targetAttr)
 {
-  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"]);
   let sumWindow = function (elems) {
     let sum = 0;
     elems.forEach(function(elem,i) {
-      sum = sum + (elem[targetAttr] * weights[i]);
+      sum = sum + (utils.resolveParam(elem, targetAttr) * weights[i]);
     });
     return (sum/elems.length);
-  }
+  };
   let wmaValues = utils.windowOp (series, weights.length, sumWindow);
-  return utils.reverseAppend(series, wmaValues, "wma")
-}
+  return utils.reverseAppend(series, wmaValues, "wma");
+};
 module.exports.wma = wma;
 
 
@@ -968,6 +964,8 @@ let resolveParam = function (obj, attrs) {
     var field = attrs[i]
     if (obj[field] != undefined)
       return obj[field]
+    else
+      return obj
   }
   throw new Error( "No valid (" + attrs + ") found in obj");
 }
@@ -991,6 +989,9 @@ module.exports.isUndef = isUndef;
 let reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
+  if (typeof refList[0] !== "object") {
+    return addList;
+  }
   addList.forEach (function (add, i) {
     refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
   })
@@ -1215,6 +1216,8 @@ let resolveParam = function (obj, attrs) {
     var field = attrs[i]
     if (obj[field] != undefined)
       return obj[field]
+    else
+      return obj
   }
   throw new Error( "No valid (" + attrs + ") found in obj");
 }
@@ -1238,6 +1241,9 @@ module.exports.isUndef = isUndef;
 let reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
+  if (typeof refList[0] !== "object") {
+    return addList;
+  }
   addList.forEach (function (add, i) {
     refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
   })

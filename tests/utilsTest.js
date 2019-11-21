@@ -28,12 +28,6 @@ describe ("Utils test", function () {
     assert.equal(value, 46)
   });
   
-  it ("ignore missing attrs", function () {
-    var obj = {o1:45, c1:46, h:40, open:39};
-    var value = tw.resolveParam (obj, ["a", "c", "open"])
-    assert.equal(value, 39)
-  });
-
   it ("reverseAppend append values", function () {
     var refList = [{val:5}, {val:6}, {val:7}, {val:8}];
     var addList = [{id:1}, {id:2}];

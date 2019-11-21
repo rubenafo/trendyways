@@ -12,6 +12,8 @@ let resolveParam = function (obj, attrs) {
     var field = attrs[i]
     if (obj[field] != undefined)
       return obj[field]
+    else
+      return obj
   }
   throw new Error( "No valid (" + attrs + ") found in obj");
 }
@@ -35,6 +37,9 @@ module.exports.isUndef = isUndef;
 let reverseAppend = function (refList, addList, field) {
   if (isUndef(field))
     throw new Error ("Unable to append values, no field given")
+  if (typeof refList[0] !== "object") {
+    return addList;
+  }
   addList.forEach (function (add, i) {
     refList[refList.length-addList.length+i][field] = add[field] ? add[field] : add;
   })
