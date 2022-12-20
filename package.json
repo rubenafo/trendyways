@@ -1,7 +1,7 @@
 {
   "name": "trendyways",
   "preferGlobal": true,
-  "version": "0.8.0",
+  "version": "1.0.1",
   "author": "Ruben Afonso <rbfrancos@gmail.com>",
   "description": "a javascript library for financial technical analysis",
   "contributors": [
@@ -33,7 +33,7 @@
     "jsdoc": "^3.6.3",
     "mocha": ">=2.3.4",
     "uglify-es": "^3.3.9",
-    "uglifyjs-webpack-plugin": "^2.1.1"
+    "uglifyjs-webpack-plugin": "^1.1.2"
   },
   "license": "Apache-2.0",
   "engines": {
@@ -42,5 +42,9 @@
   "scripts": {
     "test": "mocha tests",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests"
-  }
+  },
+  "bundleDependencies": [
+    "uglify-js",
+    "jsdoc"
+  ]
 }
