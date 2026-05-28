@@ -6,6 +6,28 @@ var tw = require ("../dist/trendyways.js");
 
 describe ("Indicators", function () {
 
+  it ("On-Balance Volume test", function () {
+    var close  = [10, 12, 11, 11, 13];
+    var volume = [100, 200, 150, 120, 300];
+    var result = tw.obv(close, volume);
+    assert.equal(result.length, close.length, "OBV length matches close length");
+    assert.equal(result[0],  100, "OBV initial value equals first volume");
+    assert.equal(result[1],  300, "OBV rises when close is higher (bullish)");
+    assert.equal(result[2],  150, "OBV falls when close is lower (bearish)");
+    assert.equal(result[3],  150, "OBV unchanged when close is flat");
+    assert.equal(result[4],  450, "OBV rises again on second bullish day");
+  });
+
+  it ("Volume-Price Trend test", function () {
+    var close  = [10, 12, 11];
+    var volume = [100, 200, 150];
+    var result = tw.vpt(close, volume);
+    assert.equal(result.length, close.length, "VPT length matches close length");
+    assert.equal(result[0].toFixed(2), (100).toFixed(2), "VPT initial value equals first volume");
+    assert.equal(result[1].toFixed(2), (140).toFixed(2), "VPT after bullish day");
+    assert.equal(result[2].toFixed(4), (127.5).toFixed(4), "VPT after bearish day");
+  });
+
   it ("Money Flow Index test", function ()
   {
     var volumes = [79370729, 67472022, 63121628, 71942510, 65147231,74202811, 101610206, 95639685,
