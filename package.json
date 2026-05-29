@@ -46,7 +46,8 @@
   "scripts": {
     "test": "mocha --require ts-node/register 'tests/**/*.ts'",
     "test-travis": "./node_modules/istanbul/lib/cli.js cover ./node_modules/mocha/bin/_mocha -- -R spec ./tests",
-    "build": "tsc"
+    "build": "tsc && git checkout dist/trendyways.js dist/trendyways.min.js 2>/dev/null; npm run bundle",
+    "bundle": "uglifyjs dist/trendyways.js -o dist/trendyways.min.js -c -m"
   },
   "bundleDependencies": [
     "uglify-js",

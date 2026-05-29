@@ -1,7 +1,765 @@
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <meta charset="utf-8"/>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Trendyways — Financial Technical Analysis Library</title>
   <link rel="shortcut icon" href="#" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #0f1117;
+      --surface:   #1a1d27;
+      --border:    #2a2d3e;
+      --accent:    #6c63ff;
+      --accent2:   #00d4aa;
+      --accent3:   #ff6b6b;
+      --accent4:   #ffd93d;
+      --text:      #e2e8f0;
+      --muted:     #8892a4;
+      --code-bg:   #12151f;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+    }
+
+    /* ── Hero ── */
+    header {
+      background: linear-gradient(135deg, #1a1d27 0%, #12151f 100%);
+      border-bottom: 1px solid var(--border);
+      padding: 4rem 2rem 3rem;
+      text-align: center;
+    }
+    header .badge {
+      display: inline-block;
+      background: var(--accent);
+      color: #fff;
+      font-size: 0.7rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.25rem 0.75rem;
+      border-radius: 999px;
+      margin-bottom: 1.25rem;
+    }
+    header h1 {
+      font-size: clamp(2rem, 5vw, 3.5rem);
+      font-weight: 800;
+      letter-spacing: -0.03em;
+      background: linear-gradient(135deg, #fff 30%, var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    header p {
+      color: var(--muted);
+      font-size: 1.1rem;
+      max-width: 560px;
+      margin: 0.75rem auto 0;
+    }
+
+    /* ── Nav tabs ── */
+    nav {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      padding: 1.5rem 2rem;
+      background: var(--surface);
+      border-bottom: 1px solid var(--border);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+    nav a {
+      color: var(--muted);
+      text-decoration: none;
+      font-size: 0.85rem;
+      font-weight: 600;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      transition: all 0.15s;
+      border: 1px solid transparent;
+    }
+    nav a:hover {
+      color: var(--text);
+      background: var(--border);
+    }
+    nav a.active {
+      color: var(--accent);
+      border-color: var(--accent);
+      background: rgba(108,99,255,0.08);
+    }
+
+    /* ── Layout ── */
+    main {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 2rem 1.5rem 4rem;
+    }
+
+    section {
+      margin-top: 3rem;
+      padding-top: 1rem;
+      border-top: 1px solid var(--border);
+    }
+    section:first-child { border-top: none; }
+
+    h2 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      margin-bottom: 0.25rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+    h2 .icon { font-size: 1.2rem; }
+
+    .section-desc {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1.5rem;
+    }
+
+    /* ── Cards ── */
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 1rem;
+      margin-bottom: 1.5rem;
+    }
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.25rem 1.5rem;
+      transition: border-color 0.2s;
+    }
+    .card:hover { border-color: var(--accent); }
+    .card h3 {
+      font-size: 0.8rem;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      margin-bottom: 0.5rem;
+    }
+    .card .value {
+      font-size: 2rem;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+    }
+    .card .value.green  { color: var(--accent2); }
+    .card .value.purple { color: var(--accent);  }
+    .card .value.red    { color: var(--accent3); }
+    .card .value.yellow { color: var(--accent4); }
+    .card .sub {
+      font-size: 0.78rem;
+      color: var(--muted);
+      margin-top: 0.25rem;
+    }
+
+    /* ── Chart ── */
+    .chart-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 1.5rem;
+      margin-bottom: 1rem;
+    }
+    .chart-box h3 {
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--muted);
+      margin-bottom: 1rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+    canvas { width: 100% !important; max-height: 280px; }
+
+    /* ── Table ── */
+    .table-wrap {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      overflow: auto;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 0.85rem;
+    }
+    th {
+      background: var(--code-bg);
+      color: var(--muted);
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      padding: 0.75rem 1rem;
+      text-align: right;
+      white-space: nowrap;
+    }
+    th:first-child { text-align: left; }
+    td {
+      padding: 0.6rem 1rem;
+      border-top: 1px solid var(--border);
+      text-align: right;
+      font-variant-numeric: tabular-nums;
+      color: var(--muted);
+    }
+    td:first-child { text-align: left; color: var(--text); font-weight: 500; }
+    tr:hover td { background: rgba(255,255,255,0.02); }
+
+    /* ── Code snippet ── */
+    pre {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 1rem 1.25rem;
+      font-size: 0.82rem;
+      font-family: 'JetBrains Mono', 'Fira Code', 'Cascadia Code', monospace;
+      overflow-x: auto;
+      color: #a8b4c8;
+      margin-top: 1rem;
+    }
+    pre .kw  { color: #c792ea; }
+    pre .fn  { color: #82aaff; }
+    pre .str { color: #c3e88d; }
+    pre .num { color: #f78c6c; }
+    pre .cmt { color: #546e7a; }
+
+    /* ── Pill tags ── */
+    .tags { display: flex; flex-wrap: wrap; gap: 0.4rem; margin-top: 0.75rem; }
+    .tag {
+      font-size: 0.7rem;
+      font-weight: 600;
+      padding: 0.2rem 0.6rem;
+      border-radius: 999px;
+      background: rgba(108,99,255,0.12);
+      color: var(--accent);
+      border: 1px solid rgba(108,99,255,0.3);
+    }
+
+    /* ── Vector result row ── */
+    .vec-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      margin-top: 0.5rem;
+    }
+    .vec-item {
+      background: var(--code-bg);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.25rem 0.6rem;
+      font-size: 0.82rem;
+      font-family: monospace;
+      color: var(--accent2);
+    }
+    .vec-item.neg { color: var(--accent3); }
+
+    footer {
+      text-align: center;
+      padding: 2rem;
+      color: var(--muted);
+      font-size: 0.82rem;
+      border-top: 1px solid var(--border);
+    }
+    footer a { color: var(--accent); text-decoration: none; }
+  </style>
 </head>
 <body>
-  <script language="javascript" type="text/javascript" src="./dist/trendyways.min.js"></script>
+
+  <header>
+    <div class="badge">v1.5.0</div>
+    <h1>Trendyways</h1>
+    <p>A JavaScript library for financial technical analysis — moving averages, oscillators, indicators, and more.</p>
+    <div class="tags" style="justify-content:center;margin-top:1rem;">
+      <span class="tag">Moving Averages</span>
+      <span class="tag">Bollinger Bands</span>
+      <span class="tag">MACD</span>
+      <span class="tag">RSI</span>
+      <span class="tag">ADX</span>
+      <span class="tag">Support &amp; Resistance</span>
+      <span class="tag">Fibonacci</span>
+      <span class="tag">Statistics</span>
+      <span class="tag">Vector Ops</span>
+    </div>
+  </header>
+
+  <nav>
+    <a href="#averages"   class="active">Averages</a>
+    <a href="#bollinger">Bollinger</a>
+    <a href="#macd">MACD</a>
+    <a href="#rsi">RSI</a>
+    <a href="#adx">ADX</a>
+    <a href="#support">Support &amp; Resistance</a>
+    <a href="#stats">Statistics</a>
+    <a href="#vectors">Vectors</a>
+    <a href="#errors">Error Metrics</a>
+  </nav>
+
+  <main>
+
+    <!-- ── Averages ── -->
+    <section id="averages">
+      <h2><span class="icon">📈</span> Moving Averages</h2>
+      <p class="section-desc">Simple (MA), Exponential (EMA), and Weighted (WMA) moving averages on a price series.</p>
+
+      <div class="chart-box">
+        <h3>Price vs MA(4) vs EMA(4)</h3>
+        <canvas id="chartAverages"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> serie = [{c:<span class="num">2</span>},{c:<span class="num">6</span>},{c:<span class="num">5</span>},{c:<span class="num">7</span>},{c:<span class="num">10</span>},{c:<span class="num">9</span>},{c:<span class="num">12</span>},{c:<span class="num">5</span>}];
+<span class="kw">const</span> ma  = tw.<span class="fn">ma</span>(serie, <span class="num">4</span>);   <span class="cmt">// simple moving average, window=4</span>
+<span class="kw">const</span> ema = tw.<span class="fn">ema</span>(serie, <span class="num">4</span>);  <span class="cmt">// exponential moving average</span>
+<span class="kw">const</span> wma = tw.<span class="fn">wma</span>(serie, [<span class="num">0.6</span>, <span class="num">0.3</span>, <span class="num">0.1</span>]); <span class="cmt">// weighted MA</span></pre>
+    </section>
+
+    <!-- ── Bollinger ── -->
+    <section id="bollinger">
+      <h2><span class="icon">🎯</span> Bollinger Bands</h2>
+      <p class="section-desc">Upper and lower bands at k standard deviations around a moving average, highlighting volatility.</p>
+
+      <div class="chart-box">
+        <h3>Price with Bollinger Bands (n=3, k=2)</h3>
+        <canvas id="chartBollinger"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> serie  = [{c:<span class="num">2.1</span>},{c:<span class="num">4.3</span>},{c:<span class="num">4.5</span>},{c:<span class="num">4.8</span>},{c:<span class="num">5.0</span>},{c:<span class="num">5.8</span>},{c:<span class="num">7.1</span>},{c:<span class="num">9.1</span>}];
+<span class="kw">const</span> bands  = tw.<span class="fn">bollinger</span>(serie, <span class="num">3</span>, <span class="num">2</span>);  <span class="cmt">// window=3, k=2</span>
+<span class="cmt">// bands[i].ub  → upper band</span>
+<span class="cmt">// bands[i].ma  → middle band (moving average)</span>
+<span class="cmt">// bands[i].lb  → lower band</span></pre>
+    </section>
+
+    <!-- ── MACD ── -->
+    <section id="macd">
+      <h2><span class="icon">⚡</span> MACD</h2>
+      <p class="section-desc">Moving Average Convergence Divergence — trend-following momentum indicator.</p>
+
+      <div class="chart-box">
+        <h3>MACD Line &amp; Signal (sample IBM data, first 50 values with signal)</h3>
+        <canvas id="chartMacd"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> results = tw.<span class="fn">macd</span>(serie);
+<span class="cmt">// results[i].macd.line   → MACD line (12-EMA minus 26-EMA)</span>
+<span class="cmt">// results[i].macd.signal → signal line (9-EMA of MACD)</span>
+<span class="cmt">// results[i].macd.hist   → histogram (line minus signal)</span></pre>
+    </section>
+
+    <!-- ── RSI ── -->
+    <section id="rsi">
+      <h2><span class="icon">🔋</span> RSI — Relative Strength Index</h2>
+      <p class="section-desc">Momentum oscillator measuring speed and change of price movements (0–100 scale).</p>
+
+      <div class="card-grid" id="rsiCards"></div>
+
+      <div class="chart-box">
+        <h3>RSI(14) with overbought / oversold bands</h3>
+        <canvas id="chartRsi"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> values = [{c:<span class="num">44.34</span>}, {c:<span class="num">44.09</span>}, ... <span class="cmt">/* 33 candles */</span>];
+<span class="kw">const</span> result = tw.<span class="fn">rsi</span>(values, <span class="num">14</span>);
+<span class="cmt">// result[i].rsi → RSI value at index i</span></pre>
+    </section>
+
+    <!-- ── ADX ── -->
+    <section id="adx">
+      <h2><span class="icon">🧭</span> ADX — Average Directional Index</h2>
+      <p class="section-desc">Measures trend strength. DI+ and DI- show directional movement.</p>
+
+      <div class="chart-box">
+        <h3>ADX, DI+, DI− (38 candles)</h3>
+        <canvas id="chartAdx"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> data   = [{h:<span class="num">30.20</span>, l:<span class="num">29.41</span>, c:<span class="num">29.87</span>}, ...];
+<span class="kw">const</span> result = tw.<span class="fn">adx</span>(data);
+<span class="cmt">// result[i].adx    → ADX value (starts at index 28)</span>
+<span class="cmt">// result[i].di14p  → DI+ (starts at index 14)</span>
+<span class="cmt">// result[i].di14n  → DI−</span></pre>
+    </section>
+
+    <!-- ── Support & Resistance ── -->
+    <section id="support">
+      <h2><span class="icon">🏗️</span> Support &amp; Resistance</h2>
+      <p class="section-desc">Floor pivots, Camarilla, Woodie's, Tom DeMark's points, and Fibonacci retracements.</p>
+
+      <div class="card-grid" id="supResCards"></div>
+
+      <div class="chart-box">
+        <h3>Floor Pivots with Support & Resistance</h3>
+        <canvas id="chartSupRes"></canvas>
+      </div>
+
+      <div class="table-wrap" style="margin-top:1rem;">
+        <table id="fibTable">
+          <thead>
+            <tr>
+              <th>Candle</th>
+              <th>100%</th><th>61.8%</th><th>50%</th><th>38.2%</th><th>23.6%</th><th>0%</th>
+            </tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="section-desc" style="margin-top:.5rem;">Fibonacci UPTREND retracements</p>
+
+      <pre><span class="kw">const</span> pivot  = tw.<span class="fn">floorPivots</span>([{c:<span class="num">15</span>, h:<span class="num">18</span>, l:<span class="num">5</span>}]);
+<span class="kw">const</span> cam    = tw.<span class="fn">camarillaPoints</span>(points);
+<span class="kw">const</span> wood   = tw.<span class="fn">woodiesPoints</span>(points);
+<span class="kw">const</span> tom    = tw.<span class="fn">tomDemarksPoints</span>(points);
+<span class="kw">const</span> fibs   = tw.<span class="fn">fibonacciRetrs</span>(points, <span class="str">'UPTREND'</span>);</pre>
+    </section>
+
+    <!-- ── Statistics ── -->
+    <section id="stats">
+      <h2><span class="icon">📊</span> Statistics</h2>
+      <p class="section-desc">Basic descriptive statistics: min, max, mean, standard deviation.</p>
+
+      <div class="card-grid" id="statsCards"></div>
+
+      <pre><span class="kw">const</span> serie = [<span class="num">2</span>,<span class="num">6</span>,<span class="num">5</span>,<span class="num">7</span>,<span class="num">10</span>,<span class="num">9</span>,<span class="num">12</span>,<span class="num">5</span>];
+tw.<span class="fn">max</span>(serie)   <span class="cmt">// → 12</span>
+tw.<span class="fn">min</span>(serie)   <span class="cmt">// → 2</span>
+tw.<span class="fn">mean</span>(serie)  <span class="cmt">// → 7</span>
+tw.<span class="fn">sd</span>(serie)    <span class="cmt">// → standard deviation</span></pre>
+    </section>
+
+    <!-- ── Vectors ── -->
+    <section id="vectors">
+      <h2><span class="icon">🔢</span> Vector Operations</h2>
+      <p class="section-desc">Element-wise arithmetic operations on numeric arrays.</p>
+
+      <div id="vecResults"></div>
+
+      <pre><span class="kw">const</span> a = [<span class="num">5</span>, <span class="num">3</span>, <span class="num">8</span>], b = [<span class="num">2</span>, <span class="num">1</span>, <span class="num">6</span>];
+tw.<span class="fn">diffVectors</span>(a, b)          <span class="cmt">// → [3, 2, 2]</span>
+tw.<span class="fn">divVector</span>(a, b)            <span class="cmt">// → [2.5, 3, 1.33]</span>
+tw.<span class="fn">powVector</span>(a)               <span class="cmt">// → [25, 9, 64]  (squares)</span>
+tw.<span class="fn">absVector</span>([-1, -2, 3])     <span class="cmt">// → [1, 2, 3]</span>
+tw.<span class="fn">sumVector</span>(a)               <span class="cmt">// → 16</span>
+tw.<span class="fn">avgVector</span>(a)               <span class="cmt">// → 5.33</span>
+tw.<span class="fn">combineVectors</span>(a, b, (x,y) => x*y) <span class="cmt">// → [10, 3, 48]</span></pre>
+    </section>
+
+    <!-- ── Error Metrics ── -->
+    <section id="errors">
+      <h2><span class="icon">📐</span> Error Metrics</h2>
+      <p class="section-desc">Measure prediction accuracy: MSE, RMSE, and MAE between two series.</p>
+
+      <div class="card-grid" id="errorCards"></div>
+
+      <pre><span class="kw">const</span> actual    = [<span class="num">1.2</span>, <span class="num">3.4</span>, -<span class="num">7.8</span>, <span class="num">2.3</span>, <span class="num">8.9</span>, <span class="num">5</span>];
+<span class="kw">const</span> predicted = [<span class="num">2.2</span>, <span class="num">8.4</span>,  <span class="num">7.8</span>, -<span class="num">2.3</span>, -<span class="num">8.9</span>, <span class="num">5.1</span>];
+tw.<span class="fn">mse</span>(actual, predicted)   <span class="cmt">// → 101.23</span>
+tw.<span class="fn">rmse</span>(actual, predicted)  <span class="cmt">// → 10.06</span>
+tw.<span class="fn">mae</span>(actual, predicted)   <span class="cmt">// → 7.35</span></pre>
+    </section>
+
+  </main>
+
+  <footer>
+    <p>Trendyways v1.5.0 &mdash; Apache 2.0 &mdash; <a href="https://github.com/rubenafo/trendyways" target="_blank">GitHub</a></p>
+  </footer>
+
+  <script src="../dist/trendyways.min.js"></script>
+  <script>
+    // ── Shared chart defaults ────────────────────────────────────────────
+    Chart.defaults.color = '#8892a4';
+    Chart.defaults.borderColor = '#2a2d3e';
+    Chart.defaults.font.family = "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif";
+
+    const PURPLE = '#6c63ff', TEAL = '#00d4aa', RED = '#ff6b6b', YELLOW = '#ffd93d', BLUE = '#60a5fa';
+
+    function chartOpts(extra) {
+      return Object.assign({
+        responsive: true,
+        maintainAspectRatio: true,
+        interaction: { mode: 'index', intersect: false },
+        plugins: {
+          legend: { labels: { boxWidth: 12, padding: 16 } },
+          tooltip: { backgroundColor: '#1a1d27', borderColor: '#2a2d3e', borderWidth: 1 }
+        },
+        scales: {
+          x: { grid: { color: '#1e2130' }, ticks: { maxTicksLimit: 10 } },
+          y: { grid: { color: '#1e2130' } }
+        }
+      }, extra);
+    }
+
+    // ── Averages ─────────────────────────────────────────────────────────
+    (function () {
+      const serie = [{c:2},{c:6},{c:5},{c:7},{c:10},{c:9},{c:12},{c:5}];
+      const maResult  = tw.ma(serie, 4);
+      const emaResult = tw.ema(serie, 4, ['c']);
+      const labels    = serie.map((_, i) => 'T' + i);
+      const prices    = serie.map(d => d.c);
+      const maVals    = maResult.map(d => d.ma !== undefined ? d.ma : null);
+      const emaVals   = emaResult.map(d => d.ema !== undefined ? d.ema : null);
+
+      new Chart(document.getElementById('chartAverages'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Price', data: prices, borderColor: BLUE,   backgroundColor: 'rgba(96,165,250,0.08)', tension: 0.3, pointRadius: 4 },
+            { label: 'MA(4)', data: maVals,  borderColor: PURPLE, backgroundColor: 'transparent', tension: 0.3, borderDash: [6,3], pointRadius: 3 },
+            { label: 'EMA(4)',data: emaVals, borderColor: TEAL,   backgroundColor: 'transparent', tension: 0.3, borderDash: [2,2], pointRadius: 3 }
+          ]
+        },
+        options: chartOpts()
+      });
+    })();
+
+    // ── Bollinger ─────────────────────────────────────────────────────────
+    (function () {
+      const serie  = [{c:2.1},{c:4.3},{c:4.5},{c:4.8},{c:5.0},{c:5.8},{c:7.1},{c:9.1}];
+      const bands  = tw.bollinger(serie, 3, 2);
+      const labels = serie.map((_, i) => 'T' + i);
+      const prices = serie.map(d => d.c);
+      const ub = bands.map(b => b.ub !== undefined ? +b.ub.toFixed(3) : null);
+      const ma = bands.map(b => b.ma !== undefined ? +b.ma.toFixed(3) : null);
+      const lb = bands.map(b => b.lb !== undefined ? +b.lb.toFixed(3) : null);
+
+      new Chart(document.getElementById('chartBollinger'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Upper Band', data: ub, borderColor: RED,    backgroundColor: 'rgba(255,107,107,0.05)', tension: 0.3, borderDash: [5,3], pointRadius: 2 },
+            { label: 'MA (middle)',data: ma, borderColor: PURPLE, backgroundColor: 'transparent', tension: 0.3, pointRadius: 3 },
+            { label: 'Lower Band', data: lb, borderColor: TEAL,   backgroundColor: 'rgba(0,212,170,0.05)', tension: 0.3, borderDash: [5,3], pointRadius: 2 },
+            { label: 'Price',      data: prices, borderColor: YELLOW, backgroundColor: 'rgba(255,217,61,0.08)', tension: 0.3, pointRadius: 4 }
+          ]
+        },
+        options: chartOpts()
+      });
+    })();
+
+    // ── MACD ─────────────────────────────────────────────────────────────
+    (function () {
+      const closes = [196.35,195.27,193.99,193.14,192.87,192.32,192.88,194.45,192.62,192.50,
+                      192.59,193.65,194.47,196.08,204.72,204.42,204.97,204.93,203.90,203.52,
+                      203.07,205.18,203.79,202.79,201.02,199.74,201.68,200.16,200.04,200.09,
+                      199.65,200.98,200.32,199.31,198.33,201.09,197.51,199.14,202.33,200.83,
+                      202.91,205.19,206.53,208.38,209.42,210.38,210.08,210.55,212.06,215.80];
+      const serie  = closes.map(c => ({c}));
+      const result = tw.macd(serie);
+      const withSignal = result.filter(d => d.macd.signal !== 0);
+      const labels = withSignal.map((_, i) => 'T' + (result.indexOf(withSignal[0]) + i));
+      const line   = withSignal.map(d => +d.macd.line.toFixed(4));
+      const signal = withSignal.map(d => +d.macd.signal.toFixed(4));
+      const hist   = withSignal.map(d => +(d.macd.line - d.macd.signal).toFixed(4));
+
+      new Chart(document.getElementById('chartMacd'), {
+        type: 'bar',
+        data: {
+          labels,
+          datasets: [
+            { type: 'line', label: 'MACD Line',   data: line,   borderColor: PURPLE, backgroundColor: 'transparent', tension: 0.3, pointRadius: 2, order: 1 },
+            { type: 'line', label: 'Signal Line',  data: signal, borderColor: YELLOW, backgroundColor: 'transparent', tension: 0.3, pointRadius: 2, order: 1 },
+            { type: 'bar',  label: 'Histogram',    data: hist,
+              backgroundColor: hist.map(v => v >= 0 ? 'rgba(0,212,170,0.4)' : 'rgba(255,107,107,0.4)'),
+              borderColor:     hist.map(v => v >= 0 ? TEAL : RED),
+              borderWidth: 1, order: 2 }
+          ]
+        },
+        options: chartOpts()
+      });
+    })();
+
+    // ── RSI ───────────────────────────────────────────────────────────────
+    (function () {
+      const values = [{c:44.34},{c:44.09},{c:44.15},{c:43.61},{c:44.33},{c:44.83},{c:45.10},{c:45.42},
+                      {c:45.84},{c:46.08},{c:45.89},{c:46.03},{c:45.61},{c:46.28},{c:46.28},{c:46.00},
+                      {c:46.03},{c:46.41},{c:46.22},{c:45.64},{c:46.21},{c:46.25},{c:45.71},{c:46.45},
+                      {c:45.78},{c:45.35},{c:44.03},{c:44.18},{c:44.22},{c:44.57},{c:43.42},{c:42.66},{c:43.13}];
+      const result = tw.rsi(values, 14);
+      const rsiVals = result.map(d => d.rsi !== undefined ? +d.rsi.toFixed(2) : null);
+      const labels  = values.map((_, i) => 'T' + i);
+      const last    = rsiVals.filter(v => v !== null);
+
+      // Cards
+      const cards = document.getElementById('rsiCards');
+      const cardData = [
+        { label: 'Last RSI(14)',  value: last[last.length-1].toFixed(1), cls: last[last.length-1] > 70 ? 'red' : last[last.length-1] < 30 ? 'green' : 'purple' },
+        { label: 'Overbought at', value: '70.0', cls: 'red' },
+        { label: 'Oversold at',   value: '30.0', cls: 'green' },
+        { label: 'Period',        value: '14',   cls: 'yellow' }
+      ];
+      cards.innerHTML = cardData.map(c => `
+        <div class="card">
+          <h3>${c.label}</h3>
+          <div class="value ${c.cls}">${c.value}</div>
+        </div>`).join('');
+
+      new Chart(document.getElementById('chartRsi'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'RSI(14)', data: rsiVals, borderColor: PURPLE, backgroundColor: 'rgba(108,99,255,0.06)', tension: 0.3, pointRadius: 2 },
+            { label: 'Overbought (70)', data: Array(values.length).fill(70), borderColor: RED,  borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 },
+            { label: 'Oversold (30)',   data: Array(values.length).fill(30), borderColor: TEAL, borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 }
+          ]
+        },
+        options: chartOpts({ scales: { y: { min: 0, max: 100, grid: { color: '#1e2130' } }, x: { grid: { color: '#1e2130' } } } })
+      });
+    })();
+
+    // ── ADX ───────────────────────────────────────────────────────────────
+    (function () {
+      const data = [
+        {h:30.20,l:29.41,c:29.87},{h:30.28,l:29.32,c:30.24},{h:30.45,l:29.96,c:30.10},
+        {h:29.35,l:28.74,c:28.90},{h:29.35,l:28.56,c:28.92},{h:29.29,l:28.41,c:28.48},
+        {h:28.83,l:28.08,c:28.56},{h:28.73,l:27.43,c:27.56},{h:28.67,l:27.66,c:28.47},
+        {h:28.85,l:27.83,c:28.28},{h:28.64,l:27.40,c:27.49},{h:27.68,l:27.09,c:27.23},
+        {h:27.21,l:26.18,c:26.35},{h:26.87,l:26.13,c:26.33},{h:27.41,l:26.63,c:27.03},
+        {h:26.94,l:26.13,c:26.22},{h:26.52,l:25.43,c:26.01},{h:26.52,l:25.35,c:25.46},
+        {h:27.09,l:25.88,c:27.03},{h:27.69,l:26.96,c:27.45},{h:28.45,l:27.14,c:28.36},
+        {h:28.53,l:28.01,c:28.43},{h:28.67,l:27.88,c:27.95},{h:29.01,l:27.99,c:29.01},
+        {h:29.87,l:28.76,c:29.38},{h:29.80,l:29.14,c:29.36},{h:29.75,l:28.71,c:28.91},
+        {h:30.65,l:28.93,c:30.61},{h:30.60,l:30.03,c:30.05},{h:30.76,l:29.39,c:30.19},
+        {h:31.17,l:30.14,c:31.12},{h:30.89,l:30.43,c:30.54},{h:30.04,l:29.35,c:29.78},
+        {h:30.66,l:29.99,c:30.04},{h:30.60,l:29.52,c:30.49},{h:31.97,l:30.94,c:31.47},
+        {h:32.10,l:31.54,c:32.05},{h:32.03,l:31.36,c:31.97}
+      ];
+      const result = tw.adx(data);
+      const labels = data.map((_, i) => 'T' + i);
+      const adxV   = result.map(d => d.adx   !== undefined ? +d.adx.toFixed(2)   : null);
+      const dip    = result.map(d => d.di14p  !== undefined ? +d.di14p.toFixed(2) : null);
+      const din    = result.map(d => d.di14n  !== undefined ? +d.di14n.toFixed(2) : null);
+
+      new Chart(document.getElementById('chartAdx'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'ADX',  data: adxV, borderColor: YELLOW, backgroundColor: 'transparent', tension: 0.3, borderWidth: 2, pointRadius: 2 },
+            { label: 'DI+',  data: dip,  borderColor: TEAL,   backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.5, pointRadius: 2 },
+            { label: 'DI−',  data: din,  borderColor: RED,    backgroundColor: 'transparent', tension: 0.3, borderWidth: 1.5, pointRadius: 2 }
+          ]
+        },
+        options: chartOpts()
+      });
+    })();
+
+    // ── Support & Resistance ─────────────────────────────────────────────
+    (function () {
+      const point  = [{c:15, h:18, l:5}];
+      const pivots = tw.floorPivots(point)[0].floor;
+
+      const cards = document.getElementById('supResCards');
+      cards.innerHTML = [
+        { label: 'Pivot Level', value: pivots.pl.toFixed(2),  cls: 'purple' },
+        { label: 'Resistance R1', value: pivots.r1.toFixed(2), cls: 'red'   },
+        { label: 'Resistance R2', value: pivots.r2.toFixed(2), cls: 'red'   },
+        { label: 'Support S1',    value: pivots.s1.toFixed(2), cls: 'green' },
+        { label: 'Support S2',    value: pivots.s2.toFixed(2), cls: 'green' },
+        { label: 'Resistance R3', value: pivots.r3.toFixed(2), cls: 'yellow'}
+      ].map(c => `<div class="card"><h3>${c.label}</h3><div class="value ${c.cls}">${c.value}</div><div class="sub">Floor pivot — {c:15, h:18, l:5}</div></div>`).join('');
+
+      // Chart with price action and support/resistance
+      const priceData = [5, 8, 12, 15, 18, 16, 14, 12, 10, 15, 18, 15, 14, 12, 11];
+      const labels = priceData.map((_, i) => 'T' + i);
+      
+      new Chart(document.getElementById('chartSupRes'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: 'Price', data: priceData, borderColor: BLUE, backgroundColor: 'rgba(96,165,250,0.08)', tension: 0.3, pointRadius: 3, fill: true },
+            { label: 'Pivot (PL)', data: Array(priceData.length).fill(pivots.pl), borderColor: PURPLE, backgroundColor: 'transparent', borderDash: [5,3], pointRadius: 0, borderWidth: 2 },
+            { label: 'Resistance R1', data: Array(priceData.length).fill(pivots.r1), borderColor: RED, backgroundColor: 'transparent', borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 },
+            { label: 'Resistance R2', data: Array(priceData.length).fill(pivots.r2), borderColor: RED, backgroundColor: 'transparent', borderDash: [3,3], pointRadius: 0, borderWidth: 1 },
+            { label: 'Support S1', data: Array(priceData.length).fill(pivots.s1), borderColor: TEAL, backgroundColor: 'transparent', borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 },
+            { label: 'Support S2', data: Array(priceData.length).fill(pivots.s2), borderColor: TEAL, backgroundColor: 'transparent', borderDash: [3,3], pointRadius: 0, borderWidth: 1 }
+          ]
+        },
+        options: chartOpts()
+      });
+
+      // Fibonacci table
+      const fibPoints = [{h:10,l:5},{h:12,l:8},{h:9,l:7},{h:15,l:6},{h:16,l:9}];
+      const fibs = tw.fibonacciRetrs(fibPoints, 'UPTREND');
+      const tbody = document.querySelector('#fibTable tbody');
+      tbody.innerHTML = fibs.map((row, i) =>
+        `<tr><td>Candle ${i+1} (h:${fibPoints[i].h}, l:${fibPoints[i].l})</td>${row.map(v => `<td>${v.toFixed(2)}</td>`).join('')}</tr>`
+      ).join('');
+    })();
+
+    // ── Statistics ────────────────────────────────────────────────────────
+    (function () {
+      const serie = [2,6,5,7,10,9,12,5];
+      const sdVal = tw.sd(serie);
+      document.getElementById('statsCards').innerHTML = [
+        { label: 'Maximum',  value: tw.max(serie),  cls: 'red'   },
+        { label: 'Minimum',  value: tw.min(serie),  cls: 'green' },
+        { label: 'Mean',     value: tw.mean(serie), cls: 'purple'},
+        { label: 'Std Dev',  value: +sdVal.toFixed(4), cls: 'yellow'}
+      ].map(c => `<div class="card"><h3>${c.label}</h3><div class="value ${c.cls}">${c.value}</div><div class="sub">[2,6,5,7,10,9,12,5]</div></div>`).join('');
+    })();
+
+    // ── Vectors ───────────────────────────────────────────────────────────
+    (function () {
+      const a = [5, 3, 8], b = [2, 1, 6];
+      const ops = [
+        { label: 'diffVectors(a, b)',           result: tw.diffVectors(a, b) },
+        { label: 'divVector(a, b)',              result: tw.divVector(a, b).map(v => +v.toFixed(3)) },
+        { label: 'powVector(a)',                 result: tw.powVector(a) },
+        { label: 'absVector([-1, -2, 3])',       result: tw.absVector([-1, -2, 3]) },
+        { label: 'combineVectors(a, b, x*y)',   result: tw.combineVectors(a, b, (x, y) => x * y) }
+      ];
+      const scalars = [
+        { label: 'sumVector(a)',  value: tw.sumVector(a) },
+        { label: 'avgVector(a)',  value: +tw.avgVector(a).toFixed(4) }
+      ];
+
+      document.getElementById('vecResults').innerHTML = ops.map(op => `
+        <div class="card" style="margin-bottom:.75rem;">
+          <h3>${op.label}</h3>
+          <div class="vec-row">${op.result.map(v => `<span class="vec-item${v < 0 ? ' neg' : ''}">${v}</span>`).join('')}</div>
+        </div>`).join('') +
+        `<div class="card-grid" style="margin-top:.75rem;">${scalars.map(s =>
+          `<div class="card"><h3>${s.label}</h3><div class="value purple">${s.value}</div></div>`
+        ).join('')}</div>`;
+    })();
+
+    // ── Error Metrics ─────────────────────────────────────────────────────
+    (function () {
+      const s1 = [1.2, 3.4, -7.8, 2.3, 8.9, 5];
+      const s2 = [2.2, 8.4,  7.8,-2.3,-8.9, 5.1];
+      const s3 = [1.5, 3.2, -7.5, 2.1, 8.7, 5.2];
+      document.getElementById('errorCards').innerHTML = [
+        { label: 'MSE',  value: tw.mse(s1, s2).toFixed(4),  cls: 'red',    sub: 'Mean Squared Error' },
+        { label: 'RMSE', value: tw.rmse(s1, s2).toFixed(4), cls: 'yellow', sub: 'Root Mean Squared Error' },
+        { label: 'MAE',  value: tw.mae(s1, s2).toFixed(4),  cls: 'purple', sub: 'Mean Absolute Error' },
+        { label: 'MSE (close)', value: tw.mse(s1, s3).toFixed(4), cls: 'green', sub: 'Similar series → small error' }
+      ].map(c => `<div class="card"><h3>${c.label}</h3><div class="value ${c.cls}">${c.value}</div><div class="sub">${c.sub}</div></div>`).join('');
+    })();
+
+    // ── Nav highlight on scroll ────────────────────────────────────────────
+    const navLinks = document.querySelectorAll('nav a');
+    const sections = document.querySelectorAll('section[id]');
+    const observer = new IntersectionObserver(entries => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          navLinks.forEach(l => l.classList.toggle('active', l.getAttribute('href') === '#' + e.target.id));
+        }
+      });
+    }, { threshold: 0.35 });
+    sections.forEach(s => observer.observe(s));
+  </script>
 </body>
+</html>
