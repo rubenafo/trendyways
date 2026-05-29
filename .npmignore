@@ -1,0 +1,30 @@
+# Source files
+src/
+tests/
+*.ts
+!dist/**
+
+# Build and CI
+.travis.yml
+.github/
+coverage/
+docs/
+Makefile
+
+# Development
+.git
+.gitignore
+.DS_Store
+node_modules/
+package-lock.json
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Testing
+mocha.opts
+test/
+.nyc_output/
