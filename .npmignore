@@ -5,11 +5,9 @@ tests/
 !dist/**
 
 # Build and CI
-.travis.yml
 .github/
 coverage/
 docs/
-Makefile
 
 # Development
 .git

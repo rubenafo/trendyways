@@ -1,4 +1,3 @@
-[![Build Status](https://travis-ci.org/rubenafo/trendyways.svg?branch=master)](https://travis-ci.org/rubenafo/trendyways)
 [![Coverage Status](https://coveralls.io/repos/github/rubenafo/trendyways/badge.svg?branch=master)](https://coveralls.io/github/rubenafo/trendyways?branch=master)
 [![npm version](https://badge.fury.io/js/trendyways.svg)](https://badge.fury.io/js/trendyways)
 
@@ -68,7 +67,6 @@ __Technical Indicators:__
 
 Tests
 -------------
-At the top of this README there is a link to the coverage and test results from Travis and CoverAll.
 If you want to run your tests locally, use mocha to run the /tests files:
 ```
 mocha ./tests
