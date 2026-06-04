@@ -660,7 +660,7 @@ tw.<span class="fn">mae</span>(actual, predicted)   <span class="cmt">// → 7.3
       const closes = data.map(d => d.c);
       const result = tw.stochastic(highs, lows, closes, 14, 3);
       const kVals = result.map(d => d.k !== undefined ? +d.k.toFixed(2) : null);
-      const dVals = result.map(d => d.d !== undefined ? +d.d.toFixed(2) : null);
+      const dVals = result.map(d => d.d != null ? +d.d.toFixed(2) : null);
       const labels = data.map((_, i) => 'T' + i);
       const lastK = kVals[kVals.length - 1];
       const lastD = dVals.filter(v => v !== null).pop();
