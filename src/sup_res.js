@@ -1,6 +1,6 @@
 "use strict";
 
-var Utils = require ("./utils")
+var utils = require ("./utils")
 
 /**
  * Returns the Floor pivot level, three support levels (s1,s2 and s3)
@@ -35,7 +35,7 @@ let floorPivots = function (values) {
     let elem = {r3:r3, r2:r2, r1:r1, pl: pivotLevel, s1:s1, s2:s2, s3:s3};
     result.push(elem);
   }
-  return Utils.reverseAppend(values, result, "floor");
+  return utils.reverseAppend(values, result, "floor");
 }
 module.exports.floorPivots = floorPivots;
 
@@ -138,7 +138,7 @@ let camarillaPoints = function (values) {
     let elem = {r4: r4, r3: r3, r2: r2, r1: r1, s1: s1, s2: s2, s3: s3, s4: s4};
     result.push(elem);
   }
-  return reverseAppend(values, result, "cam");
+  return utils.reverseAppend(values, result, "cam");
 }
 module.exports.camarillaPoints = camarillaPoints;
 

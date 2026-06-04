@@ -99,8 +99,8 @@ let mfi = function (values)
     }
   }
 
-  let sumPosFlow = utils.windowOp (posMoneyFlow, 14, sumVector);
-  let sumNegFlow = utils.windowOp (negMoneyFlow, 14, sumVector);
+  let sumPosFlow = utils.windowOp (posMoneyFlow, 14, vectors.sumVector);
+  let sumNegFlow = utils.windowOp (negMoneyFlow, 14, vectors.sumVector);
   let moneyRatio = vectors.divVector (sumPosFlow, sumNegFlow);
 
   let mfi = [];
@@ -266,7 +266,7 @@ module.exports.rsi = rsi;
  */
 
 let atr = function (values, p) {
-  p = valueIfUndef(p, 14);
+  p = utils.valueIfUndef(p, 14);
   let results = [];
   for (var i = 0; i < values.length; i++) {
     if (i == 0) {

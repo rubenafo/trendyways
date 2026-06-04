@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as tw from '../dist/trendyways.js';
+import * as tw from '../dist/index.js';
 
 describe('Supports and resistances', function () {
   it('Floor pivot level, supports and resistances', function () {

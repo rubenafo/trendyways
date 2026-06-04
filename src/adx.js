@@ -30,7 +30,7 @@ let adx = function (values) {
 			Math.abs(serie[1].l - serie[0].c));
 		return {dmp:dmPos, dmn:dmNeg, tr:tr}
 	}
-	let result = Utils.windowOp(values, 2, dmWindow);
+	let result = utils.windowOp(values, 2, dmWindow);
 	result.unshift({dmp:0, dmn:0, tr:0});
 
 	let firstTr14 = vectors.sumVector(result.slice(0, 15), "tr"),

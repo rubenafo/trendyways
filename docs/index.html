@@ -285,6 +285,7 @@
       <span class="tag">Bollinger Bands</span>
       <span class="tag">MACD</span>
       <span class="tag">RSI</span>
+      <span class="tag">Stochastic</span>
       <span class="tag">ADX</span>
       <span class="tag">Support &amp; Resistance</span>
       <span class="tag">Fibonacci</span>
@@ -298,6 +299,7 @@
     <a href="#bollinger">Bollinger</a>
     <a href="#macd">MACD</a>
     <a href="#rsi">RSI</a>
+    <a href="#stochastic">Stochastic</a>
     <a href="#adx">ADX</a>
     <a href="#support">Support &amp; Resistance</a>
     <a href="#stats">Statistics</a>
@@ -371,6 +373,24 @@
       <pre><span class="kw">const</span> values = [{c:<span class="num">44.34</span>}, {c:<span class="num">44.09</span>}, ... <span class="cmt">/* 33 candles */</span>];
 <span class="kw">const</span> result = tw.<span class="fn">rsi</span>(values, <span class="num">14</span>);
 <span class="cmt">// result[i].rsi → RSI value at index i</span></pre>
+    </section>
+
+    <!-- ── Stochastic ── -->
+    <section id="stochastic">
+      <h2><span class="icon">📊</span> Stochastic Oscillator</h2>
+      <p class="section-desc">Momentum oscillator measuring position within high-low range (%K and %D lines, 0–100 scale).</p>
+
+      <div class="card-grid" id="stochCards"></div>
+
+      <div class="chart-box">
+        <h3>Stochastic %K &amp; %D (14-period, 3-period smoothing)</h3>
+        <canvas id="chartStoch"></canvas>
+      </div>
+
+      <pre><span class="kw">const</span> data = [{h:<span class="num">30.20</span>, l:<span class="num">29.41</span>, c:<span class="num">29.87</span>}, ...];
+<span class="kw">const</span> result = tw.<span class="fn">stochastic</span>(highs, lows, closes, <span class="num">14</span>, <span class="num">3</span>);
+<span class="cmt">// result[i].k  → %K value (0–100)</span>
+<span class="cmt">// result[i].d  → %D value (3-EMA of %K)</span></pre>
     </section>
 
     <!-- ── ADX ── -->
@@ -612,6 +632,62 @@ tw.<span class="fn">mae</span>(actual, predicted)   <span class="cmt">// → 7.3
             { label: 'RSI(14)', data: rsiVals, borderColor: PURPLE, backgroundColor: 'rgba(108,99,255,0.06)', tension: 0.3, pointRadius: 2 },
             { label: 'Overbought (70)', data: Array(values.length).fill(70), borderColor: RED,  borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 },
             { label: 'Oversold (30)',   data: Array(values.length).fill(30), borderColor: TEAL, borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 }
+          ]
+        },
+        options: chartOpts({ scales: { y: { min: 0, max: 100, grid: { color: '#1e2130' } }, x: { grid: { color: '#1e2130' } } } })
+      });
+    })();
+
+    // ── Stochastic ────────────────────────────────────────────────────────
+    (function () {
+      const data = [
+        {h:30.20,l:29.41,c:29.87},{h:30.28,l:29.32,c:30.24},{h:30.45,l:29.96,c:30.10},
+        {h:29.35,l:28.74,c:28.90},{h:29.35,l:28.56,c:28.92},{h:29.29,l:28.41,c:28.48},
+        {h:28.83,l:28.08,c:28.56},{h:28.73,l:27.43,c:27.56},{h:28.67,l:27.66,c:28.47},
+        {h:28.85,l:27.83,c:28.28},{h:28.64,l:27.40,c:27.49},{h:27.68,l:27.09,c:27.23},
+        {h:27.21,l:26.18,c:26.35},{h:26.87,l:26.13,c:26.33},{h:27.41,l:26.63,c:27.03},
+        {h:26.94,l:26.13,c:26.22},{h:26.52,l:25.43,c:26.01},{h:26.52,l:25.35,c:25.46},
+        {h:27.09,l:25.88,c:27.03},{h:27.69,l:26.96,c:27.45},{h:28.45,l:27.14,c:28.36},
+        {h:28.53,l:28.01,c:28.43},{h:28.67,l:27.88,c:27.95},{h:29.01,l:27.99,c:29.01},
+        {h:29.87,l:28.76,c:29.38},{h:29.80,l:29.14,c:29.36},{h:29.75,l:28.71,c:28.91},
+        {h:30.65,l:28.93,c:30.61},{h:30.60,l:30.03,c:30.05},{h:30.76,l:29.39,c:30.19},
+        {h:31.17,l:30.14,c:31.12},{h:30.89,l:30.43,c:30.54},{h:30.04,l:29.35,c:29.78},
+        {h:30.66,l:29.99,c:30.04},{h:30.60,l:29.52,c:30.49},{h:31.97,l:30.94,c:31.47},
+        {h:32.10,l:31.54,c:32.05},{h:32.03,l:31.36,c:31.97}
+      ];
+      const highs = data.map(d => d.h);
+      const lows = data.map(d => d.l);
+      const closes = data.map(d => d.c);
+      const result = tw.stochastic(highs, lows, closes, 14, 3);
+      const kVals = result.map(d => d.k !== undefined ? +d.k.toFixed(2) : null);
+      const dVals = result.map(d => d.d !== undefined ? +d.d.toFixed(2) : null);
+      const labels = data.map((_, i) => 'T' + i);
+      const lastK = kVals[kVals.length - 1];
+      const lastD = dVals.filter(v => v !== null).pop();
+
+      // Cards
+      const cards = document.getElementById('stochCards');
+      const cardData = [
+        { label: 'Last %K(14)',  value: lastK.toFixed(1), cls: lastK > 80 ? 'red' : lastK < 20 ? 'green' : 'purple' },
+        { label: 'Last %D(3)',   value: lastD.toFixed(1), cls: lastD > 80 ? 'red' : lastD < 20 ? 'green' : 'yellow' },
+        { label: 'Overbought at',value: '80.0', cls: 'red' },
+        { label: 'Oversold at',  value: '20.0', cls: 'green' }
+      ];
+      cards.innerHTML = cardData.map(c => `
+        <div class="card">
+          <h3>${c.label}</h3>
+          <div class="value ${c.cls}">${c.value}</div>
+        </div>`).join('');
+
+      new Chart(document.getElementById('chartStoch'), {
+        type: 'line',
+        data: {
+          labels,
+          datasets: [
+            { label: '%K (14)', data: kVals, borderColor: PURPLE, backgroundColor: 'rgba(108,99,255,0.06)', tension: 0.3, pointRadius: 2 },
+            { label: '%D (3)',  data: dVals, borderColor: YELLOW, backgroundColor: 'transparent', tension: 0.3, pointRadius: 2, borderDash: [6,3] },
+            { label: 'Overbought (80)', data: Array(data.length).fill(80), borderColor: RED,  borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 },
+            { label: 'Oversold (20)',   data: Array(data.length).fill(20), borderColor: TEAL, borderDash: [6,3], pointRadius: 0, borderWidth: 1.5 }
           ]
         },
         options: chartOpts({ scales: { y: { min: 0, max: 100, grid: { color: '#1e2130' } }, x: { grid: { color: '#1e2130' } } } })

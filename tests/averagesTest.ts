@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as tw from '../dist/trendyways.js';
+import * as tw from '../dist/index.js';
 
 describe('Averages', function () {
   it('Moving Average of a sample serie', function () {

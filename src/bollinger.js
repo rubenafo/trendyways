@@ -1,7 +1,8 @@
 "use strict";
 
-var Utils = require ("./utils") 
-var Avg = require ("./averages")
+var utils = require ("./utils")
+var avg = require ("./averages")
+var statistics = require ("./statistics")
 
 /*
  * Returns the Bollinger Band values as an object
@@ -19,9 +20,9 @@ var Avg = require ("./averages")
  * located +2*sd and -2*sd from the central moving average.
  */
 let bollinger = function (list, n, k, targetAttr) {
-  targetAttr = Utils.valueIfUndef(targetAttr, ["c"])
-  let movingAvg = Avg.ma (list, n, targetAttr);
-  let movingSd = Utils.windowOp (list, n, sd, targetAttr);
+  targetAttr = utils.valueIfUndef(targetAttr, ["c"])
+  let movingAvg = avg.ma (list, n, targetAttr);
+  let movingSd = utils.windowOp (list, n, statistics.sd, targetAttr);
   let upperBand = new Array();
   let lowerBand = new Array();
   let movingAvgElem = 0;

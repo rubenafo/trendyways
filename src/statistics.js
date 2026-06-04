@@ -1,4 +1,7 @@
 
+var utils = require("./utils");
+var vectors = require("./vectors");
+
 /**
  * @description Max value in a series
  * @param{array} values array of numerical values
@@ -45,7 +48,7 @@ let mean = function (values, targetAttr) {
   if (values.length == 0)
     return mean;
   for (var i = 0; i < values.length; i++) {
-      mean += isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+      mean += utils.isUndef(targetAttr) ? values[i] : values[i][targetAttr]
   }
   return mean/values.length;
 }
@@ -62,7 +65,7 @@ let sd = function (values, targetAttr) {
   var meanVal = mean(values, targetAttr);
   var sqrSum = 0;
   for (var i = 0; i < values.length; i++) {
-    var value = isUndef(targetAttr) ? values[i] : values[i][targetAttr]
+    var value = utils.isUndef(targetAttr) ? values[i] : values[i][targetAttr]
     sqrSum += Math.pow(value-meanVal, 2);
   }
   return Math.sqrt (sqrSum/values.length);
@@ -79,7 +82,7 @@ module.exports.sd = sd
  */
 let mse = function (series1, series2)
 {
-  return avgVector (powVector (diffVectors(series1, series2)));
+  return vectors.avgVector (vectors.powVector (vectors.diffVectors(series1, series2)));
 }
 module.exports.mse = mse;
 
@@ -107,6 +110,6 @@ module.exports.rmse = rmse;
  */
 let mae = function (series1, series2)
 {
-  return avgVector(absVector(diffVectors(series1, series2)));
+  return vectors.avgVector(vectors.absVector(vectors.diffVectors(series1, series2)));
 }
 module.exports.mae = mae;

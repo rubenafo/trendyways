@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as tr from '../dist/trendyways.min.js';
+import * as tr from '../dist/index.js';
 
 describe('ADX', function () {
   const data = [

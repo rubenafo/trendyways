@@ -27,10 +27,12 @@
     "jsdoc"
   ],
   "devDependencies": {
+    "browserify": "^16.2.3",
     "coveralls": "^3.1.1",
     "istanbul": "^0.4.2",
     "jsdoc": "^3.6.3",
     "mocha": ">=2.3.4",
+    "uglify-es": "^3.3.9",
     "uglifyjs-webpack-plugin": "^1.1.2",
     "typescript": "^5.0.0",
     "@types/mocha": "^10.0.0",
@@ -44,7 +46,7 @@
   "scripts": {
     "test": "mocha --require ts-node/register tests/**/*.ts",
     "build": "tsc && npm run bundle",
-    "bundle": "uglifyjs dist/trendyways.js -o dist/trendyways.min.js -c -m"
+    "bundle": "browserify dist/index.js --standalone tw -o dist/trendyways.js && uglifyjs dist/trendyways.js -o dist/trendyways.min.js -c -m"
   },
   "bundleDependencies": [
     "uglify-js",

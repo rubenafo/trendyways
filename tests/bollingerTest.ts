@@ -4,7 +4,7 @@
  */
 
 import * as assert from 'assert';
-import * as tw from '../dist/trendyways.js';
+import * as tw from '../dist/index.js';
 
 describe('Bollinger', function () {
   it('Bollinger bands values for a sample serie', function () {

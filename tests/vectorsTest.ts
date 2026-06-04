@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as tw from '../dist/trendyways.js';
+import * as tw from '../dist/index.js';
 
 describe('Vectors', function () {
   describe('diffVectors', function () {

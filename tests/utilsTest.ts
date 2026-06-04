@@ -1,5 +1,5 @@
 import * as assert from 'assert';
-import * as tw from '../dist/trendyways.js';
+import * as tw from '../dist/index.js';
 
 describe('Utils test', function () {
   it('throws an exception when it cannot retrieve the attr from an object', function () {
