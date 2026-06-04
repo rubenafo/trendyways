@@ -1,7 +1,7 @@
 {
   "name": "trendyways",
   "preferGlobal": true,
-  "version": "1.5.0",
+  "version": "1.6.0",
   "author": "Ruben Afonso <rbfrancos@gmail.com>",
   "description": "a javascript library for financial technical analysis",
   "contributors": [
@@ -27,17 +27,34 @@
     "jsdoc"
   ],
   "devDependencies": {
-    "browserify": "^16.2.3",
-    "coveralls": "^3.1.1",
-    "istanbul": "^0.4.2",
-    "jsdoc": "^3.6.3",
-    "mocha": ">=2.3.4",
-    "uglify-es": "^3.3.9",
-    "uglifyjs-webpack-plugin": "^1.1.2",
-    "typescript": "^5.0.0",
     "@types/mocha": "^10.0.0",
     "@types/node": "^20.0.0",
-    "ts-node": "^10.9.0"
+    "browserify": "^16.2.3",
+    "coveralls": "^3.1.1",
+    "jsdoc": "^3.6.3",
+    "mocha": ">=2.3.4",
+    "nyc": "^15.1.0",
+    "ts-node": "^10.9.0",
+    "typescript": "^5.0.0",
+    "uglify-es": "^3.3.9",
+    "uglify-js": "^3.19.3",
+    "uglifyjs": "^2.4.11",
+    "uglifyjs-webpack-plugin": "^1.1.2"
+  },
+  "nyc": {
+    "include": [
+      "dist/**/*.js"
+    ],
+    "exclude": [
+      "dist/trendyways.js",
+      "dist/trendyways.min.js"
+    ],
+    "reporter": [
+      "text",
+      "lcov"
+    ],
+    "sourceMap": true,
+    "all": true
   },
   "license": "Apache-2.0",
   "engines": {
@@ -45,6 +62,8 @@
   },
   "scripts": {
     "test": "mocha --require ts-node/register tests/**/*.ts",
+    "coverage": "nyc mocha --require ts-node/register tests/**/*.ts",
+    "coveralls": "npm run coverage && nyc report --reporter=text-lcov | node --use-system-ca node_modules/coveralls/bin/coveralls.js",
     "build": "tsc && npm run bundle",
     "bundle": "browserify dist/index.js --standalone tw -o dist/trendyways.js && uglifyjs dist/trendyways.js -o dist/trendyways.min.js -c -m && node -e \"require('fs').copyFileSync('dist/trendyways.min.js','docs/trendyways.min.js')\""
   },

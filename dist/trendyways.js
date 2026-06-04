@@ -568,7 +568,6 @@ let stochastic = function (highPrices, lowPrices, closePrices, period, smoothPer
         throw new Error("Invalid input: all price arrays must have the same length");
     }
     let kValues = [];
-    // Calculate %K line
     for (let i = 0; i < closePrices.length; i++) {
         let windowStart = Math.max(0, i - period + 1);
         let windowEnd = i + 1;
@@ -578,11 +577,9 @@ let stochastic = function (highPrices, lowPrices, closePrices, period, smoothPer
         let lowestLow = statistics.min(lowWindow);
         let range = highestHigh - lowestLow;
         let close = closePrices[i];
-        // Calculate %K (0-100 scale)
         let k = range === 0 ? 0 : ((close - lowestLow) / range) * 100;
         kValues.push(k);
     }
-    // Calculate %D line (SMA of %K)
     let dValues = [];
     for (let i = 0; i < kValues.length; i++) {
         if (i < smoothPeriod - 1) {
@@ -594,13 +591,9 @@ let stochastic = function (highPrices, lowPrices, closePrices, period, smoothPer
             dValues.push(d);
         }
     }
-    // Return combined results
     let result = [];
     for (let i = 0; i < kValues.length; i++) {
-        result.push({
-            k: kValues[i],
-            d: dValues[i]
-        });
+        result.push({ k: kValues[i], d: dValues[i] });
     }
     return result;
 };
