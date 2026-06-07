@@ -27,7 +27,7 @@ and the file will be available as the __tw__ module: e.g. `tw.max([4,5,6])`
 
 Documentation
 -------------
-Please refer to the wiki of the project to access the latest documentation: https://github.com/rubenafo/trendyways/wiki
+Please refer to: http://rubenafo.github.io/trendyways
 
 __General purpose functions:__
  
